@@ -7,7 +7,7 @@
                 Penerimaan Kulakan
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Penerimaan</li>
             </ol>
         </section>
@@ -94,10 +94,10 @@
                         </div>
 
                         <!-- <div class="form-group">
-                                        <label>Date *</label>
-                                        <input type="hidden" name="penerimaan_id" value="61">
-                                        <input type="date" name="tanggal_penerimaan" value="2023-12-09" class="form-control" required>
-                                    </div> -->
+                                            <label>Date *</label>
+                                            <input type="hidden" name="penerimaan_id" value="61">
+                                            <input type="date" name="tanggal_penerimaan" value="2023-12-09" class="form-control" required>
+                                        </div> -->
 
                         <div class="form-group">
                             <div class="row">

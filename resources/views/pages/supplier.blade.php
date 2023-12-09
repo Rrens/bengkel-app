@@ -8,7 +8,7 @@
                 <small>Tambahan norek mungkin</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Supplier</li>
             </ol>
         </section>
@@ -76,7 +76,8 @@
                         <span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add Supplier</h4>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
+                <form action="{{ route('supplier.store') }}" method="post">
+                    @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Supplier Name *</label>

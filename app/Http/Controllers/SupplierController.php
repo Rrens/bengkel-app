@@ -13,4 +13,9 @@ class SupplierController extends Controller
         $active_detail = '';
         return view('pages.supplier', compact('active', 'active_detail'));
     }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Laporan\PembelianController as LaporanPembelianController;
 use App\Http\Controllers\Laporan\PenerimaanController as LaporanPenerimaanController;
 use App\Http\Controllers\Laporan\TransactionServiceController;
@@ -29,8 +30,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [SupplierController::class, 'index'])->name('supplier.index');
-Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
+Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
+
+Route::group([
+    'prefix' => 'customer'
+], function () {
+    Route::get('', [CustomerController::class, 'index'])->name('customer.index');
+});
+
+Route::group([
+    'prefix' => 'supplier'
+], function () {
+    Route::get('', [SupplierController::class, 'index'])->name('supplier.index');
+    Route::post('', [SupplierController::class, 'store'])->name('supplier.store');
+});
 
 Route::group([
     'prefix' => 'products'
