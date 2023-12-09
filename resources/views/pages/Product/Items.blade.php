@@ -4,21 +4,21 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Spare Part
+                Items
+                <small>Data Barang</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Spare Part</li>
+                <li class="active">Product</li>
             </ol>
         </section>
 
         <section class="content">
             <div class="row">
-
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Spare Part</h3>
+                            <h3 class="box-title">Data Product</h3>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">
@@ -31,8 +31,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Barcode</th>
                                         <th>Name</th>
-                                        <th>Kategori</th>
+                                        <th>Category</th>
+                                        <th>Unit</th>
                                         <th>Price</th>
                                         <th>Stock</th>
                                         <th>Action</th>
@@ -46,6 +48,8 @@
                                         </td>
                                         <td>Win 95+</td>
                                         <td> 4</td>
+                                        <td>X</td>
+                                        <td>X</td>
                                         <td>X</td>
                                         <td>
                                             <button class="btn btn-primary btn-sm" data-toggle="modal"
@@ -78,13 +82,42 @@
                 <form action="http://localhost/awrmotor/supplier/process" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Name *</label>
+                            <label>Barcode *</label>
                             <input type="hidden" name="id" value="">
-                            <input type="text" name="name" value="" class="form-control" required>
+                            <input type="text" name="barcode" value="" class="form-control" required="">
                         </div>
+
+                        <div class="form-group">
+                            <label for="product_name">Product Name *</label>
+                            <input type="text" name="product_name" id="product_name" value="" class="form-control"
+                                required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Category*</label>
+                            <!-- contoh pertama -->
+                            <select name="category" class="form-control" required="">
+                                <option value="" selected hidden>- Pilih -</option>
+                                <option value="7">Oli</option>
+                                <option value="8">Kampas Rem</option>
+                                <option value="9">Seal</option>
+                                <option value="10">Lampu</option>
+                                <option value="11">Busi</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Unit *</label>
+                            <!-- contoh kedua -->
+                            <select name="unit" class="form-control" required="required">
+                                <option value="" selected="selected">- Pilih -</option>
+                                <option value="6">Unit</option>
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label>Price *</label>
-                            <input type="number" name="price" value="" class="form-control" required>
+                            <input type="number" name="price" value="" class="form-control" required="">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -109,13 +142,42 @@
                 <form action="http://localhost/awrmotor/supplier/process" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Name *</label>
+                            <label>Barcode *</label>
                             <input type="hidden" name="id" value="">
-                            <input type="text" name="name" value="" class="form-control" required>
+                            <input type="text" name="barcode" value="" class="form-control" required="">
                         </div>
+
+                        <div class="form-group">
+                            <label for="product_name">Product Name *</label>
+                            <input type="text" name="product_name" id="product_name" value=""
+                                class="form-control" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Category*</label>
+                            <!-- contoh pertama -->
+                            <select name="category" class="form-control" required="">
+                                <option value="">- Pilih -</option>
+                                <option value="7">Oli</option>
+                                <option value="8">Kampas Rem</option>
+                                <option value="9">Seal</option>
+                                <option value="10">Lampu</option>
+                                <option value="11">Busi</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Unit *</label>
+                            <!-- contoh kedua -->
+                            <select name="unit" class="form-control" required="required">
+                                <option value="" selected="selected">- Pilih -</option>
+                                <option value="6">Unit</option>
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label>Price *</label>
-                            <input type="number" name="price" value="" class="form-control" required>
+                            <input type="number" name="price" value="" class="form-control" required="">
                         </div>
                     </div>
                     <div class="modal-footer">

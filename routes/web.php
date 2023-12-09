@@ -6,8 +6,13 @@ use App\Http\Controllers\Laporan\PenerimaanController as LaporanPenerimaanContro
 use App\Http\Controllers\Laporan\TransactionServiceController;
 use App\Http\Controllers\MinMax\PeriodeController;
 use App\Http\Controllers\MinMax\RealtimeController;
+use App\Http\Controllers\Product\CategoriesController;
+use App\Http\Controllers\Product\ItemsController;
 use App\Http\Controllers\Restcok\PembelianController;
 use App\Http\Controllers\Restcok\PenerimaanController;
+use App\Http\Controllers\Service\SalesController;
+use App\Http\Controllers\Service\SalesInController;
+use App\Http\Controllers\Service\SalesOutController;
 use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiServiceController;
@@ -26,7 +31,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [SupplierController::class, 'index'])->name('supplier.index');
 Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
-Route::get('spare-part', [SparePartController::class, 'index'])->name('sparepart.index');
+
+Route::group([
+    'prefix' => 'products'
+], function () {
+    Route::get('categories', [CategoriesController::class, 'index'])->name('product.categories.index');
+    Route::get('items', [ItemsController::class, 'index'])->name('product.items.index');
+});
 
 Route::group([
     'prefix' => 'restock'
@@ -36,6 +47,13 @@ Route::group([
 });
 
 Route::get('transaction', [TransaksiServiceController::class, 'index'])->name('transaction-service.index');
+Route::group([
+    'prefix' => 'transaction'
+], function () {
+    Route::get('sales', [SalesController::class, 'index'])->name('service.sales.index');
+    Route::get('sales-in', [SalesInController::class, 'index'])->name('service.sales-in.index');
+    Route::get('sales-out', [SalesOutController::class, 'index'])->name('service.sales-out.index');
+});
 
 Route::group([
     'prefix' => 'min-max',
