@@ -32,25 +32,27 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
+                                        <th>Nama</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Trident</td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                data-target="#modalEdit">
-                                                <i class="fa fa-pencil"> Edit</i>
-                                            </button>
-                                            <button data-toggle="modal" data-target="#modalDelete"
-                                                class="btn btn-danger btn-sm">
-                                                <i class="fa fa-trash"> Delete</i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    @foreach ($data as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    data-target="#modalEdit{{ $item->id }}">
+                                                    <i class="fa fa-pencil"> Edit</i>
+                                                </button>
+                                                <button data-toggle="modal" data-target="#modalDelete{{ $item->id }}"
+                                                    class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"> Delete</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -66,13 +68,14 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add Category</h4>
+                    <h4 class="modal-title">Tambah Kategori</h4>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
+                <form action="{{ route('product.categories.store') }}" method="post">
+                    @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Category Name *</label>
-                            <input type="text" name="name" value="" class="form-control" required>
+                            <label>Nama Kategori *</label>
+                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -86,56 +89,66 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEdit">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Edit Category</h4>
-                </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
-                    <div class="modal-body">
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalEdit{{ $item->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Edit Kategori {{ $item->name }}</h4>
+                    </div>
+                    <form action="{{ route('product.categories.update') }}" method="post">
+                        @csrf
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label>Category Name *</label>
-                                <input type="text" name="name" value="" class="form-control" required>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Category Name *</label>
+                                    <input type="number" name="id" value="{{ $item->id }}" hidden>
+                                    <input type="text" name="name"
+                                        value="{{ empty(old('name')) ? $item->name : old('name') }}" class="form-control"
+                                        required>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        <div class="modal-footer">
+                            <div style="float: right;">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalDelete">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Delete Category</h4>
+                    </form>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
-                    <div class="modal-body">
-                        <input type="number" value="" name="id" hidden>
-                    </div>
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+    @endforeach
+
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalDelete{{ $item->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Hapus Kategori {{ $item->name }}</h4>
+                    </div>
+                    <form action="{{ route('product.categories.delete') }}" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <input type="number" value="{{ $item->id }}" name="id" hidden>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="float: right;">
+                                <button type="button" class="btn btn-default pull-left"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
     @push('head')
         <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">

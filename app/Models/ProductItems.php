@@ -25,7 +25,7 @@ class ProductItems extends Model
 
     public function category()
     {
-        return $this->hasMany(Product_category::class, 'id', 'category_id');
+        return $this->hasMany(ProductCategory::class, 'id', 'category_id');
     }
 
     public function cart()

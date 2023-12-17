@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('gender');
             $table->string('phone');
             $table->longText('address');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -36,6 +36,9 @@ Route::group([
     'prefix' => 'customer'
 ], function () {
     Route::get('', [CustomerController::class, 'index'])->name('customer.index');
+    Route::post('', [CustomerController::class, 'store'])->name('customer.store');
+    Route::post('update', [CustomerController::class, 'update'])->name('customer.update');
+    Route::post('delete', [CustomerController::class, 'delete'])->name('customer.delete');
 });
 
 Route::group([
@@ -43,19 +46,40 @@ Route::group([
 ], function () {
     Route::get('', [SupplierController::class, 'index'])->name('supplier.index');
     Route::post('', [SupplierController::class, 'store'])->name('supplier.store');
+    Route::post('update', [SupplierController::class, 'update'])->name('supplier.update');
+    Route::post('delete', [SupplierController::class, 'delete'])->name('supplier.delete');
 });
 
 Route::group([
     'prefix' => 'products'
 ], function () {
-    Route::get('categories', [CategoriesController::class, 'index'])->name('product.categories.index');
-    Route::get('items', [ItemsController::class, 'index'])->name('product.items.index');
+    Route::group([
+        'prefix' => 'categories'
+    ], function () {
+        Route::get('', [CategoriesController::class, 'index'])->name('product.categories.index');
+        Route::post('', [CategoriesController::class, 'store'])->name('product.categories.store');
+        Route::post('update', [CategoriesController::class, 'update'])->name('product.categories.update');
+        Route::post('delete', [CategoriesController::class, 'delete'])->name('product.categories.delete');
+    });
+
+    Route::group([
+        'prefix' => 'items'
+    ], function () {
+        Route::get('', [ItemsController::class, 'index'])->name('product.items.index');
+        Route::post('', [ItemsController::class, 'store'])->name('product.items.store');
+        Route::post('update', [ItemsController::class, 'update'])->name('product.items.update');
+        Route::post('delete', [ItemsController::class, 'delete'])->name('product.items.delete');
+    });
 });
 
 Route::group([
     'prefix' => 'restock'
 ], function () {
-    Route::get('pembelian', [PembelianController::class, 'index'])->name('restock.pembelian.index');
+    Route::group([
+        'prefix' => 'pembelian',
+    ], function () {
+        Route::get('', [PembelianController::class, 'index'])->name('restock.pembelian.index');
+    });
     Route::get('penerimaan', [PenerimaanController::class, 'index'])->name('restock.penerimaan.index');
 });
 
@@ -63,9 +87,16 @@ Route::get('transaction', [TransaksiServiceController::class, 'index'])->name('t
 Route::group([
     'prefix' => 'transaction'
 ], function () {
-    Route::get('sales', [SalesController::class, 'index'])->name('service.sales.index');
-    Route::get('sales-in', [SalesInController::class, 'index'])->name('service.sales-in.index');
-    Route::get('sales-out', [SalesOutController::class, 'index'])->name('service.sales-out.index');
+    Route::group([
+        'prefix' => 'sales'
+    ], function () {
+        Route::get('', [SalesController::class, 'index'])->name('service.sales.index');
+    });
+    // Route:group([
+    //     'prefix' => 'sales-in'
+    // ])
+    // Route::get('sales-in', [SalesInController::class, 'index'])->name('service.sales-in.index');
+    // Route::get('sales-out', [SalesOutController::class, 'index'])->name('service.sales-out.index');
 });
 
 Route::group([

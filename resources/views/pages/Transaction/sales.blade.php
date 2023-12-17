@@ -26,8 +26,7 @@
                                         </td>
                                         <td>
                                             <div class="form-group">
-                                                <input type="date" id="date" value="2023-12-09"
-                                                    class="form-control">
+                                                <input type="date" id="date" value="" class="form-control">
                                             </div>
                                         </td>
                                     </tr>
@@ -91,7 +90,7 @@
                                     </tr>
                                     <tr>
                                         <td style="vertical-align: top;">
-                                            <label for="qty">Qty</label>
+                                            <label for="qty">Terjual</label>
                                         </td>
                                         <td>
                                             <div class="form-group">
@@ -101,6 +100,19 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td style="vertical-align: top;">
+                                            <label for="permintaan">Permintaan</label>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="number" id="qty" value="1" min="1"
+                                                    class="form-control">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
                                         <td></td>
                                         <td>
                                             <div>

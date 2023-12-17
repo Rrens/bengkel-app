@@ -19,10 +19,79 @@
                         <div class="box-header">
                             <h3 class="box-title">Data Pembelian</h3>
                             <div class="pull-right">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Tanggal Pembelian *</label>
+                                        <input type="date" name="tanggal_pembelian" value="2023-12-09"
+                                            class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Supplier *</label>
+                                        <select name="supplier" class="form-control">
+                                            <option value="">- Pilih -</option>
+                                            @foreach ($supplier as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="name_item">Search Item</label>
+                            </div>
+                            <div class="form-group input-group">
+                                <input type="hidden" name="item_id" id="item_id" value="">
+                                <input type="text" name="name_item" id="name_item" value="" class="form-control"
+                                    readonly="">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
+                                        data-target="#modalItemAdd">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="stock">Stock Now</label>
+                                        <input type="text" name="stock" id="stock" value=""
+                                            class="form-control" readonly="">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>Buy Stock</label>
+                                        <input type="number" name="jumlah_pembelian" value="" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div style="float: right;">
+                                    {{-- <button type="button" class="btn btn-default pull-left"
+                                        data-dismiss="modal">Close</button> --}}
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Data Pembelian</h3>
+                            <div class="pull-right">
+                                {{-- <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">
                                     <i class="fa fa-plus"> Create</i>
-                                </button>
+                                </button> --}}
                             </div>
                         </div>
                         <div class="box-body">
@@ -57,7 +126,7 @@
         </section>
     </div>
 
-    <div class="modal fade" id="modalAdd">
+    {{-- <div class="modal fade" id="modalAdd">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -71,14 +140,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Pembelian ID *</label>
-                                    <input type="number" name="tanggal_pembelian" value="2023-12-09" class="form-control"
-                                        required>
+                                    <input type="number" name="tanggal_pembelian" value="2023-12-09"
+                                        class="form-control" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label>Tanggal Pembelian *</label>
-                                    <input type="date" name="tanggal_pembelian" value="2023-12-09" class="form-control"
-                                        required>
+                                    <input type="date" name="tanggal_pembelian" value="2023-12-09"
+                                        class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -112,8 +181,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="stock">Stock Now</label>
-                                    <input type="text" name="stock" id="stock" value="" class="form-control"
-                                        readonly="">
+                                    <input type="text" name="stock" id="stock" value=""
+                                        class="form-control" readonly="">
                                 </div>
 
                                 <div class="col-md-6">
@@ -125,7 +194,8 @@
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-default pull-left"
+                                    data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
@@ -133,7 +203,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="modal fade" id="modalItemAdd">
         <div class="modal-dialog">
@@ -147,7 +217,7 @@
                 </div>
 
                 <div class="modal-body table-responsive">
-                    <table class="table table-bordered table-striped" id="table1">
+                    <table class="table table-bordered table-striped" id="example2">
                         <thead>
                             <tr>
                                 <th>Name Item</th>
@@ -158,61 +228,23 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>Busi Honda</td>
-                                <td class="text-right">Rp. 10.000</td>
-                                <td class="text-right">0</td>
-                                <td>
-                                    <button class="btn btn-xs btn-info" id="select" data-item_id="1"
-                                        data-name_item="Busi Honda" data-stock="0">
-                                        <i class="fa fa-check"> Select</i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Oli Motul</td>
-                                <td class="text-right">Rp. 40.000</td>
-                                <td class="text-right">0</td>
-                                <td>
-                                    <button class="btn btn-xs btn-info" id="select" data-item_id="2"
-                                        data-name_item="Oli Motul" data-stock="0">
-                                        <i class="fa fa-check"> Select</i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Seal Mesin</td>
-                                <td class="text-right">Rp. 5.000</td>
-                                <td class="text-right">0</td>
-                                <td>
-                                    <button class="btn btn-xs btn-info" id="select" data-item_id="3"
-                                        data-name_item="Seal Mesin" data-stock="0">
-                                        <i class="fa fa-check"> Select</i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Lampu Led Putih</td>
-                                <td class="text-right">Rp. 45.000</td>
-                                <td class="text-right">0</td>
-                                <td>
-                                    <button class="btn btn-xs btn-info" id="select" data-item_id="4"
-                                        data-name_item="Lampu Led Putih" data-stock="0">
-                                        <i class="fa fa-check"> Select</i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Kampas Rem</td>
-                                <td class="text-right">Rp. 10.000</td>
-                                <td class="text-right">0</td>
-                                <td>
-                                    <button class="btn btn-xs btn-info" id="select" data-item_id="5"
-                                        data-name_item="Kampas Rem" data-stock="0">
-                                        <i class="fa fa-check"> Select</i>
-                                    </button>
-                                </td>
-                            </tr>
+                            @foreach ($items as $item)
+                                @php
+                                    // dd($item);
+                                @endphp
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="text-right">Rp {{ number_format($item->price) }}</td>
+                                    <td class="text-right">{{ $item->stock }}</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-info" id="select"
+                                            data-item_id="{{ $item->id }}" data-name_item="{{ $item->name }}"
+                                            data-stock="{{ $item->stock }}">
+                                            <i class="fa fa-check"> Select</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

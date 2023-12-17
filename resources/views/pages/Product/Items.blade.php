@@ -34,34 +34,35 @@
                                         <th>Barcode</th>
                                         <th>Name</th>
                                         <th>Category</th>
-                                        <th>Unit</th>
                                         <th>Price</th>
                                         <th>Stock</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 4.0
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td> 4</td>
-                                        <td>X</td>
-                                        <td>X</td>
-                                        <td>X</td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                data-target="#modalEdit">
-                                                <i class="fa fa-pencil"> Edit</i>
-                                            </button>
-                                            <button data-toggle="modal" data-target="#modalDelete"
-                                                class="btn btn-danger btn-sm">
-                                                <i class="fa fa-trash"> Delete</i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    @foreach ($data as $item)
+                                        @php
+                                            // dd($data);
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->barcode }} </td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->category[0]->name }}</td>
+                                            <td>{{ $item->price }}</td>
+                                            <td>{{ $item->stock }}</td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    data-target="#modalEdit{{ $item->id }}">
+                                                    <i class="fa fa-pencil"> Edit</i>
+                                                </button>
+                                                <button data-toggle="modal" data-target="#modalDelete{{ $item->id }}"
+                                                    class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"> Delete</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -77,47 +78,43 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add Spare Part</h4>
+                    <h4 class="modal-title">Tambah </h4>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
+                <form action="{{ route('product.items.store') }}" method="post">
+                    @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Barcode *</label>
                             <input type="hidden" name="id" value="">
-                            <input type="text" name="barcode" value="" class="form-control" required="">
+                            <input type="text" name="barcode" value="{{ $barcode }}" class="form-control" readonly
+                                required>
                         </div>
 
                         <div class="form-group">
-                            <label for="product_name">Product Name *</label>
-                            <input type="text" name="product_name" id="product_name" value="" class="form-control"
+                            <label for="name">Nama Produk *</label>
+                            <input type="text" name="name" value="" class="form-control" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Kategori *</label>
+                            <select name="category_id" class="form-control" required="">
+                                @foreach ($category as $row)
+                                    <option
+                                        {{ (!empty(old('category')) ? 'selected' : $item->category_id == $row->id) ? 'selected' : '' }}
+                                        value="{{ $row->id }}">{{ $row->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Harga *</label>
+                            <input type="number" name="price" value="{{ old('price') }}" class="form-control"
                                 required="">
                         </div>
-
                         <div class="form-group">
-                            <label>Category*</label>
-                            <!-- contoh pertama -->
-                            <select name="category" class="form-control" required="">
-                                <option value="" selected hidden>- Pilih -</option>
-                                <option value="7">Oli</option>
-                                <option value="8">Kampas Rem</option>
-                                <option value="9">Seal</option>
-                                <option value="10">Lampu</option>
-                                <option value="11">Busi</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Unit *</label>
-                            <!-- contoh kedua -->
-                            <select name="unit" class="form-control" required="required">
-                                <option value="" selected="selected">- Pilih -</option>
-                                <option value="6">Unit</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Price *</label>
-                            <input type="number" name="price" value="" class="form-control" required="">
+                            <label>Stok *</label>
+                            <input type="number" name="stock" value="{{ old('stock') }}" class="form-control"
+                                required="">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -131,88 +128,92 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEdit">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Edit Spare Part</h4>
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalEdit{{ $item->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Edit {{ $item->name }}</h4>
+                    </div>
+                    <form action="{{ route('product.items.update') }}" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Barcode *</label>
+                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                <input type="text" name="barcode" value="{{ $item->barcode }}" class="form-control"
+                                    required="" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Nama Produk *</label>
+                                <input type="text" name="name" id="name" value="{{ $item->name }}"
+                                    class="form-control" required="">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Kategory *</label>
+                                <select name="category_id" class="form-control" required="">
+                                    @foreach ($category as $row)
+                                        <option
+                                            {{ (!empty(old('category')) ? 'selected' : $item->category_id == $row->id) ? 'selected' : '' }}
+                                            value="{{ $row->id }}">{{ $row->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Harga *</label>
+                                <input type="number" name="price" value="{{ $item->price }}" class="form-control"
+                                    required="">
+                            </div>
+                            <div class="form-group">
+                                <label>Stok *</label>
+                                <input type="number" name="stock" value="{{ $item->stock }}" class="form-control"
+                                    required="">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="float: right;">
+                                <button type="button" class="btn btn-default pull-left"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Barcode *</label>
-                            <input type="hidden" name="id" value="">
-                            <input type="text" name="barcode" value="" class="form-control" required="">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="product_name">Product Name *</label>
-                            <input type="text" name="product_name" id="product_name" value=""
-                                class="form-control" required="">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Category*</label>
-                            <!-- contoh pertama -->
-                            <select name="category" class="form-control" required="">
-                                <option value="">- Pilih -</option>
-                                <option value="7">Oli</option>
-                                <option value="8">Kampas Rem</option>
-                                <option value="9">Seal</option>
-                                <option value="10">Lampu</option>
-                                <option value="11">Busi</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Unit *</label>
-                            <!-- contoh kedua -->
-                            <select name="unit" class="form-control" required="required">
-                                <option value="" selected="selected">- Pilih -</option>
-                                <option value="6">Unit</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Price *</label>
-                            <input type="number" name="price" value="" class="form-control" required="">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+    @endforeach
 
-    <div class="modal fade" id="modalDelete">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Delete Spare Part</h4>
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalDelete{{ $item->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Hapus Item {{ $item->name }}</h4>
+                    </div>
+                    <form action="{{ route('product.items.delete') }}" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <input type="number" value="{{ $item->id }}" name="id" hidden>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="float: right;">
+                                <button type="button" class="btn btn-default pull-left"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
-                    <div class="modal-body">
-                        <input type="number" value="" name="id" hidden>
-                    </div>
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+    @endforeach
+
 
     @push('head')
         <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">

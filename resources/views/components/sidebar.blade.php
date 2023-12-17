@@ -66,28 +66,12 @@
                  </ul>
              </li>
 
-             <li class="treeview {{ $active == 'transaction' ? 'active' : '' }}">
-                 <a href="#">
-                     <i class="fa fa-shopping-cart"></i>
-                     <span>Transaction</span>
-                     <span class="pull-right-container">
-                         <i class="fa fa-angle-left pull-right"></i>
-                     </span>
+             <li class="{{ $active == 'transaction' ? 'active' : '' }}">
+                 <a href="{{ route('service.sales.index') }}">
+                     <i class="fa fa-shopping-cart"></i> <span>Penjualan</span>
                  </a>
-                 <ul class="treeview-menu">
-                     <li class="{{ $active_detail == 'sales' ? 'active' : '' }}">
-                         <a href="{{ route('service.sales.index') }}"><i class="fa fa-circle-o"></i> Sales</a>
-                     </li>
-                     <li class="{{ $active_detail == 'sales-in' ? 'active' : '' }}">
-                         <a href="{{ route('service.sales-in.index') }}"><i class="fa fa-circle-o"></i>
-                             Sales-in</a>
-                     </li>
-                     <li class="{{ $active_detail == 'sales-out' ? 'active' : '' }}">
-                         <a href="{{ route('service.sales-out.index') }}"><i class="fa fa-circle-o"></i>
-                             Sales-out</a>
-                     </li>
-                 </ul>
              </li>
+
              <li class="header">MENU PERHITUNGAN MIN MAX</li>
              <li class="treeview {{ $active == 'min-max' ? 'active' : '' }}">
                  <a href="#">

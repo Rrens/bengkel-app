@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Restcok;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductItems;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class PembelianController extends Controller
@@ -11,6 +13,13 @@ class PembelianController extends Controller
     {
         $active = 'restock';
         $active_detail = 'pembelian';
-        return view('pages.restock.pembelian', compact('active', 'active_detail'));
+        $supplier = Supplier::all();
+        $items = ProductItems::all();
+        return view('pages.restock.pembelian', compact(
+            'active',
+            'active_detail',
+            'supplier',
+            'items',
+        ));
     }
 }

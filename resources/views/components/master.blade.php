@@ -38,6 +38,7 @@
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
+    @include('sweetalert::alert')
     <div class="wrapper">
 
         <header class="main-header">

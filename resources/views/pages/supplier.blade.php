@@ -32,33 +32,31 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Toko</th>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
+                                        <th>Name Toko</th>
+                                        <th>No Telp</th>
+                                        <th>Alamat</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Trident</td>
-                                        <td>Internet
-                                            Explorer 4.0
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td> 4</td>
-                                        <td>X</td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                data-target="#modalEdit">
-                                                <i class="fa fa-pencil"> Edit</i>
-                                            </button>
-                                            <button data-toggle="modal" data-target="#modalDelete"
-                                                class="btn btn-danger btn-sm">
-                                                <i class="fa fa-trash"> Delete</i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    @foreach ($data as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->phone }}</td>
+                                            <td>{{ $item->address }}</td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    data-target="#modalEdit{{ $item->id }}">
+                                                    <i class="fa fa-pencil"> Edit</i>
+                                                </button>
+                                                <button data-toggle="modal" data-target="#modalDelete{{ $item->id }}"
+                                                    class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"> Delete</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -74,27 +72,25 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add Supplier</h4>
+                    <h4 class="modal-title">Tambah Toko</h4>
                 </div>
                 <form action="{{ route('supplier.store') }}" method="post">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Supplier Name *</label>
-                            <input type="hidden" name="id" value="">
-                            <input type="text" name="name" value="" class="form-control" required>
+                            <label>Nama Toko *</label>
+                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
                         </div>
 
                         <div class="form-group">
-                            <label>Phone *</label>
-                            <input type="number" name="phone" value="" class="form-control" required>
+                            <label>Nomor Telp *</label>
+                            <input type="number" name="phone" value="{{ old('phone') }}" class="form-control" required>
                         </div>
 
                         <div class="form-group">
-                            <label>Address *</label>
-                            <textarea name="address" class="form-control" required></textarea>
+                            <label>Alamat *</label>
+                            <textarea name="address" class="form-control" required>{{ old('address') }}</textarea>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <div style="float: right;">
@@ -107,66 +103,77 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEdit">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Edit Supplier</h4>
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalEdit{{ $item->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Edit Supplier</h4>
+                    </div>
+                    <form action="{{ route('supplier.update') }}" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nama Toko *</label>
+                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                <input type="text" name="name"
+                                    value="{{ empty(old('name')) ? $item->name : old('name') }}" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>No Telp *</label>
+                                <input type="number" name="phone"
+                                    value="{{ empty(old('phone')) ? $item->phone : old('phone') }}" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Alamat *</label>
+                                <textarea name="address" class="form-control" required>{{ empty(old('address')) ? $item->address : old('address') }}</textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div style="float: right;">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Supplier Name *</label>
-                            <input type="hidden" name="id" value="">
-                            <input type="text" name="name" value="" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Phone *</label>
-                            <input type="number" name="phone" value="" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Address *</label>
-                            <textarea name="address" class="form-control" required></textarea>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+    @endforeach
 
-    <div class="modal fade" id="modalDelete">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Delete Supplier</h4>
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalDelete{{ $item->id }}">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Hapus Toko {{ $item->name }}</h4>
+                    </div>
+                    <form action="{{ route('supplier.delete') }}" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <input type="number" value="{{ $item->id }}" name="id" hidden>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="float: right;">
+                                <button type="button" class="btn btn-default pull-left"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form action="http://localhost/awrmotor/supplier/process" method="post">
-                    <div class="modal-body">
-                        <input type="number" value="" name="id" hidden>
-                    </div>
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+    @endforeach
 
     @push('head')
         <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
