@@ -42,4 +42,9 @@ class ProductItems extends Model
     {
         return $this->belongsTo(Stock::class);
     }
+
+    public function pembelian()
+    {
+        return $this->belongsTo(Pembelian::class);
+    }
 }

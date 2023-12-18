@@ -33,7 +33,7 @@ class ItemsController extends Controller
                 }
             )->get();
         $category = ProductCategory::all();
-        $barcode = $this->generate_id(ProductItems::latest()->first());
+        $barcode = $this->generate_id();
         return view('pages.Product.Items', compact('active', 'active_detail', 'data', 'category', 'barcode'));
     }
 

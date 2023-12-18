@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             SaleSeeder::class,
             SaleDetailSeeder::class,
             StockSeeder::class,
+            PembelianSeeder::class,
+            PenerimaanSeeder::class,
         ]);
     }
 }

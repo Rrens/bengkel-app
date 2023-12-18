@@ -75,15 +75,25 @@ Route::group([
 Route::group([
     'prefix' => 'restock'
 ], function () {
+
     Route::group([
         'prefix' => 'pembelian',
     ], function () {
         Route::get('', [PembelianController::class, 'index'])->name('restock.pembelian.index');
+        Route::post('', [PembelianController::class, 'store'])->name('restock.pembelian.store');
+        Route::post('update', [PembelianController::class, 'update'])->name('restock.pembelian.update');
     });
-    Route::get('penerimaan', [PenerimaanController::class, 'index'])->name('restock.penerimaan.index');
+
+    Route::group([
+        'prefix' => 'penerimaan'
+    ], function () {
+        Route::get('', [PenerimaanController::class, 'index'])->name('restock.penerimaan.index');
+        Route::post('update', [PenerimaanController::class, 'update'])->name('restock.penerimaan.update');
+        Route::post('delete', [PenerimaanController::class, 'delete'])->name('restock.penerimaan.delete');
+    });
 });
 
-Route::get('transaction', [TransaksiServiceController::class, 'index'])->name('transaction-service.index');
+// Route::get('transaction', [TransaksiServiceController::class, 'index'])->name('transaction-service.index');
 Route::group([
     'prefix' => 'transaction'
 ], function () {

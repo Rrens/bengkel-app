@@ -6,28 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Supplier extends Model
+class Penerimaan extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'suppliers';
+    protected $table = 'penerimaans';
     protected $primaryKey = 'id';
     protected $guarded = [];
 
     protected $fillable = [
-        'name',
-        'phone',
-        'address',
+        'pembelian_id',
+        'jumlah_penerimaan',
+        'tanggal_penerimaan',
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
-
-    public function stock()
-    {
-        return $this->belongsTo(Stock::class);
-    }
-
-    public function pembelian()
-    {
-        return $this->belongsTo(Pembelian::class);
-    }
 }
