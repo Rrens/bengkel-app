@@ -18,8 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->double('price');
-            $table->double('discount_item');
+            $table->double('discount_item')->default(0);
             $table->double('total');
+            $table->integer('quantity')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

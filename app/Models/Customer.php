@@ -26,4 +26,9 @@ class Customer extends Model
     {
         return $this->belongsTo(sale::class);
     }
+
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class);
+    }
 }

@@ -3,20 +3,217 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\Customer;
 use App\Models\ProductItems;
+use App\Models\Sale;
+use App\Models\SaleDetail;
 use App\Models\Supplier;
+use App\Models\User;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SalesController extends Controller
 {
+    public function invoice()
+    {
+        $lastRecord = Sale::latest()->first();
+        $lastID = $lastRecord ? $lastRecord->my_id : 0;
+
+        $newID = 'MP' . date('ym') . str_pad($lastID + 1, 4, '0', STR_PAD_LEFT);
+        return $newID;
+    }
     public function index()
     {
         $active = 'transaction';
         $active_detail = 'sales';
+        $customers = Customer::all();
+        $carts = Cart::with('item')->where('user_id', 1)->get();
+        $product_item = ProductItems::all();
+        $invoice = $this->invoice();
+        $date = Carbon::today()->format('Y-m-d');
+        // dd($date);
 
         return view('pages.Transaction.sales', compact(
             'active',
             'active_detail',
+            'customers',
+            'carts',
+            'product_item',
+            'invoice',
+            'date',
         ));
+    }
+
+    public function cart_data()
+    {
+        $data = Cart::with('item')->where('user_id', 1)->get();
+        return view('pages.Transaction.cart-data', compact('data'));
+    }
+
+    public function add_cart(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'item_id' => 'required|exists:product_items,id',
+            'price' => 'required|numeric',
+            'qty' => 'required|numeric',
+            'user_id' => 'required|exists:users,name'
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+        }
+
+        $user = User::where('name', $request['user_id'])->pluck('id');
+        // return response()->json($user[0]);
+
+        try {
+            $data = new Cart();
+            $data->item_id = $request['item_id'];
+            $data->user_id = $user[0];
+            $data->price = $request['price'];
+            $data->quantity  = $request['qty'];
+            $data->total = $data->price * $data->quantity;
+            $data->save();
+
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (Exception $error) {
+            return response()->json($error);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'discount' => 'nullable|numeric',
+            'item_id' => 'required|exists:product_items,id',
+            'price' => 'required',
+            'quantity' => 'required',
+            'total' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all());
+        }
+
+        try {
+            $data = Cart::where('item_id', $request['item_id'])->first();
+            $data->discount_item = $request['discount'];
+            $data->price = $request['price'];
+            $data->quantity = $request['quantity'];
+            $data->total = $request['total'];
+            $data->save();
+
+            return response()->json([
+                'success' => true,
+                'data' => $data
+            ]);
+        } catch (Exception $error) {
+            return response()->json($error);
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:carts,id'
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+        }
+
+        try {
+            Cart::where('id', $request['id'])->delete();
+
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (Exception $error) {
+            return response()->json($error);
+        }
+    }
+
+    public function store_sale(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'grandtotal' => 'required',
+            'service' => 'nullable',
+            'subtotal' => 'required',
+            'note' => 'nullable',
+            'cash' => 'required',
+            'change' => 'required',
+            'customer_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+        }
+
+        if ($request['customer_id'] == "Umum") {
+            $request['customer_id'] = null;
+        }
+
+        $cart = Cart::where('user_id', 1)->get();
+
+        try {
+            $data = new Sale();
+            $data->invoice = $this->invoice();
+            $data->customer_id = $request['customer_id'];
+            $data->user_id = 1;
+            $data->total_price = $request['subtotal'];
+            $data->service = $request['service'];
+            $data->final_price = $request['grandtotal'];
+            $data->cash = $request['cash'];
+            $data->remaining = $request['change'];
+            $data->note = $request['note'];
+            $data->date = Carbon::today();
+            $data->save();
+            foreach ($cart as $item) {
+                $data_detail = new SaleDetail();
+                $data_detail->sale_id = $data->id;
+                $data_detail->item_id = $item->item_id;
+                $data_detail->price = $item->price;
+                $data_detail->qty = $item->quantity;
+                $data_detail->discount_item = $item->discount_item;
+                $data_detail->total = $item->total;
+                $data_detail->save();
+            }
+
+            Cart::where('user_id', 1)->delete();
+
+            // return response()->json($data->id);
+            return response()->json([
+                'sale_id' => $data->id,
+                'success' => true
+            ]);
+        } catch (Exception $error) {
+            return response()->json($error);
+        }
+    }
+
+    public function cancel_sale(Request $request)
+    {
+        try {
+            Cart::where('user_id', 1)->delete();
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (Exception $error) {
+            return response()->json($error);
+        }
+    }
+
+    public function print($id)
+    {
+        $data = Sale::with('user', 'customer')->where('id', $id)->first();
+        $data_detail = SaleDetail::with('item')->where('sale_id', $id)->get();
+        // dd($data, $data_detail);
+        return view('pages.Transaction.print', compact('data', 'data_detail'));
     }
 }

@@ -101,6 +101,13 @@ Route::group([
         'prefix' => 'sales'
     ], function () {
         Route::get('', [SalesController::class, 'index'])->name('service.sales.index');
+        Route::get('cart-data', [SalesController::class, 'cart_data'])->name('cart-data');
+        Route::post('add-cart', [SalesController::class, 'add_cart'])->name('service.sales.add-cart');
+        Route::post('delete', [SalesController::class, 'delete'])->name('service.sales.delete');
+        Route::post('update', [SalesController::class, 'update'])->name('service.sales.update');
+        Route::post('store-sales', [SalesController::class, 'store_sale'])->name('service.sales.store-sales');
+        Route::post('cancel-sales', [SalesController::class, 'cancel_sale'])->name('service.sales.cancel-sales');
+        Route::get('print/{id}', [SalesController::class, 'print'])->name('service.sales.print');
     });
     // Route:group([
     //     'prefix' => 'sales-in'

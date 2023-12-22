@@ -15,21 +15,26 @@ class Cart extends Model
 
     protected $fillable = [
         'item_id',
-        'customer_id',
+        'user_id',
         'price',
-        'discount_item',
+        'user_id',
         'total',
+        'quantity',
         'created_at',
         'updated_at',
     ];
 
     public function item()
     {
-        return $this->hasMany(Product_items::class, 'id', 'item_id');
+        return $this->hasMany(ProductItems::class, 'id', 'item_id');
     }
 
     public function user()
     {
         return $this->hasMany(User::class, 'id', 'user_id');
     }
+    // public function customer()
+    // {
+    //     return $this->hasMany(Customer::class, 'id', 'customer_id');
+    // }
 }

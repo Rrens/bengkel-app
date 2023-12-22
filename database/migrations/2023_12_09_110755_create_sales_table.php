@@ -25,6 +25,7 @@ return new class extends Migration
             $table->double('remaining');
             $table->longText('note')->nullable();
             $table->date('date');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

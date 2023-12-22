@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('product_categories');
             $table->double('price')->nullable();
             $table->integer('stock');
+            $table->integer('discount_item')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -15,130 +15,78 @@
 
         <section class="content">
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="box box-widget">
+                <div class="col-md-12">
+                    <div class="box">
                         <div class="box-body">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td style="vertical-align: top;">
-                                            <label for="date">Date</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="date" id="date" value="" class="form-control">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top; width:30%">
-                                            <label for="user">Kasir</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="text" id="user" value="Fanani A" class="form-control"
-                                                    readonly="">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top">
-                                            <label for="customer">Customer</label>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <select id="customer" class="form-control">
-                                                    <option value="">Umum</option>
-                                                    <option value="9">Aldo</option>
-                                                    <option value="10">fanani</option>
-                                                    <option value="11">bela</option>
-                                                    <option value="12">aini</option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="box box-widget">
-                        <div class="box-body">
-                            <table width="100%">
-                                <tbody>
-                                    <tr>
-                                        <td style="vertical-align: top; width:30%">
-                                            <label for="barcode">Barcode</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group input-group">
-                                                <input type="hidden" id="item_id">
-                                                <input type="hidden" id="price">
-                                                <input type="hidden" id="stock">
-                                                <input type="hidden" id="qty_cart">
-                                                <input type="text" id="barcode" class="form-control" autofocus="">
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                                        data-target="#modal-item">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top;">
-                                            <label for="qty">Terjual</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="number" id="qty" value="1" min="1"
-                                                    class="form-control">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top;">
-                                            <label for="permintaan">Permintaan</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="number" id="qty" value="1" min="1"
-                                                    class="form-control">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div>
-                                                <button type="button" id="add_cart" class="btn btn-block btn-primary">
-                                                    <i class="fa fa-cart-plus"> Add</i>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @php
+                                            // dd($date);
+                                        @endphp
+                                        <label for="date">Tanggal Transaksi</label>
+                                        <input type="date" class="form-control"
+                                            value="{{ old('date') == null ? $date : old('date') }}" name="date" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kasir">Kasir</label>
+                                        <input type="text" name="user_id" id="user_id" value="fanani" readonly
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="kode_transaksi">Kode Transaksi</label>
+                                        <input type="text" name="kode_transaksi" id="kode_transaksi" class="form-control"
+                                            value="{{ $invoice }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customer">Pelanggan</label>
+                                        <select id="customer" class="form-control">
+                                            <option selected>Umum</option>
+                                            @foreach ($customers as $item)
+                                                <option {{ $item->id == old('customer') ? 'selected' : '' }}
+                                                    value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="barcode">Barcode</label>
+                                        <div class="form-group input-group">
+                                            <input type="hidden" id="item_id">
+                                            <input type="hidden" id="price">
+                                            <input type="hidden" id="stock">
+                                            <input type="hidden" id="qty_cart">
+                                            <input type="text" id="barcode" class="form-control" autofocus="">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
+                                                    data-target="#modal-item">
+                                                    <i class="fa fa-search"></i>
                                                 </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="grand_total2">Jumlah Jual</label>
+                                        <input type="text" class="form-control" id="grand_total2" readonly>
+                                    </div>
 
-                <div class="col-lg-4">
-                    <div class="box box-widget">
-                        <div class="box-body">
-                            <div align="right">
-                                <h4>Invoice
-                                    <b><span id="invoice">MP2312090001</span></b>
-                                </h4>
-                                <h1>
-                                    <b><span id="grand_total2" style="font-size: 50pt;">185000</span></b>
-                                </h1>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="jumlah_permintaan">Jumlah Permintaan</label>
+                                        <input type="text" class="form-control" name="jumlah_permintaan"
+                                            id="jumlah_permintaan">
+                                    </div>
+                                </div>
                             </div>
+                            <button type="button" id="add_cart" class="btn btn-primary" style="float: right;">
+                                <i class="fa fa-cart-plus"> Add</i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -162,26 +110,33 @@
                                     </tr>
                                 </thead>
                                 <tbody id="cart_table">
-                                    <tr>
-                                        <td>1.</td>
-                                        <td class="barcode">A001</td>
-                                        <td>Kampas Rem Honda</td>
-                                        <td class="text-right">15000</td>
-                                        <td class="text-center">7</td>
-                                        <td class="text-right">0</td>
-                                        <td class="text-right" id="total">105000</td>
-                                        <td class="text-center" width="160px">
-                                            <button id="update_cart" data-toggle="modal" data-target="#modal-item-edit"
-                                                data-cartid="1" data-barcode="A001" data-product="Kampas Rem Honda"
-                                                data-stock="111" data-price="15000" data-qty="7" data-discount="0"
-                                                data-total="105000" class="btn btn-xs btn-primary">
-                                                <i class="fa fa-pencil"></i> Update
-                                            </button>
-                                            <button id="del_cart" data-cartid="1" class="btn btn-xs btn-danger">
-                                                <i class="fa fa-trash"></i>Delete
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    @foreach ($carts as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td class="barcode">{{ $item->item[0]->barcode }}</td>
+                                            <td>{{ $item->item[0]->name }}</td>
+                                            <td>{{ $item->price }}</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ $item->discount_item }}</td>
+                                            <td id="total">{{ $item->total }}</td>
+                                            <td class="text-center" width="160px">
+                                                <button id="update_cart" data-toggle="modal" data-target="#modal-item-edit"
+                                                    data-cartid="{{ $item->item_id }}"
+                                                    data-barcode="{{ $item->item[0]->barcode }}"
+                                                    data-product="{{ $item->item[0]->name }}"
+                                                    data-stock="{{ $item->item[0]->stock }}"
+                                                    data-price="{{ $item->price }}" data-qty="{{ $item->quantity }}"
+                                                    data-discount="{{ $item->discount_item }}"
+                                                    data-total="{{ $item->total }}" class="btn btn-xs btn-primary">
+                                                    <i class="fa fa-pencil"></i> Update
+                                                </button>
+                                                <button id="del_cart" data-cartid="{{ $item->id }}"
+                                                    class="btn btn-xs btn-danger">
+                                                    <i class="fa fa-trash"></i>Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -190,115 +145,56 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-12">
                     <div class="box box-widget">
                         <div class="box-body">
-                            <table width="100%">
-                                <tbody>
-                                    <tr>
-                                        <td style="vertical-align: top; width:30%">
-                                            <label for="sub_total">Sub Total</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="number" id="sub_total" value="" class="form-control"
-                                                    readonly="">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top;">
-                                            <label for="discount">Jasa</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="number" id="discount" value="0" min="0"
-                                                    class="form-control">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top;">
-                                            <label for="grand_total">Grand Total</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="number" id="grand_total" class="form-control"
-                                                    readonly="">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sub_total">Sub Total</label>
+                                        <input type="number" id="sub_total" value="" class="form-control"
+                                            readonly="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jasa">Jasa</label>
+                                        <input type="number" id="discount" value="0" min="0"
+                                            class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="grand_total">Total Harga Akhir</label>
+                                        <input type="number" id="grand_total" class="form-control" readonly="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cash">Dibayarkan</label>
+                                        <input type="number" id="cash" value="0" min="0"
+                                            class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cash">Kembalian</label>
+                                        <input type="number" id="change" value="0" min="0"
+                                            class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="from-group">
+                                        <label for="note">Catatan</label>
+                                        <textarea id="note" rows="16" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="float: right; margin-top: 10px;">
+                                <button id="cancel_payment" class="btn btn-block btn-flat btn-warning">
+                                    <i class="fa fa-refresh"> Cancel</i>
+                                </button>
+                                <button id="process_payment" class="btn btn-block btn-flat btn-flat btn-success">
+                                    <i class="fa fa-paper-plane-o"> Process Payment</i>
+                                </button>
+                            </div>
                         </div>
+                        </dv>
                     </div>
-                </div>
 
-                <div class="col-lg-4">
-                    <div class="box box-widget">
-                        <div class="box-body">
-                            <table width="100%">
-                                <tbody>
-                                    <tr>
-                                        <td style="vertical-align: top; width:30%">
-                                            <label for="cash">Cash</label>
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <input type="number" id="cash" value="0" min="0"
-                                                    class="form-control">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: top;">
-                                            <label for="change">Change</label>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <input type="number" id="change" class="form-control"
-                                                    readonly="">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
-
-                <div class="col-lg-4">
-                    <div class="box box-widget">
-                        <div class="box-body">
-                            <table width="100%">
-                                <tbody>
-                                    <tr>
-                                        <td style="vertical-align: top;">
-                                            <label for="note">Note</label>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <textarea id="note" rows="3" class="form-control"></textarea>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div>
-                        <button id="cancel_payment" class="btn btn-block btn-flat btn-warning">
-                            <i class="fa fa-refresh"> Cancel</i>
-                        </button>
-                        <button id="process_payment" class="btn btn-block btn-flat btn-flat btn-success">
-                            <i class="fa fa-paper-plane-o"> Process Payment</i>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <!-- modal add product item -->
@@ -317,52 +213,27 @@
                                 <tr>
                                     <th>Barcode</th>
                                     <th>Name</th>
-                                    <th>Unit</th>
                                     <th>Price</th>
                                     <th>Stock</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>A001</td>
-                                    <td>Kampas Rem Honda</td>
-                                    <td>Unit</td>
-                                    <td class="text-right">Rp. 15.000</td>
-                                    <td class="text-right">111</td>
-                                    <td class="text-right">
-                                        <button class="btn btn-xs btn-info" id="select" data-id="10"
-                                            data-barcode="A001" data-price="15000" data-stock="111">
-                                            <i class="fa fa-check"></i> Select
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>A002</td>
-                                    <td>Oli Motul</td>
-                                    <td>Unit</td>
-                                    <td class="text-right">Rp. 80.000</td>
-                                    <td class="text-right">222</td>
-                                    <td class="text-right">
-                                        <button class="btn btn-xs btn-info" id="select" data-id="11"
-                                            data-barcode="A002" data-price="80000" data-stock="222">
-                                            <i class="fa fa-check"></i> Select
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>A003</td>
-                                    <td>Lampu Honda</td>
-                                    <td>Unit</td>
-                                    <td class="text-right">Rp. 30.000</td>
-                                    <td class="text-right">333</td>
-                                    <td class="text-right">
-                                        <button class="btn btn-xs btn-info" id="select" data-id="12"
-                                            data-barcode="A003" data-price="30000" data-stock="333">
-                                            <i class="fa fa-check"></i> Select
-                                        </button>
-                                    </td>
-                                </tr>
+                                @foreach ($product_item as $item)
+                                    <tr>
+                                        <td>{{ $item->barcode }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td class="text-right">Rp. {{ number_format($item->price) }}</td>
+                                        <td class="text-right">{{ $item->stock }}</td>
+                                        <td class="text-right">
+                                            <button class="btn btn-xs btn-info" id="select"
+                                                data-id="{{ $item->id }}" data-barcode="{{ $item->barcode }}"
+                                                data-price="{{ $item->price }}" data-stock="{{ $item->stock }}">
+                                                <i class="fa fa-check"></i> Select
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -468,7 +339,7 @@
 
             function get_cart_qty(barcode) {
                 //
-                var qty_cart = $("#cart_table td.barcode:contains('" + barcode + "')").parent().find("td").eq(4).html()
+                let qty_cart = $("#cart_table td.barcode:contains('" + barcode + "')").parent().find("td").eq(4).html()
                 if (qty_cart != null) {
                     $('#qty_cart').val(qty_cart)
                 } else {
@@ -478,11 +349,12 @@
 
             //menambahkan data di cart
             $(document).on('click', '#add_cart', function() {
-                var item_id = $('#item_id').val()
-                var price = $('#price').val()
-                var stock = $('#stock').val()
-                var qty = $('#qty').val()
-                var qty_cart = $('#qty_cart').val()
+                let item_id = $('#item_id').val()
+                let price = $('#price').val()
+                let stock = $('#stock').val()
+                let qty = $('#jumlah_permintaan').val()
+                let qty_cart = $('#qty_cart').val()
+                let user_id = $('#user_id').val()
                 if (item_id == '') {
                     alert('Product belum dipilih')
                     $('#barcode').focus()
@@ -492,17 +364,19 @@
                 } else {
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost/mypos/sale/process',
+                        url: '{{ route('service.sales.add-cart') }}',
                         data: {
                             'add_cart': true,
                             'item_id': item_id,
                             'price': price,
-                            'qty': qty
+                            'qty': qty,
+                            'user_id': user_id,
+                            '_token': '{{ csrf_token() }}',
                         },
                         dataType: 'json',
                         success: function(result) {
                             if (result.success == true) {
-                                $('#cart_table').load('http://localhost/mypos/sale/cart_data', function() {
+                                $('#cart_table').load('{{ route('cart-data') }}', function() {
                                     calculate()
                                 })
                                 $('#item_id').val('')
@@ -520,17 +394,18 @@
             //hapus data di cart
             $(document).on('click', '#del_cart', function() {
                 if (confirm('Apakah Anda yakin?')) {
-                    var cart_id = $(this).data('cartid')
+                    let id = $(this).data('cartid')
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost/mypos/sale/cart_del',
+                        url: '{{ route('service.sales.delete') }}',
                         dataType: 'json',
                         data: {
-                            'cart_id': cart_id
+                            'id': id,
+                            '_token': '{{ csrf_token() }}',
                         },
                         success: function(result) {
                             if (result.success == true) {
-                                $('#cart_table').load('http://localhost/mypos/sale/cart_data', function() {
+                                $('#cart_table').load('{{ route('cart-data') }}', function() {
                                     calculate()
                                 })
                             } else {
@@ -556,9 +431,9 @@
 
             //hitung yang di cart
             function count_edit_modal() {
-                var price = $('#price_item').val()
-                var qty = $('#qty_item').val()
-                var discount = $('#discount_item').val()
+                let price = $('#price_item').val()
+                let qty = $('#qty_item').val()
+                let discount = $('#discount_item').val()
 
                 total_before = price * qty
                 $('#total_before').val(total_before)
@@ -578,12 +453,12 @@
 
             // edit
             $(document).on('click', '#edit_cart', function() {
-                var cart_id = $('#cartid_item').val()
-                var price = $('#price_item').val()
-                var qty = $('#qty_item').val()
-                var discount = $('#discount_item').val()
-                var total = $('#total_item').val()
-                var stock = $('#stock_item').val()
+                let item_id = $('#cartid_item').val()
+                let price = $('#price_item').val()
+                let qty = $('#qty_item').val()
+                let discount = $('#discount_item').val()
+                let total = $('#total_item').val()
+                let stock = $('#stock_item').val()
                 if (price == '' || price < 1) {
                     alert('Harga tidak boleh kosong')
                     $('#pice_item').focus()
@@ -596,19 +471,21 @@
                 } else {
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost/mypos/sale/process',
+                        url: '{{ route('service.sales.update') }}',
                         data: {
                             'edit_cart': true,
-                            'cart_id': cart_id,
+                            'item_id': item_id,
                             'price': price,
-                            'qty': qty,
+                            'quantity': qty,
                             'discount': discount,
-                            'total': total
+                            'total': total,
+                            '_token': '{{ csrf_token() }}',
                         },
                         dataType: 'json',
                         success: function(result) {
+                            console.log(result)
                             if (result.success == true) {
-                                $('#cart_table').load('http://localhost/mypos/sale/cart_data', function() {
+                                $('#cart_table').load('{{ route('cart-data') }}', function() {
                                     calculate()
                                 })
                                 alert('Item cart berhasil ter-update')
@@ -624,26 +501,27 @@
 
             //hitung yang dibawah cart
             function calculate() {
-                var subtotal = 0;
+                let subtotal = 0;
                 $('#cart_table tr').each(function() {
                     subtotal += parseInt($(this).find('#total').text())
                 })
                 isNaN(subtotal) ? $('#sub_total').val(0) : $('#sub_total').val(subtotal)
 
-                var discount = $('#discount').val()
-                var grand_total = 0
+                let discount = $('#discount').val()
+                let grand_total = 0
 
                 grand_total += (parseInt(subtotal) + parseInt(discount))
+                // console.log((discount))
 
                 if (isNaN(grand_total)) {
                     $('#grand_total').val(0)
-                    $('#grand_total2').text(0)
+                    $('#grand_total2').val(0)
                 } else {
                     $('#grand_total').val(grand_total)
-                    $('#grand_total2').text(grand_total)
+                    $('#grand_total2').val(grand_total)
                 }
 
-                var cash = $('#cash').val();
+                let cash = $('#cash').val();
                 cash != 0 ? $('#change').val(cash - grand_total) : $('#change').val(0)
 
                 if (discount == '') {
@@ -663,14 +541,14 @@
 
             // process payment
             $(document).on('click', '#process_payment', function() {
-                var customer_id = $('#customer').val()
-                var subtotal = $('#sub_total').val()
-                var discount = $('#discount').val()
-                var grandtotal = $('#grand_total').val()
-                var cash = $('#cash').val()
-                var change = $('#change').val()
-                var note = $('#note').val()
-                var date = $('#date').val()
+                let customer_id = $('#customer').val()
+                let subtotal = $('#sub_total').val()
+                let discount = $('#discount').val()
+                let grandtotal = $('#grand_total').val()
+                let cash = $('#cash').val()
+                let change = $('#change').val()
+                let note = $('#note').val()
+                let date = $('#date').val()
                 if (subtotal < 1) {
                     alert('Belum ada product item yang dipilih')
                     $('#barcode').focus()
@@ -681,7 +559,7 @@
                     if (confirm('Yakin proses transaksi ini?')) {
                         $.ajax({
                             type: 'POST',
-                            url: 'http://localhost/mypos/sale/process',
+                            url: '{{ route('service.sales.store-sales') }}',
                             data: {
                                 'process_payment': true,
                                 'customer_id': customer_id,
@@ -691,18 +569,22 @@
                                 'cash': cash,
                                 'change': change,
                                 'note': note,
-                                'date': date
+                                'date': date,
+                                '_token': '{{ csrf_token() }}',
                             },
                             dataType: 'json',
                             success: function(result) {
                                 if (result.success) {
+                                    let sales_id = result.sale_id ? result.sale_id : 1;
                                     alert('Transaksi berhasil');
-                                    window.open('http://localhost/mypos/sale/cetak/' + result.sale_id,
+                                    window.open(
+                                        `{{ route('service.sales.print', ':sales_id') }}`.replace(
+                                            ':sales_id', sales_id),
                                         '_blank')
                                 } else {
                                     alert('Transaksi gagal');
                                 }
-                                location.href = 'http://localhost/mypos/sale'
+                                location.href = '{{ route('service.sales.index') }}'
                             }
                         })
                     }
@@ -713,14 +595,15 @@
                 if (confirm('Batalkan?')) {
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost/mypos/sale/cart_del',
+                        url: '{{ route('service.sales.cancel-sales') }}',
                         dataType: 'json',
                         data: {
-                            'cancel_payment': true
+                            'cancel_payment': true,
+                            '_token': '{{ csrf_token() }}',
                         },
                         success: function(result) {
                             if (result.success == true) {
-                                $('#cart_table').load('http://localhost/mypos/sale/cart_data', function() {
+                                $('#cart_table').load('{{ route('cart-data') }}', function() {
                                     calculate()
                                 })
                             }
