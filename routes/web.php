@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
 
+Route::redirect('', 'transaction/sales');
+
 Route::group([
     'prefix' => 'customer'
 ], function () {

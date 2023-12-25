@@ -12,11 +12,11 @@
 
          <ul class="sidebar-menu" data-widget="tree">
              <li class="header">MENU DATA MASTER</li>
-             <li class="{{ $active == 'dashboard' ? 'active' : '' }}">
+             {{-- <li class="{{ $active == 'dashboard' ? 'active' : '' }}">
                  <a href="{{ route('dashboard.index') }}">
                      <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                  </a>
-             </li>
+             </li> --}}
              <li class="{{ $active == 'supplier' ? 'active' : '' }}">
                  <a href="{{ route('supplier.index') }}">
                      <i class="fa fa fa-truck"></i> <span>Supplier</span>
