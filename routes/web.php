@@ -109,11 +109,6 @@ Route::group([
         Route::post('cancel-sales', [SalesController::class, 'cancel_sale'])->name('service.sales.cancel-sales');
         Route::get('print/{id}', [SalesController::class, 'print'])->name('service.sales.print');
     });
-    // Route:group([
-    //     'prefix' => 'sales-in'
-    // ])
-    // Route::get('sales-in', [SalesInController::class, 'index'])->name('service.sales-in.index');
-    // Route::get('sales-out', [SalesOutController::class, 'index'])->name('service.sales-out.index');
 });
 
 Route::group([
