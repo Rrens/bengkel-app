@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Service;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Customer;
+use App\Models\History;
+use App\Models\Minmax;
 use App\Models\ProductItems;
 use App\Models\Sale;
 use App\Models\SaleDetail;
@@ -76,8 +78,10 @@ class SalesController extends Controller
             $data->user_id = $user[0];
             $data->price = $request['price'];
             $data->quantity  = $request['qty'];
+            $data->jumlah_jual  = $request['jumlah_jual'];
             $data->total = $data->price * $data->quantity;
             $data->save();
+
 
             return response()->json([
                 'success' => true
@@ -85,6 +89,13 @@ class SalesController extends Controller
         } catch (Exception $error) {
             return response()->json($error);
         }
+    }
+
+    public function minmax($item_id)
+    {
+        $product_item = ProductItems::findOrFail($item_id);
+        $minmax = Minmax::where('item_id', $item_id)->get();
+        $minmax->stock = $product_item->stock;
     }
 
     public function update(Request $request)
@@ -183,11 +194,16 @@ class SalesController extends Controller
                 $data_detail->discount_item = $item->discount_item;
                 $data_detail->total = $item->total;
                 $data_detail->save();
+
+                $history = new History();
+                $history->item_id = $item->item_id;
+                $history->date = Carbon::today();
+                $history->total = $item->quantity;
+                $history->save();
             }
 
             Cart::where('user_id', 1)->delete();
 
-            // return response()->json($data->id);
             return response()->json([
                 'sale_id' => $data->id,
                 'success' => true

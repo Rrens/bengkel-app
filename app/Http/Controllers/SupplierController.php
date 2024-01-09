@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Minmax;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -36,6 +37,7 @@ class SupplierController extends Controller
         $data = new Supplier();
         $data->fill($request->all());
         $data->save();
+
 
         Alert::Toast('Sukses Menyimpan', 'success');
         return back();

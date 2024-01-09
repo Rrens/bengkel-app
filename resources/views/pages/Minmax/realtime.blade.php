@@ -4,7 +4,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Pembelian / Kulakan
+                DAFTAR STOCK SPARE PART MIN MAX REALTIME
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -17,78 +17,7 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Pembelian</h3>
-                            <div class="pull-right">
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <form action="{{ route('restock.pembelian.store') }}" method="post">
-                                @csrf
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>Tanggal Pembelian *</label>
-                                            <input type="date" name="tanggal_pembelian" value="{{ $date }}"
-                                                class="form-control" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>Supplier *</label>
-                                            <select name="supplier_id" class="form-control">
-                                                <option selected hidden>- Pilih -</option>
-                                                @foreach ($supplier as $item)
-                                                    <option {{ !empty(old('supplier_id')) ? 'selected' : '' }}
-                                                        value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="name_item">Cari Item</label>
-                                </div>
-                                <div class="form-group input-group">
-                                    <input type="hidden" name="item_id" id="item_id" value="">
-                                    <input type="text" name="name_item" id="name_item" value=""
-                                        class="form-control" readonly="">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                            data-target="#modalItemAdd">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="stock">Stok Sekarang</label>
-                                            <input type="text" name="stock" id="stock" value=""
-                                                class="form-control" readonly="">
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label>Stok Dibeli</label>
-                                            <input type="number" name="jumlah_pembelian"
-                                                value="{{ old('jumlah_pembelian') }}" class="form-control" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div style="float: right;">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">Data Pembelian</h3>
+                            <h3 class="box-title">Data Real Time</h3>
                             <div class="pull-right">
                             </div>
                         </div>
@@ -97,16 +26,22 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal Pembelian</th>
-                                        <th>Nama Toko</th>
-                                        <th>Name Item</th>
-                                        <th>Jumlah Pembelian</th>
+                                        <th>Spare Part</th>
+                                        <th>Stok</th>
+                                        <th>Stok Min</th>
+                                        <th>Stok Max</th>
+                                        <th>Safety Stok</th>
+                                        <th>Lead Time</th>
+                                        <th>Max Per</th>
+                                        <th>Rata-rata Per</th>
+                                        <th>Restok</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
+                                    {{-- @foreach ($data as $item) --}}
+                                    <tr>
+                                        {{-- <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->tanggal_pembelian }}</td>
                                             <td>{{ $item->supplier[0]->name }}</td>
                                             <td>{{ $item->item[0]->name }}</td>
@@ -116,9 +51,9 @@
                                                     data-target="#modalEdit{{ $item->id }}">
                                                     <i class="fa fa-pencil"> Edit</i>
                                                 </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                            </td> --}}
+                                    </tr>
+                                    {{-- @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -127,7 +62,8 @@
             </div>
         </section>
     </div>
-    @foreach ($data as $item)
+
+    {{-- @foreach ($data as $item)
         <div class="modal fade" id="modalEdit{{ $item->id }}">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -159,7 +95,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label for="name_item">Cari Item</label>
+                                <label for="name_item">Search Item</label>
                             </div>
                             <div class="form-group input-group">
                                 <input type="hidden" name="item_id" id="item_id" value="">
@@ -196,33 +132,28 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        {{-- <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div> --}}
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
-    @endforeach
+    @endforeach --}}
 
-    <div class="modal fade" id="modalItemAdd">
+    {{-- <div class="modal fade" id="modalItemAdd">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">Cari Produk</h4>
+                    <h4 class="modal-title">Select Product Item</h4>
                 </div>
                 <div class="modal-body table-responsive">
                     <table class="table table-bordered table-striped" id="example2">
                         <thead>
                             <tr>
-                                <th>Nama Produk</th>
-                                <th>Harga</th>
-                                <th>Stok</th>
+                                <th>Name Item</th>
+                                <th>Price</th>
+                                <th>Stock</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -246,7 +177,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     @push('head')
         <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">

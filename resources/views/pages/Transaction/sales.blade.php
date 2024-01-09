@@ -70,16 +70,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="grand_total2">Jumlah Jual</label>
                                         <input type="text" class="form-control" id="grand_total2" readonly>
+                                    </div> --}}
+                                    <div class="form-group">
+                                        <label for="jumlah_jual">Jumlah Jual</label>
+                                        <input type="number" class="form-control" id="jumlah_jual" readonly>
                                     </div>
 
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jumlah_permintaan">Jumlah Permintaan</label>
-                                        <input type="text" class="form-control" name="jumlah_permintaan"
+                                        <input type="number" class="form-control" name="jumlah_permintaan"
                                             id="jumlah_permintaan">
                                     </div>
                                 </div>
@@ -103,10 +107,11 @@
                                         <th>Barcode</th>
                                         <th>Product Item</th>
                                         <th>Price</th>
-                                        <th>Qty</th>
-                                        <th width="10%">Discount Item</th>
+                                        <th>Jumlah Permintaan</th>
+                                        <th>Jumlah Jual</th>
+                                        <th width="10%">Diskon Produk</th>
                                         <th width="15%">Total</th>
-                                        <th>Action</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="cart_table">
@@ -117,6 +122,7 @@
                                             <td>{{ $item->item[0]->name }}</td>
                                             <td>{{ $item->price }}</td>
                                             <td>{{ $item->quantity }}</td>
+                                            <td>{{ $item->jumlah_jual }}</td>
                                             <td>{{ $item->discount_item }}</td>
                                             <td id="total">{{ $item->total }}</td>
                                             <td class="text-center" width="160px">
@@ -205,17 +211,17 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title">Add Product Item</h4>
+                        <h4 class="modal-title">Pilih Produk</h4>
                     </div>
                     <div class="modal-body table-responsive">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Barcode</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Stock</th>
-                                    <th>Actions</th>
+                                    <th>Nama</th>
+                                    <th>Harga</th>
+                                    <th>Stok</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -254,7 +260,7 @@
                     <div class="modal-body">
                         <input type="hidden" id="cartid_item">
                         <div class="form-group">
-                            <label for="product_item">Product Item</label>
+                            <label for="product_item">Produk Item</label>
                             <div class="row">
                                 <div class="col-md-5">
                                     <input type="text" id="barcode_item" class="form-control" readonly="">
@@ -265,7 +271,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="price_item">Price</label>
+                            <label for="price_item">Harga</label>
                             <input type="number" id="price_item" min="0" class="form-control">
                         </div>
                         <div class="form-group">
@@ -275,21 +281,21 @@
                                     <input type="number" id="qty_item" min="1" class="form-control">
                                 </div>
                                 <div class="col-md-5">
-                                    <label for="qty_item">Stock</label>
+                                    <label for="qty_item">Stok</label>
                                     <input type="number" id="stock_item" class="form-control" readonly="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="total_before">Total before Discount</label>
+                            <label for="total_before">Total sebelum diskon</label>
                             <input type="number" id="total_before" class="form-control" readonly="">
                         </div>
                         <div class="form-group">
-                            <label for="discount_item">Discount per Item</label>
+                            <label for="discount_item">Diskon per barang</label>
                             <input type="number" id="discount_item" min="0" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="total_item">Total after Discount</label>
+                            <label for="total_item">Total setelah Diskon</label>
                             <input type="number" id="total_item" class="form-control" readonly="">
                         </div>
                     </div>
@@ -327,6 +333,21 @@
                 })
             })
 
+            $('#jumlah_permintaan').on('change', function() {
+                let stock = parseInt($('#stock').val());
+                let jumlah_jual = parseInt($('#jumlah_jual').val());
+                let jumlah_permintaan = parseInt($('#jumlah_permintaan').val());
+                console.log(stock)
+                console.log(jumlah_jual)
+                console.log(jumlah_permintaan)
+
+                if (jumlah_permintaan >= stock) {
+                    $('#jumlah_jual').val(stock);
+                } else {
+                    $('#jumlah_jual').val(jumlah_permintaan);
+                }
+            })
+
             $(document).on('click', '#select', function() {
                 $('#item_id').val($(this).data('id'))
                 $('#barcode').val($(this).data('barcode'))
@@ -353,14 +374,16 @@
                 let price = $('#price').val()
                 let stock = $('#stock').val()
                 let qty = $('#jumlah_permintaan').val()
+                let jumlah_jual = $('#jumlah_jual').val()
                 let qty_cart = $('#qty_cart').val()
                 let user_id = $('#user_id').val()
                 if (item_id == '') {
                     alert('Product belum dipilih')
                     $('#barcode').focus()
-                } else if (stock < 1 || parseInt(stock) < (parseInt(qty_cart) + parseInt(qty))) {
-                    alert('Stock tidak mencukupi')
-                    $('#barcode').focus()
+                    // }
+                    // else if (stock < 1 || parseInt(stock) < (parseInt(qty_cart) + parseInt(jumlah_jual))) {
+                    //     alert('Stock tidak mencukupi')
+                    //     $('#barcode').focus()
                 } else {
                     $.ajax({
                         type: 'POST',
@@ -370,6 +393,7 @@
                             'item_id': item_id,
                             'price': price,
                             'qty': qty,
+                            'jumlah_jual': jumlah_jual,
                             'user_id': user_id,
                             '_token': '{{ csrf_token() }}',
                         },

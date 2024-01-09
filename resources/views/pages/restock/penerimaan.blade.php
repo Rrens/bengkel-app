@@ -25,13 +25,13 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Pembelian ID</th>
-                                        <th>Supplier Name</th>
-                                        <th>Item Name</th>
+                                        <th>Supplier Nama</th>
+                                        <th>Nama Produk</th>
                                         <th>Jumlah Pembelian</th>
                                         <th>Jumlah Penerimaan</th>
                                         <th>Tanggal Pembelian</th>
                                         <th>Tanggal Penerimaan</th>
-                                        <th>Action</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,7 +54,7 @@
                                                 <button data-toggle="modal"
                                                     data-target="#modalDelete{{ $item->id_penerimaan }}"
                                                     class="btn btn-danger btn-sm">
-                                                    <i class="fa fa-trash"> Delete</i>
+                                                    <i class="fa fa-trash"> Hapus</i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -101,13 +101,13 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="jumlah_pembelian">Stock Dibeli</label>
+                                        <label for="jumlah_pembelian">Stok Dibeli</label>
                                         <input type="number" name="jumlah_pembelian" id="jumlah_pembelian"
                                             value="{{ $item->jumlah_pembelian }}" class="form-control" readonly="">
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label>Stock Diterima</label>
+                                        <label>Stok Diterima</label>
                                         <input type="number" name="jumlah_penerimaan"
                                             value="{{ check_empty($item->jumlah_penerimaan) }}" class="form-control"
                                             required="">
@@ -117,8 +117,8 @@
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -145,8 +145,8 @@
                         <div class="modal-footer">
                             <div style="float: right;">
                                 <button type="button" class="btn btn-default pull-left"
-                                    data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                    data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </form>

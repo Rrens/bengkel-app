@@ -11,6 +11,6 @@ class RealtimeController extends Controller
     {
         $active = 'min-max';
         $active_detail = 'realtime';
-        return view('pages.transaksi-service', compact('active', 'active_detail'));
+        return view('pages.Minmax.realtime', compact('active', 'active_detail'));
     }
 }

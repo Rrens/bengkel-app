@@ -22,7 +22,7 @@
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">
-                                    <i class="fa fa-plus"> Create</i>
+                                    <i class="fa fa-plus"> Tambah</i>
                                 </button>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                         <th>Product Item</th>
                                         <th>Qty</th>
                                         <th>Date</th>
-                                        <th>Action</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,7 +54,7 @@
                                             </button>
                                             <button data-toggle="modal" data-target="#modalDelete"
                                                 class="btn btn-danger btn-sm">
-                                                <i class="fa fa-trash"> Delete</i>
+                                                <i class="fa fa-trash"> Hapus</i>
                                             </button>
                                         </td>
                                     </tr>
@@ -132,8 +132,8 @@
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                                             <th>Nama</th>
                                             <th>Harga</th>
                                             <th>Stok</th>
-                                            <th>Action</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -251,8 +251,8 @@
                     </div>
                     <div class="modal-footer">
                         <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
                 </form>

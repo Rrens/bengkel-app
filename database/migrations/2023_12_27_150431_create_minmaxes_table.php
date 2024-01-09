@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carts', function (Blueprint $table) {
+        Schema::create('minmaxes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('item_id')->nullable();
             $table->foreign('item_id')->references('id')->on('product_items');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->double('price');
-            $table->double('discount_item')->default(0);
-            $table->double('total');
-            $table->integer('quantity')->nullable();
-            $table->integer('jumlah_jual')->nullable();
+            $table->integer('stock')->nullable();
+            $table->integer('stock_min')->nullable();
+            $table->integer('stock_max')->nullable();
+            $table->integer('safety_stock')->nullable();
+            $table->integer('lead_time')->nullable();
+            $table->integer('max_per')->nullable();
+            $table->integer('rata_per')->nullable();
+            $table->integer('restock')->nullable();
+            $table->date('date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('minmaxes');
     }
 };

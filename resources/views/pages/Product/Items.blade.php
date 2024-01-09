@@ -9,7 +9,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Product</li>
+                <li class="active">Produk</li>
             </ol>
         </section>
 
@@ -18,11 +18,11 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Product</h3>
+                            <h3 class="box-title">Data Produk</h3>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">
-                                    <i class="fa fa-plus"> Create</i>
+                                    <i class="fa fa-plus"> Tambah</i>
                                 </button>
                             </div>
                         </div>
@@ -32,18 +32,15 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Barcode</th>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Stock</th>
-                                        <th>Action</th>
+                                        <th>Nama</th>
+                                        <th>Kategori</th>
+                                        <th>Harga</th>
+                                        <th>Stok</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
-                                        @php
-                                            // dd($data);
-                                        @endphp
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->barcode }} </td>
@@ -58,7 +55,7 @@
                                                 </button>
                                                 <button data-toggle="modal" data-target="#modalDelete{{ $item->id }}"
                                                     class="btn btn-danger btn-sm">
-                                                    <i class="fa fa-trash"> Delete</i>
+                                                    <i class="fa fa-trash"> Hapus</i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -119,8 +116,8 @@
                     </div>
                     <div class="modal-footer">
                         <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -154,7 +151,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Kategory *</label>
+                                <label>Kategori *</label>
                                 <select name="category_id" class="form-control" required="">
                                     @foreach ($category as $row)
                                         <option
@@ -177,8 +174,8 @@
                         <div class="modal-footer">
                             <div style="float: right;">
                                 <button type="button" class="btn btn-default pull-left"
-                                    data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                    data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -204,8 +201,8 @@
                         <div class="modal-footer">
                             <div style="float: right;">
                                 <button type="button" class="btn btn-default pull-left"
-                                    data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                    data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </form>

@@ -6,21 +6,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Cart extends Model
+class Minmax extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'carts';
+
+    protected $table = 'minmaxes';
     protected $primaryKey = 'id';
     protected $guarded = [];
 
     protected $fillable = [
         'item_id',
-        'user_id',
-        'price',
-        'user_id',
-        'total',
-        'quantity',
-        'jumlah_jual',
+        'stock',
+        'stock_min',
+        'stock_max',
+        'safety_stock',
+        'lead_time',
+        'max_per',
+        'rata_per',
+        'restock',
+        'month',
         'created_at',
         'updated_at',
     ];
@@ -29,13 +33,4 @@ class Cart extends Model
     {
         return $this->hasMany(ProductItems::class, 'id', 'item_id');
     }
-
-    public function user()
-    {
-        return $this->hasMany(User::class, 'id', 'user_id');
-    }
-    // public function customer()
-    // {
-    //     return $this->hasMany(Customer::class, 'id', 'customer_id');
-    // }
 }

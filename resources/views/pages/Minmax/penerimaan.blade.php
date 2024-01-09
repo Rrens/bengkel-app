@@ -4,37 +4,33 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Suppliers Spare Part
-                <small>Tambahan norek mungkin</small>
+                Penerimaan Kulakan
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Supplier</li>
+                <li class="active">Penerimaan</li>
             </ol>
         </section>
 
         <section class="content">
             <div class="row">
-
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Supplier</h3>
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
-                                    data-target="#modalAdd">
-                                    <i class="fa fa-plus"> Tambah</i>
-                                </button>
-                            </div>
+                            <h3 class="box-title">Data Penerimaan</h3>
                         </div>
                         <div class="box-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name Toko</th>
-                                        <th>No Telp</th>
-                                        <th>Alamat</th>
+                                        <th>Pembelian ID</th>
+                                        <th>Supplier Name</th>
+                                        <th>Item Name</th>
+                                        <th>Jumlah Pembelian</th>
+                                        <th>Jumlah Penerimaan</th>
+                                        <th>Tanggal Pembelian</th>
+                                        <th>Tanggal Penerimaan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -42,15 +38,21 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->phone }}</td>
-                                            <td>{{ $item->address }}</td>
+                                            <td>{{ $item->id_pembelian }}</td>
+                                            <td>{{ $item->supplier_name }}</td>
+                                            <td>{{ $item->item_name }}</td>
+                                            <td>{{ $item->jumlah_pembelian }}</td>
+                                            <td>{{ check_empty($item->jumlah_penerimaan) }}</td>
+                                            <td>{{ $item->tanggal_pembelian }}</td>
+                                            <td>{{ check_empty($item->tanggal_penerimaan) }}
+                                            </td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#modalEdit{{ $item->id }}">
+                                                    data-target="#modalEdit{{ $item->id_penerimaan }}">
                                                     <i class="fa fa-pencil"> Edit</i>
                                                 </button>
-                                                <button data-toggle="modal" data-target="#modalDelete{{ $item->id }}"
+                                                <button data-toggle="modal"
+                                                    data-target="#modalDelete{{ $item->id_penerimaan }}"
                                                     class="btn btn-danger btn-sm">
                                                     <i class="fa fa-trash"> Hapus</i>
                                                 </button>
@@ -66,75 +68,52 @@
         </section>
     </div>
 
-    <div class="modal fade" id="modalAdd">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Tambah Toko</h4>
-                </div>
-                <form action="{{ route('supplier.store') }}" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nama Toko *</label>
-                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Nomor Telp *</label>
-                            <input type="number" name="phone" value="{{ old('phone') }}" class="form-control" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Alamat *</label>
-                            <textarea name="address" class="form-control" required>{{ old('address') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     @foreach ($data as $item)
-        <div class="modal fade" id="modalEdit{{ $item->id }}">
+        <div class="modal fade" id="modalEdit{{ $item->id_penerimaan }}">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Edit Supplier</h4>
+                        <h4 class="modal-title">Edit Penerimaan</h4>
                     </div>
-                    <form action="{{ route('supplier.update') }}" method="post">
+                    <form action="{{ route('restock.penerimaan.update') }}" method="post">
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Nama Toko *</label>
-                                <input type="hidden" name="id" value="{{ $item->id }}">
-                                <input type="text" name="name"
-                                    value="{{ empty(old('name')) ? $item->name : old('name') }}" class="form-control"
-                                    required>
-                            </div>
+                                <div class="row">
+                                    <input type="hidden" name="id" value="{{ $item->id_penerimaan }}">
+                                    <input type="number" value="{{ $item->id_pembelian }}" name="id_pembelian" hidden>
+                                    <div class="col-md-6">
+                                        <label for="tanggal_pembelian">Tanggal Pembelian</label>
+                                        <input type="text" name="tanggal_pembelian" id="tanggal_pembelian"
+                                            value="{{ $item->tanggal_pembelian }}" class="form-control" readonly="">
+                                    </div>
 
+                                    <div class="col-md-6">
+                                        <label>Tanggal Diterima</label>
+                                        <input type="date" name="tanggal_penerimaan"
+                                            value="{{ check_empty($item->tanggal_penerimaan) }}" class="form-control"
+                                            required="">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
-                                <label>No Telp *</label>
-                                <input type="number" name="phone"
-                                    value="{{ empty(old('phone')) ? $item->phone : old('phone') }}" class="form-control"
-                                    required>
-                            </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="jumlah_pembelian">Stock Dibeli</label>
+                                        <input type="number" name="jumlah_pembelian" id="jumlah_pembelian"
+                                            value="{{ $item->jumlah_pembelian }}" class="form-control" readonly="">
+                                    </div>
 
-                            <div class="form-group">
-                                <label>Alamat *</label>
-                                <textarea name="address" class="form-control" required>{{ empty(old('address')) ? $item->address : old('address') }}</textarea>
+                                    <div class="col-md-6">
+                                        <label>Stock Diterima</label>
+                                        <input type="number" name="jumlah_penerimaan"
+                                            value="{{ check_empty($item->jumlah_penerimaan) }}" class="form-control"
+                                            required="">
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">
@@ -149,18 +128,19 @@
     @endforeach
 
     @foreach ($data as $item)
-        <div class="modal fade" id="modalDelete{{ $item->id }}">
-            <div class="modal-dialog modal-dialog-centered">
+        <div class="modal fade" id="modalDelete{{ $item->id_penerimaan }}">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Hapus Toko {{ $item->name }}</h4>
+                        <h4 class="modal-title">Hapus Penerimaan</h4>
                     </div>
-                    <form action="{{ route('supplier.delete') }}" method="post">
+                    <form action="{{ route('restock.penerimaan.delete') }}" method="post">
                         @csrf
                         <div class="modal-body">
-                            <input type="number" value="{{ $item->id }}" name="id" hidden>
+                            <input type="number" value="{{ $item->id_penerimaan }}" name="id_penerimaan" hidden>
+                            <input type="number" value="{{ $item->id_pembelian }}" name="id_pembelian" hidden>
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">

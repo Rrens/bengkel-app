@@ -48,4 +48,14 @@ class ProductItems extends Model
     {
         return $this->belongsTo(Pembelian::class);
     }
+
+    public function history()
+    {
+        return $this->belongsTo(History::class);
+    }
+
+    public function minmax()
+    {
+        return $this->belongsTo(Minmax::class);
+    }
 }

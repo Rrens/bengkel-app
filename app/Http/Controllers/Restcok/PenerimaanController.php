@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Restcok;
 
 use App\Http\Controllers\Controller;
+use App\Models\Minmax;
 use App\Models\Pembelian;
 use App\Models\Penerimaan;
 use App\Models\ProductItems;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -63,6 +65,20 @@ class PenerimaanController extends Controller
         $item->stock += $request->jumlah_penerimaan;
         $item->save();
 
+        $tanggalPembelian = Carbon::createFromFormat('Y-m-d', $request->tanggal_pembelian);
+        $tanggalPenerimaan = Carbon::createFromFormat('Y-m-d', $request->tanggal_penerimaan);
+        $selisihHari = $tanggalPembelian->diffInDays($tanggalPenerimaan);
+        $minmax = Minmax::where('item_id', $item->id)->first();
+
+        if (empty($minmax)) {
+            $minmax = new Minmax();
+        }
+
+
+        $minmax->item_id = $item->id;
+        $minmax->lead_time = $selisihHari;
+        $minmax->save();
+
         Alert::toast('Sukses Merubah', 'success');
         return back();
     }
@@ -85,6 +101,8 @@ class PenerimaanController extends Controller
         // dd($item, $penerimaan->jumlah_penerimaan);
         $item->stock -= $penerimaan->jumlah_penerimaan;
         $item->save();
+
+        $minmax = Minmax::where('item_id', $item->id)->delete();
 
         Pembelian::where('id', $request->id_pembelian)->delete();
         $penerimaan->delete();

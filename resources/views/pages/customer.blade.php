@@ -4,11 +4,11 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                customers
+                Pelanggan
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Customers</li>
+                <li class="active">Pelanggan</li>
             </ol>
         </section>
 
@@ -17,11 +17,11 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Customers</h3>
+                            <h3 class="box-title">Data Pelanggan</h3>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">
-                                    <i class="fa fa-plus"> Create</i>
+                                    <i class="fa fa-plus"> Tambah</i>
                                 </button>
                             </div>
                         </div>
@@ -30,11 +30,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name</th>
+                                        <th>Nama</th>
                                         <th>Jenis Kelamin</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
+                                        <th>No. Telp</th>
+                                        <th>ALamat</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -52,7 +52,7 @@
                                                 </button>
                                                 <button data-toggle="modal" data-target="#modalDelete{{ $item->id }}"
                                                     class="btn btn-danger btn-sm">
-                                                    <i class="fa fa-trash"> Delete</i>
+                                                    <i class="fa fa-trash"> Hapus</i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -102,8 +102,8 @@
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Edit Customer {{ $item->name }}</h4>
+                        <h4 class="modal-title">Edit Oelanggan {{ $item->name }}</h4>
                     </div>
                     <form action="{{ route('customer.update') }}" method="post">
                         @csrf
@@ -155,8 +155,8 @@
                             <div class="modal-footer">
                                 <div style="float: right;">
                                     <button type="button" class="btn btn-default pull-left"
-                                        data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                        data-dismiss="modal">Tutup</button>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Hapus Customer {{ $item->name }}</h4>
+                        <h4 class="modal-title">Hapus Pelanggan {{ $item->name }}</h4>
                     </div>
                     <form action="{{ route('customer.delete') }}" method="post">
                         @csrf
@@ -183,8 +183,8 @@
                         <div class="modal-footer">
                             <div style="float: right;">
                                 <button type="button" class="btn btn-default pull-left"
-                                    data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                    data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </form>

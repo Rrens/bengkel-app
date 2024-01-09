@@ -4,12 +4,12 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Categories
+                Kategori
                 <small>Kategori Barang</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Categories</li>
+                <li class="active">Kategori</li>
             </ol>
         </section>
 
@@ -19,11 +19,11 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Categories</h3>
+                            <h3 class="box-title">Data Kategori</h3>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">
-                                    <i class="fa fa-plus"> Create</i>
+                                    <i class="fa fa-plus"> Tambah</i>
                                 </button>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
-                                        <th>Action</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,7 +48,7 @@
                                                 </button>
                                                 <button data-toggle="modal" data-target="#modalDelete{{ $item->id }}"
                                                     class="btn btn-danger btn-sm">
-                                                    <i class="fa fa-trash"> Delete</i>
+                                                    <i class="fa fa-trash"> Hapus</i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -80,8 +80,8 @@
                     </div>
                     <div class="modal-footer">
                         <div style="float: right;">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -103,7 +103,7 @@
                         <div class="modal-body">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label>Category Name *</label>
+                                    <label>Kategori Name *</label>
                                     <input type="number" name="id" value="{{ $item->id }}" hidden>
                                     <input type="text" name="name"
                                         value="{{ empty(old('name')) ? $item->name : old('name') }}" class="form-control"
@@ -113,8 +113,8 @@
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -140,8 +140,8 @@
                         <div class="modal-footer">
                             <div style="float: right;">
                                 <button type="button" class="btn btn-default pull-left"
-                                    data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                    data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>
                     </form>
