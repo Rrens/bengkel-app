@@ -21,17 +21,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        @php
-                                            // dd($date);
-                                        @endphp
                                         <label for="date">Tanggal Transaksi</label>
                                         <input type="date" class="form-control"
                                             value="{{ old('date') == null ? $date : old('date') }}" name="date" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="kasir">Kasir</label>
-                                        <input type="text" name="user_id" id="user_id" value="fanani" readonly
-                                            class="form-control">
+                                        <input type="text" name="user_id" id="user_id"
+                                            value="{{ auth()->user()->name }}" readonly class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -76,7 +73,7 @@
                                     </div> --}}
                                     <div class="form-group">
                                         <label for="jumlah_jual">Jumlah Jual</label>
-                                        <input type="number" class="form-control" id="jumlah_jual" readonly>
+                                        <input type="number" class="form-control" id="jumlah_jual">
                                     </div>
 
                                 </div>
@@ -333,7 +330,7 @@
                 })
             })
 
-            $('#jumlah_permintaan').on('change', function() {
+            $('#jumlah_jual').on('change', function() {
                 let stock = parseInt($('#stock').val());
                 let jumlah_jual = parseInt($('#jumlah_jual').val());
                 let jumlah_permintaan = parseInt($('#jumlah_permintaan').val());
@@ -341,10 +338,11 @@
                 console.log(jumlah_jual)
                 console.log(jumlah_permintaan)
 
-                if (jumlah_permintaan >= stock) {
+                if (jumlah_jual >= stock) {
                     $('#jumlah_jual').val(stock);
+                    alert('Jumlah Jual Melebihi Stok')
                 } else {
-                    $('#jumlah_jual').val(jumlah_permintaan);
+                    $('#jumlah_jual').val(jumlah_jual);
                 }
             })
 
@@ -380,10 +378,9 @@
                 if (item_id == '') {
                     alert('Product belum dipilih')
                     $('#barcode').focus()
-                    // }
-                    // else if (stock < 1 || parseInt(stock) < (parseInt(qty_cart) + parseInt(jumlah_jual))) {
-                    //     alert('Stock tidak mencukupi')
-                    //     $('#barcode').focus()
+                } else if (stock < 1 || parseInt(stock) < (parseInt(qty_cart) + parseInt(jumlah_jual))) {
+                    alert('Stock tidak mencukupi')
+                    $('#barcode').focus()
                 } else {
                     $.ajax({
                         type: 'POST',
@@ -405,6 +402,8 @@
                                 })
                                 $('#item_id').val('')
                                 $('#barcode').val('')
+                                $('#jumlah_permintaan').val('')
+                                $('#jumlah_jual').val('')
                                 $('#qty').val(1)
                                 $('#barcode').focus()
                             } else {
@@ -609,6 +608,7 @@
                                     alert('Transaksi gagal');
                                 }
                                 location.href = '{{ route('service.sales.index') }}'
+                                // console.log(result)
                             }
                         })
                     }

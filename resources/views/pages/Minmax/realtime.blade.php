@@ -39,21 +39,51 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($data as $item) --}}
-                                    <tr>
-                                        {{-- <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->tanggal_pembelian }}</td>
-                                            <td>{{ $item->supplier[0]->name }}</td>
-                                            <td>{{ $item->item[0]->name }}</td>
-                                            <td>{{ $item->jumlah_pembelian }}</td>
-                                            <td>
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#modalEdit{{ $item->id }}">
-                                                    <i class="fa fa-pencil"> Edit</i>
-                                                </button>
-                                            </td> --}}
-                                    </tr>
-                                    {{-- @endforeach --}}
+                                    @php
+                                        $i = 0;
+                                    @endphp
+                                    @foreach ($data_part as $data)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $data->nm_motor }}</td>
+                                            <td>{{ $data->stok }}</td>
+                                            <td>{{ ceil($hitung[$i]->rata / $jum_hari) * $data->time + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time }}
+                                                Item</td>
+                                            <td>{{ ceil($hitung[$i]->rata / $jum_hari) * $data->time * 2 + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time }}
+                                                Item</td>
+                                            <td>{{ ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time }}
+                                                Item</td>
+                                            <td>{{ $data->time }} hari</td>
+                                            <td>{{ $hitung[$i]->besar }} item/hari</td>
+                                            <td>{{ ceil($hitung[$i]->rata / $jum_hari) }} item/hari</td>
+                                            @if ($data->stok <= ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time)
+                                                <td>{{ ceil($hitung[$i]->rata / $jum_hari) * $data->time * 2 + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time - (ceil($hitung[$i]->rata / $jum_hari) * $data->time + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time) }}
+                                                    Item</td>
+                                                <td>
+                                                    <center><span class="badge bg-danger">KRITIS</span></center>
+                                                </td>
+                                            @elseif (
+                                                $data->stok <=
+                                                    ceil($hitung[$i]->rata / $jum_hari) * $data->time +
+                                                        ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time)
+                                                <td>{{ ceil($hitung[$i]->rata / $jum_hari) * $data->time * 2 + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time - (ceil($hitung[$i]->rata / $jum_hari) * $data->time + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time) }}
+                                                    Item</td>
+                                                <td>
+                                                    <center><span class="badge badge-warning">RESTOCK</span></center>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    0
+                                                </td>
+                                                <td>
+                                                    <center><span class="badge badge-success">AMAN</span></center>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                    @php
+                                        $i++;
+                                    @endphp
                                 </tbody>
                             </table>
                         </div>
@@ -63,124 +93,24 @@
         </section>
     </div>
 
-    {{-- @foreach ($data as $item)
-        <div class="modal fade" id="modalEdit{{ $item->id }}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Edit Penerimaan</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('restock.pembelian.update') }}" method="post">
-                            @csrf
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Tanggal Pembelian *</label>
-                                        <input type="date" name="tanggal_pembelian" value="{{ $date }}"
-                                            class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Supplier *</label>
-                                        <select name="supplier_id" class="form-control">
-                                            <option selected hidden>- Pilih -</option>
-                                            @foreach ($supplier as $item)
-                                                <option {{ !empty(old('supplier_id')) ? 'selected' : '' }}
-                                                    value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="name_item">Search Item</label>
-                            </div>
-                            <div class="form-group input-group">
-                                <input type="hidden" name="item_id" id="item_id" value="">
-                                <input type="text" name="name_item" id="name_item" value=""
-                                    class="form-control" readonly="">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                        data-target="#modalItemAdd">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="stock">Stok Sekarang</label>
-                                        <input type="text" name="stock" id="stock" value=""
-                                            class="form-control" readonly="">
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label>Stok Dibeli</label>
-                                        <input type="number" name="jumlah_pembelian"
-                                            value="{{ old('jumlah_pembelian') }}" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div style="float: right;">
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach --}}
-
-    {{-- <div class="modal fade" id="modalItemAdd">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">Select Product Item</h4>
-                </div>
-                <div class="modal-body table-responsive">
-                    <table class="table table-bordered table-striped" id="example2">
-                        <thead>
-                            <tr>
-                                <th>Name Item</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($items as $item)
-                                <tr>
-                                    <td>{{ $item->name }}</td>
-                                    <td class="text-right">Rp {{ number_format($item->price) }}</td>
-                                    <td class="text-right">{{ $item->stock }}</td>
-                                    <td>
-                                        <button class="btn btn-xs btn-info" id="select"
-                                            data-item_id="{{ $item->id }}" data-name_item="{{ $item->name }}"
-                                            data-stock="{{ $item->stock }}">
-                                            <i class="fa fa-check"> Select</i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     @push('head')
         <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+    @endpush
+
+    @push('head')
+        <style>
+            .bg-danger {
+                background-color: red;
+            }
+
+            .badge-warning {
+                background-color: yellow;
+            }
+
+            .badge-success {
+                background-color: green;
+            }
+        </style>
     @endpush
 
     @push('scripts')
@@ -196,19 +126,6 @@
                     'ordering': true,
                     'info': true,
                     'autoWidth': false
-                })
-            })
-        </script>
-        <script>
-            $(document).ready(function() {
-                $(document).on('click', '#select', function() {
-                    var item_id = $(this).data('item_id');
-                    var name_item = $(this).data('name_item');
-                    var stock = $(this).data('stock');
-                    $('#item_id').val(item_id);
-                    $('#name_item').val(name_item);
-                    $('#stock').val(stock);
-                    $('#modalItemAdd').modal('hide');
                 })
             })
         </script>

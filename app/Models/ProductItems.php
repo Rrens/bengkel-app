@@ -20,6 +20,7 @@ class ProductItems extends Model
         'price',
         'stock',
         'discount_item',
+        'lead_time',
         'created_at',
         'updated_at',
     ];

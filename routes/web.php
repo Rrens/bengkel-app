@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Laporan\PembelianController as LaporanPembelianController;
@@ -32,98 +33,134 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
 
-Route::redirect('', 'transaction/sales');
+Route::redirect('', 'auth/login');
 
 Route::group([
-    'prefix' => 'customer'
+    'prefix' => 'auth'
 ], function () {
-    Route::get('', [CustomerController::class, 'index'])->name('customer.index');
-    Route::post('', [CustomerController::class, 'store'])->name('customer.store');
-    Route::post('update', [CustomerController::class, 'update'])->name('customer.update');
-    Route::post('delete', [CustomerController::class, 'delete'])->name('customer.delete');
+    Route::get('login', [AuthController::class, 'index'])->name('auth.login');
+    Route::post('login', [AuthController::class, 'post_login'])->name('auth.post-login');
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
 
-Route::group([
-    'prefix' => 'supplier'
-], function () {
-    Route::get('', [SupplierController::class, 'index'])->name('supplier.index');
-    Route::post('', [SupplierController::class, 'store'])->name('supplier.store');
-    Route::post('update', [SupplierController::class, 'update'])->name('supplier.update');
-    Route::post('delete', [SupplierController::class, 'delete'])->name('supplier.delete');
-});
+Route::group(
+    [
+        'middleware' => ['auth']
+    ],
+    function () {
 
-Route::group([
-    'prefix' => 'products'
-], function () {
-    Route::group([
-        'prefix' => 'categories'
-    ], function () {
-        Route::get('', [CategoriesController::class, 'index'])->name('product.categories.index');
-        Route::post('', [CategoriesController::class, 'store'])->name('product.categories.store');
-        Route::post('update', [CategoriesController::class, 'update'])->name('product.categories.update');
-        Route::post('delete', [CategoriesController::class, 'delete'])->name('product.categories.delete');
-    });
+        Route::group([
+            'prefix' => 'customer'
+        ], function () {
+            Route::get('', [CustomerController::class, 'index'])->name('customer.index');
+            Route::post('', [CustomerController::class, 'store'])->name('customer.store');
+            Route::post('update', [CustomerController::class, 'update'])->name('customer.update');
+            Route::post('delete', [CustomerController::class, 'delete'])->name('customer.delete');
+        });
 
-    Route::group([
-        'prefix' => 'items'
-    ], function () {
-        Route::get('', [ItemsController::class, 'index'])->name('product.items.index');
-        Route::post('', [ItemsController::class, 'store'])->name('product.items.store');
-        Route::post('update', [ItemsController::class, 'update'])->name('product.items.update');
-        Route::post('delete', [ItemsController::class, 'delete'])->name('product.items.delete');
-    });
-});
+        Route::group([
+            'prefix' => 'supplier'
+        ], function () {
+            Route::get('', [SupplierController::class, 'index'])->name('supplier.index');
+            Route::post('', [SupplierController::class, 'store'])->name('supplier.store');
+            Route::post('update', [SupplierController::class, 'update'])->name('supplier.update');
+            Route::post('delete', [SupplierController::class, 'delete'])->name('supplier.delete');
+        });
 
-Route::group([
-    'prefix' => 'restock'
-], function () {
+        Route::group([
+            'prefix' => 'products'
+        ], function () {
+            Route::group([
+                'prefix' => 'categories'
+            ], function () {
+                Route::get('', [CategoriesController::class, 'index'])->name('product.categories.index');
+                Route::post('', [CategoriesController::class, 'store'])->name('product.categories.store');
+                Route::post('update', [CategoriesController::class, 'update'])->name('product.categories.update');
+                Route::post('delete', [CategoriesController::class, 'delete'])->name('product.categories.delete');
+            });
 
-    Route::group([
-        'prefix' => 'pembelian',
-    ], function () {
-        Route::get('', [PembelianController::class, 'index'])->name('restock.pembelian.index');
-        Route::post('', [PembelianController::class, 'store'])->name('restock.pembelian.store');
-        Route::post('update', [PembelianController::class, 'update'])->name('restock.pembelian.update');
-    });
+            Route::group([
+                'prefix' => 'items'
+            ], function () {
+                Route::get('', [ItemsController::class, 'index'])->name('product.items.index');
+                Route::post('', [ItemsController::class, 'store'])->name('product.items.store');
+                Route::post('update', [ItemsController::class, 'update'])->name('product.items.update');
+                Route::post('delete', [ItemsController::class, 'delete'])->name('product.items.delete');
+            });
+        });
 
-    Route::group([
-        'prefix' => 'penerimaan'
-    ], function () {
-        Route::get('', [PenerimaanController::class, 'index'])->name('restock.penerimaan.index');
-        Route::post('update', [PenerimaanController::class, 'update'])->name('restock.penerimaan.update');
-        Route::post('delete', [PenerimaanController::class, 'delete'])->name('restock.penerimaan.delete');
-    });
-});
+        Route::group([
+            'prefix' => 'restock'
+        ], function () {
 
-// Route::get('transaction', [TransaksiServiceController::class, 'index'])->name('transaction-service.index');
-Route::group([
-    'prefix' => 'transaction'
-], function () {
-    Route::group([
-        'prefix' => 'sales'
-    ], function () {
-        Route::get('', [SalesController::class, 'index'])->name('service.sales.index');
-        Route::get('cart-data', [SalesController::class, 'cart_data'])->name('cart-data');
-        Route::post('add-cart', [SalesController::class, 'add_cart'])->name('service.sales.add-cart');
-        Route::post('delete', [SalesController::class, 'delete'])->name('service.sales.delete');
-        Route::post('update', [SalesController::class, 'update'])->name('service.sales.update');
-        Route::post('store-sales', [SalesController::class, 'store_sale'])->name('service.sales.store-sales');
-        Route::post('cancel-sales', [SalesController::class, 'cancel_sale'])->name('service.sales.cancel-sales');
-        Route::get('print/{id}', [SalesController::class, 'print'])->name('service.sales.print');
-    });
-});
+            Route::group([
+                'prefix' => 'pembelian',
+            ], function () {
+                Route::get('', [PembelianController::class, 'index'])->name('restock.pembelian.index');
+                Route::post('', [PembelianController::class, 'store'])->name('restock.pembelian.store');
+                Route::post('update', [PembelianController::class, 'update'])->name('restock.pembelian.update');
+            });
 
-Route::group([
-    'prefix' => 'min-max',
-], function () {
-    Route::get('real-time', [RealtimeController::class, 'index'])->name('min-max.realtime.index');
-    Route::get('periode', [PeriodeController::class, 'index'])->name('min-max.periode.index');
-});
+            Route::group([
+                'prefix' => 'penerimaan'
+            ], function () {
+                Route::get('', [PenerimaanController::class, 'index'])->name('restock.penerimaan.index');
+                Route::post('update', [PenerimaanController::class, 'update'])->name('restock.penerimaan.update');
+                Route::post('delete', [PenerimaanController::class, 'delete'])->name('restock.penerimaan.delete');
+            });
+        });
 
-Route::group([
-    'prefix' => 'laporan'
-], function () {
-    Route::get('transaction-service', [TransactionServiceController::class, 'index'])->name('laporan.transaction.index');
-    Route::get('pembelian', [LaporanPembelianController::class, 'index'])->name('laporan.pembelian.index');
-    Route::get('penerimaan', [LaporanPenerimaanController::class, 'index'])->name('laporan.penerimaan.index');
-});
+        // Route::get('transaction', [TransaksiServiceController::class, 'index'])->name('transaction-service.index');
+        Route::group([
+            'prefix' => 'transaction'
+        ], function () {
+            Route::group([
+                'prefix' => 'sales'
+            ], function () {
+                Route::get('', [SalesController::class, 'index'])->name('service.sales.index');
+                Route::get('cart-data', [SalesController::class, 'cart_data'])->name('cart-data');
+                Route::post('add-cart', [SalesController::class, 'add_cart'])->name('service.sales.add-cart');
+                Route::post('delete', [SalesController::class, 'delete'])->name('service.sales.delete');
+                Route::post('update', [SalesController::class, 'update'])->name('service.sales.update');
+                Route::post('store-sales', [SalesController::class, 'store_sale'])->name('service.sales.store-sales');
+                Route::post('cancel-sales', [SalesController::class, 'cancel_sale'])->name('service.sales.cancel-sales');
+                Route::get('print/{id}', [SalesController::class, 'print'])->name('service.sales.print');
+            });
+        });
+
+        Route::group([
+            'prefix' => 'min-max',
+        ], function () {
+            Route::get('real-time', [RealtimeController::class, 'index'])->name('min-max.realtime.index');
+            Route::get('periode', [RealtimeController::class, 'next_periode'])->name('min-max.periode.index');
+        });
+
+        Route::group([
+            'prefix' => 'laporan'
+        ], function () {
+            Route::group([
+                'prefix' => 'transaction-service'
+            ], function () {
+                Route::get('', [TransactionServiceController::class, 'index'])->name('laporan.transaction.index');
+                Route::get('{month}', [TransactionServiceController::class, 'filter_month'])->name('laporan.transaction.filter');
+                Route::get('print/{id}', [TransactionServiceController::class, 'print'])->name('laporan.transaction.print');
+            });
+
+            Route::group([
+                'prefix' => 'pembelian',
+            ], function () {
+                Route::get('', [LaporanPembelianController::class, 'index'])->name('laporan.pembelian.index');
+                Route::get('{month}', [LaporanPembelianController::class, 'filter'])->name('laporan.pembelian.filter');
+            });
+
+            Route::group([
+                'prefix' => 'penerimaan'
+            ], function () {
+                Route::get('', [LaporanPenerimaanController::class, 'index'])->name('laporan.penerimaan.index');
+                Route::get('{month}', [LaporanPenerimaanController::class, 'filter'])->name('laporan.penerimaan.filter');
+            });
+        });
+    }
+);
+
+Route::get('/data-hitung/{id}', [PembelianController::class, 'data_hitung']);

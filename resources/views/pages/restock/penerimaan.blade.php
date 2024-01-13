@@ -92,7 +92,7 @@
 
                                     <div class="col-md-6">
                                         <label>Tanggal Diterima</label>
-                                        <input type="date" name="tanggal_penerimaan"
+                                        <input type="date" name="tanggal_penerimaan" id="tanggal_penerimaan"
                                             value="{{ check_empty($item->tanggal_penerimaan) }}" class="form-control"
                                             required="">
                                     </div>
@@ -111,6 +111,14 @@
                                         <input type="number" name="jumlah_penerimaan"
                                             value="{{ check_empty($item->jumlah_penerimaan) }}" class="form-control"
                                             required="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="jumlah_pembelian">Lead Time</label>
+                                        <input type="number" name="lead_time" id="lead_time" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -175,5 +183,20 @@
                 })
             })
         </script>
+
+        {{-- <script>
+            let tanggal_penerimaan = new Date($('#tanggal_penerimaan').val());
+            let tanggal_pembelian = new Date($('#tanggal_pembelian').val());
+            $('#tanggal_penerimaan').on('change', function() {
+                let selisihMillis = tanggal_penerimaan - tanggal_pembelian;
+
+                // Konversi milidetik ke hari
+                let lead_time_hari = selisihMillis / (1000 * 60 * 60 * 24);
+
+                console.log(selisihMillis);
+                console.log(tanggal_pembelian);
+                console.log(tanggal_penerimaan);
+            });
+        </script> --}}
     @endpush
 @endsection

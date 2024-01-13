@@ -61,13 +61,15 @@ class PenerimaanController extends Controller
         $data->fill($request->all());
         $data->save();
 
-        $item = ProductItems::findOrFail(Pembelian::where('id', $request->id_pembelian)->first()['item_id']);
-        $item->stock += $request->jumlah_penerimaan;
-        $item->save();
-
         $tanggalPembelian = Carbon::createFromFormat('Y-m-d', $request->tanggal_pembelian);
         $tanggalPenerimaan = Carbon::createFromFormat('Y-m-d', $request->tanggal_penerimaan);
         $selisihHari = $tanggalPembelian->diffInDays($tanggalPenerimaan);
+
+        $item = ProductItems::findOrFail(Pembelian::where('id', $request->id_pembelian)->first()['item_id']);
+        $item->stock += $request->jumlah_penerimaan;
+        $item->lead_time = $selisihHari;
+        $item->save();
+
         $minmax = Minmax::where('item_id', $item->id)->first();
 
         if (empty($minmax)) {

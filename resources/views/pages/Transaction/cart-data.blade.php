@@ -6,6 +6,7 @@
             <td>{{ $item->item[0]->name }}</td>
             <td>{{ $item->price }}</td>
             <td>{{ $item->quantity }}</td>
+            <td>{{ $item->jumlah_jual }}</td>
             <td>{{ $item->discount_item }}</td>
             <td id="total">{{ $item->total }}</td>
             <td class="text-center" width="160px">

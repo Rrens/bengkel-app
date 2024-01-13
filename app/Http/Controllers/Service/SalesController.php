@@ -12,14 +12,17 @@ use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Supplier;
 use App\Models\User;
+use App\Traits\MyTrait;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class SalesController extends Controller
 {
+    use MyTrait;
     public function invoice()
     {
         $lastRecord = Sale::latest()->first();
@@ -73,15 +76,24 @@ class SalesController extends Controller
         // return response()->json($user[0]);
 
         try {
-            $data = new Cart();
-            $data->item_id = $request['item_id'];
-            $data->user_id = $user[0];
-            $data->price = $request['price'];
-            $data->quantity  = $request['qty'];
-            $data->jumlah_jual  = $request['jumlah_jual'];
+
+            $data = Cart::where('item_id', $request['item_id'])
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            if (!empty($data)) {
+                $data->jumlah_jual += $request['jumlah_jual'];
+                $data->quantity += $request['qty'];
+            } else {
+                $data = new Cart();
+                $data->item_id = $request['item_id'];
+                $data->user_id = $user[0];
+                $data->price = $request['price'];
+                $data->quantity  = $request['qty'];
+                $data->jumlah_jual  = $request['jumlah_jual'];
+            }
             $data->total = $data->price * $data->quantity;
             $data->save();
-
 
             return response()->json([
                 'success' => true
@@ -91,12 +103,12 @@ class SalesController extends Controller
         }
     }
 
-    public function minmax($item_id)
-    {
-        $product_item = ProductItems::findOrFail($item_id);
-        $minmax = Minmax::where('item_id', $item_id)->get();
-        $minmax->stock = $product_item->stock;
-    }
+    // public function minmax($item_id)
+    // {
+    //     $product_item = ProductItems::findOrFail($item_id);
+    //     $minmax = Minmax::where('item_id', $item_id)->get();
+    //     $minmax->stock = $product_item->stock;
+    // }
 
     public function update(Request $request)
     {
@@ -161,6 +173,7 @@ class SalesController extends Controller
             'change' => 'required',
             'customer_id' => 'required'
         ]);
+        // dd($request->all());
 
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
@@ -170,13 +183,13 @@ class SalesController extends Controller
             $request['customer_id'] = null;
         }
 
-        $cart = Cart::where('user_id', 1)->get();
+        $cart = Cart::where('user_id', Auth::user()->id)->get();
 
         try {
             $data = new Sale();
             $data->invoice = $this->invoice();
             $data->customer_id = $request['customer_id'];
-            $data->user_id = 1;
+            $data->user_id = Auth::user()->id;
             $data->total_price = $request['subtotal'];
             $data->service = $request['service'];
             $data->final_price = $request['grandtotal'];
@@ -190,6 +203,7 @@ class SalesController extends Controller
                 $data_detail->sale_id = $data->id;
                 $data_detail->item_id = $item->item_id;
                 $data_detail->price = $item->price;
+                // dd($item);
                 $data_detail->qty = $item->quantity;
                 $data_detail->discount_item = $item->discount_item;
                 $data_detail->total = $item->total;
@@ -200,9 +214,11 @@ class SalesController extends Controller
                 $history->date = Carbon::today();
                 $history->total = $item->quantity;
                 $history->save();
+
+                $this->minmax($item->item_id, $item->quantity);
             }
 
-            Cart::where('user_id', 1)->delete();
+            Cart::where('user_id', Auth::user()->id)->delete();
 
             return response()->json([
                 'sale_id' => $data->id,

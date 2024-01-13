@@ -68,7 +68,7 @@
 
                                         <div class="col-md-6">
                                             <label>Stok Dibeli</label>
-                                            <input type="number" name="jumlah_pembelian"
+                                            <input type="number" name="jumlah_pembelian" id="stok_dibeli"
                                                 value="{{ old('jumlah_pembelian') }}" class="form-control" required>
                                         </div>
                                     </div>
@@ -278,6 +278,17 @@
                     $('#name_item').val(name_item);
                     $('#stock').val(stock);
                     $('#modalItemAdd').modal('hide');
+
+                    $.ajax({
+                        url: `/data-hitung/${item_id}`,
+                        method: 'GET',
+                        success: function(data) {
+                            $('#stok_dibeli').val(data)
+                        },
+                        error: function() {
+                            $('#stok_dibeli').val('')
+                        }
+                    })
                 })
             })
         </script>

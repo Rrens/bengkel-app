@@ -20,6 +20,7 @@ return new class extends Migration
             $table->double('price')->nullable();
             $table->integer('stock');
             $table->integer('discount_item')->nullable();
+            $table->integer('lead_time')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -31,4 +31,9 @@ class Pembelian extends Model
     {
         return $this->hasMany(ProductItems::class, 'id', 'item_id');
     }
+
+    public function penerimaan()
+    {
+        return $this->belongsTo(Penerimaan::class);
+    }
 }

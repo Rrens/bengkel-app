@@ -10,7 +10,7 @@ class History extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'histories';
+    protected $table = 'history';
     protected $primaryKey = 'id';
     protected $guarded = [];
 

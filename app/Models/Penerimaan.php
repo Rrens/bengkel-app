@@ -20,4 +20,9 @@ class Penerimaan extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function pembelian()
+    {
+        return $this->hasMany(Pembelian::class, 'id', 'pembelian_id');
+    }
 }

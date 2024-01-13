@@ -32,7 +32,8 @@ class ProductItemsFactory extends Factory
             'name' => "$itemType $vehicleBrand",
             'category_id' => $this->faker->numberBetween(1, 10),
             'stock' => $this->faker->numberBetween(10, 100),
-            'price' => $this->faker->randomFloat(2, 10000, 200000)
+            'price' => $this->faker->randomFloat(2, 10000, 200000),
+            'lead_time' => $this->faker->numberBetween(1, 10),
         ];
     }
 }
