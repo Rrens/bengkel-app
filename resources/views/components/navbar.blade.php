@@ -17,11 +17,8 @@
                 <!-- Menu Body -->
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                    <div class="pull-left">
-                        <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    </div>
                     <div class="pull-right">
-                        <a href="#" class="btn btn-danger btn-flat">Sign out</a>
+                        <a href="{{ route('auth.logout') }}" class="btn btn-danger btn-flat">Sign out</a>
                     </div>
                 </li>
             </ul>
