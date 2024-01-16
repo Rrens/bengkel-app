@@ -35,12 +35,19 @@ Route::get('', [DashboardController::class, 'index'])->name('dashboard.index');
 
 Route::redirect('', 'auth/login');
 
+Route::redirect('daftar', 'auth/register');
+
 Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::get('login', [AuthController::class, 'index'])->name('auth.login');
     Route::post('login', [AuthController::class, 'post_login'])->name('auth.post-login');
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+    Route::get('register', [AuthController::class, 'register']);
+    Route::post('register', [AuthController::class, 'store'])->name('register.store');
+    Route::post('register/update', [AuthController::class, 'update'])->name('register.update');
+    Route::post('register/delete', [AuthController::class, 'delete'])->name('register.delete');
 });
 
 Route::group(
