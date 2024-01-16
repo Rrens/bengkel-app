@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -25,12 +26,60 @@ class SalesController extends Controller
     use MyTrait;
     public function invoice()
     {
-        $lastRecord = Sale::latest()->first();
-        $lastID = $lastRecord ? $lastRecord->my_id : 0;
+        // $lastRecord = Sale::latest()->first();
+        $lastRecord = Sale::count();
+        $lastID = $lastRecord ? $lastRecord : 0;
 
         $newID = 'MP' . date('ym') . str_pad($lastID + 1, 4, '0', STR_PAD_LEFT);
         return $newID;
     }
+
+    public function check_min_stock($id)
+    {
+        $current = Carbon::now()->format('m');
+
+        $jum_hari = DB::table('history')
+            ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
+            ->whereMonth('date', $current)
+            ->where('item_id', $id)
+            ->get();
+
+        foreach ($jum_hari as $item) {
+            $jum_hari = $item->jum_hari;
+        }
+
+        $hitung = DB::table('history')
+            ->join("product_items", function ($join) {
+                $join->on("product_items.id", "=", "history.item_id");
+            })
+            //->select(DB::raw('MAX(total) as besar, round(SUM(total)/30) as rata'))
+            ->select(DB::raw('*,MAX(total) as besar, SUM(total) as rata'))
+            ->whereMonth('date', $current)
+            ->where('item_id', $id)
+            ->groupBy('product_items.id')
+            ->get();
+
+
+        // dd($data);
+
+        $data_part = DB::table('product_items')
+            ->join("history", function ($join) {
+                $join->on("product_items.id", "=", "history.item_id");
+            })
+            ->whereMonth('history.date', $current)
+            ->where('product_items.id', $id)
+            ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "product_items.lead_time as time")
+            ->groupBy('product_items.id')
+            ->get();
+        // dd($data_part);
+        $stock_min = ceil($hitung[0]->rata / $jum_hari) * $data_part[0]->time + ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time;
+        $safety_stock = ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time;
+        return response()->json([
+            'stock_min' =>  $stock_min,
+            'safety_stock' => $safety_stock
+        ]);
+    }
+
     public function index()
     {
         $active = 'transaction';
@@ -39,6 +88,7 @@ class SalesController extends Controller
         $carts = Cart::with('item')->where('user_id', 1)->get();
         $product_item = ProductItems::all();
         $invoice = $this->invoice();
+        // dd($invoice);
         $date = Carbon::today()->format('Y-m-d');
         // dd($date);
 

@@ -132,6 +132,8 @@ Route::group(
                 Route::post('store-sales', [SalesController::class, 'store_sale'])->name('service.sales.store-sales');
                 Route::post('cancel-sales', [SalesController::class, 'cancel_sale'])->name('service.sales.cancel-sales');
                 Route::get('print/{id}', [SalesController::class, 'print'])->name('service.sales.print');
+
+                Route::get('check-min-stock/{id}', [SalesController::class, 'check_min_stock']);
             });
         });
 
