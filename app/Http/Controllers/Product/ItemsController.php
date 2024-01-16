@@ -40,7 +40,7 @@ class ItemsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'barcode' => 'required',
+            'barcode' => 'required|unique:product_items,barcode',
             'name' => 'required',
             'category_id' => 'required|exists:product_categories,id',
             'price' => 'required',
@@ -66,7 +66,7 @@ class ItemsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:product_items,id',
-            'barcode' => 'required',
+            'barcode' => 'required|unique:product_items,barcode',
             'name' => 'required',
             'category_id' => 'required|exists:product_categories,id',
             'price' => 'required',

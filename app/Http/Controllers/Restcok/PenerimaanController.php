@@ -35,7 +35,9 @@ class PenerimaanController extends Controller
             )
             ->whereNull('pb.deleted_at')
             ->whereNull('pn.deleted_at')
+            ->orderBy('pb.tanggal_pembelian', 'desc')
             ->get();
+        // dd($data);
         return view('pages.restock.penerimaan', compact('active', 'active_detail', 'data'));
     }
 
@@ -47,11 +49,16 @@ class PenerimaanController extends Controller
             'jumlah_pembelian' => 'required|numeric',
             'jumlah_penerimaan' => 'required|numeric|lte:jumlah_pembelian',
             'tanggal_pembelian' => 'required|date',
-            'tanggal_penerimaan' => 'required|date|after:tanggal_pembelian'
+            'tanggal_penerimaan' => 'required|date'
         ]);
 
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
+            return back()->withInput();
+        }
+
+        if ($request->tanggal_pembelian > $request->tanggal_penerimaan) {
+            Alert::toast('the tanggal penerimaan must not exceed the tanggal pembelian', 'error');
             return back()->withInput();
         }
 
@@ -70,16 +77,16 @@ class PenerimaanController extends Controller
         $item->lead_time = $selisihHari;
         $item->save();
 
-        $minmax = Minmax::where('item_id', $item->id)->first();
+        // $minmax = Minmax::where('item_id', $item->id)->first();
 
-        if (empty($minmax)) {
-            $minmax = new Minmax();
-        }
+        // if (empty($minmax)) {
+        //     $minmax = new Minmax();
+        // }
 
 
-        $minmax->item_id = $item->id;
-        $minmax->lead_time = $selisihHari;
-        $minmax->save();
+        // $minmax->item_id = $item->id;
+        // $minmax->lead_time = $selisihHari;
+        // $minmax->save();
 
         Alert::toast('Sukses Merubah', 'success');
         return back();
@@ -104,7 +111,7 @@ class PenerimaanController extends Controller
         $item->stock -= $penerimaan->jumlah_penerimaan;
         $item->save();
 
-        $minmax = Minmax::where('item_id', $item->id)->delete();
+        // $minmax = Minmax::where('item_id', $item->id)->delete();
 
         Pembelian::where('id', $request->id_pembelian)->delete();
         $penerimaan->delete();

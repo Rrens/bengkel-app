@@ -141,7 +141,7 @@
                                 <label>Barcode *</label>
                                 <input type="hidden" name="id" value="{{ $item->id }}">
                                 <input type="text" name="barcode" value="{{ $item->barcode }}" class="form-control"
-                                    required="" readonly>
+                                    required>
                             </div>
 
                             <div class="form-group">

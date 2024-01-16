@@ -47,8 +47,8 @@
                                     <label for="name_item">Cari Item</label>
                                 </div>
                                 <div class="form-group input-group">
-                                    <input type="hidden" name="item_id" id="item_id" value="">
-                                    <input type="text" name="name_item" id="name_item" value=""
+                                    <input name="item_id" id="item_id" value="{{ old('item_id') }}" hidden>
+                                    <input type="text" name="name_item" id="name_item" value="{{ old('name_item') }}"
                                         class="form-control" readonly="">
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
@@ -62,7 +62,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="stock">Stok Sekarang</label>
-                                            <input type="text" name="stock" id="stock" value=""
+                                            <input type="text" name="stock" id="stock" value="{{ old('stock') }}"
                                                 class="form-control" readonly="">
                                         </div>
 

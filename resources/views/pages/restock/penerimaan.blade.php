@@ -24,12 +24,12 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Pembelian ID</th>
+                                        {{-- <th>Pembelian ID</th> --}}
+                                        <th>Tanggal Pembelian</th>
                                         <th>Supplier Nama</th>
                                         <th>Nama Produk</th>
                                         <th>Jumlah Pembelian</th>
                                         <th>Jumlah Penerimaan</th>
-                                        <th>Tanggal Pembelian</th>
                                         <th>Tanggal Penerimaan</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -38,12 +38,12 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->id_pembelian }}</td>
+                                            {{-- <td>{{ $item->id_pembelian }}</td> --}}
+                                            <td>{{ $item->tanggal_pembelian }}</td>
                                             <td>{{ $item->supplier_name }}</td>
                                             <td>{{ $item->item_name }}</td>
                                             <td>{{ $item->jumlah_pembelian }}</td>
                                             <td>{{ check_empty($item->jumlah_penerimaan) }}</td>
-                                            <td>{{ $item->tanggal_pembelian }}</td>
                                             <td>{{ check_empty($item->tanggal_penerimaan) }}
                                             </td>
                                             <td>
@@ -114,14 +114,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="jumlah_pembelian">Lead Time</label>
                                         <input type="number" name="lead_time" id="lead_time" class="form-control">
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">

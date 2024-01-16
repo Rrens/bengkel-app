@@ -17,7 +17,7 @@ class ProductItemsFactory extends Factory
      */
     public function definition(): array
     {
-        $last_number = ProductItems::max('barcode') ?? 0;
+        $last_number = ProductItems::count();
         $next_number = $last_number + 1;
         $formatted_number = sprintf('A%03d', $next_number);
 
@@ -28,7 +28,7 @@ class ProductItemsFactory extends Factory
         $vehicleBrand = $this->faker->randomElement($vehicleBrands);
 
         return [
-            'barcode' => $formatted_number,
+            // 'barcode' => $formatted_number,
             'name' => "$itemType $vehicleBrand",
             'category_id' => $this->faker->numberBetween(1, 10),
             'stock' => $this->faker->numberBetween(10, 100),

@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             SaleSeeder::class,
             SaleDetailSeeder::class,
             HistorySeeder::class,
-            StockSeeder::class,
+            // StockSeeder::class,
             PembelianSeeder::class,
             PenerimaanSeeder::class,
         ]);

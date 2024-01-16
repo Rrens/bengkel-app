@@ -33,6 +33,7 @@ class RealtimeController extends Controller
             ->whereMonth('date', $current)
             ->groupBy('product_items.id')
             ->get();
+        // dd($hitung);
 
 
         //	echo "<script>console.log('Debug Objects: " . $jum_hari . "' );</script>";
@@ -43,6 +44,7 @@ class RealtimeController extends Controller
             })
             ->whereMonth('history.date', $current)
             ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "product_items.lead_time as time")
+            ->groupBy('product_items.id')
             ->get();
         // dd($hitung, $data_part);
         // dd($data_part, $hitung, $jum_hari);
@@ -90,6 +92,7 @@ class RealtimeController extends Controller
             })
             ->whereMonth('history.date', $current)
             ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "product_items.lead_time as time")
+            ->groupBy('product_items.id')
             ->get();
         // dd($data_part, $hitung, $jum_hari);
 

@@ -21,7 +21,9 @@ class PembelianController extends Controller
         $active_detail = 'pembelian';
         $supplier = Supplier::all();
         $items = ProductItems::all();
-        $data = Pembelian::with('supplier', 'item')->get();
+        $data = Pembelian::with('supplier', 'item')
+            ->orderBy('tanggal_pembelian', 'desc')
+            ->get();
         $date = Carbon::today()->toDateString();
 
         return view('pages.restock.pembelian', compact(
@@ -98,7 +100,7 @@ class PembelianController extends Controller
             'supplier_id' => 'required|exists:suppliers,id',
             'item_id' => 'required|exists:product_items,id',
             'stock' => 'required|exists:product_items,stock',
-            'jumlah_pembelian' => 'required|lte:stock',
+            'jumlah_pembelian' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -115,7 +117,7 @@ class PembelianController extends Controller
         $penerimaan->pembelian_id = $pembelian->id;
         $penerimaan->save();
 
-        Alert::toast('Sukses Menyimpan', 'succes');
+        Alert::toast('Sukses Menyimpan', 'success');
         return back();
     }
 

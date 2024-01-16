@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('item_id')->references('id')->on('product_items');
             $table->double('price');
             $table->integer('qty');
-            $table->double('discount_item');
+            $table->integer('discount_item');
             $table->double('total');
             $table->softDeletes();
             $table->timestamps();
