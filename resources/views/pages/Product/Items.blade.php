@@ -95,11 +95,13 @@
                         <div class="form-group">
                             <label>Kategori *</label>
                             <select name="category_id" class="form-control" required="">
-                                @foreach ($category as $row)
-                                    <option
-                                        {{ (!empty(old('category')) ? 'selected' : $item->category_id == $row->id) ? 'selected' : '' }}
-                                        value="{{ $row->id }}">{{ $row->name }}</option>
-                                @endforeach
+                                @if (!empty($item))
+                                    @foreach ($category as $row)
+                                        <option
+                                            {{ (!empty(old('category')) ? 'selected' : $item->category_id == $row->id) ? 'selected' : '' }}
+                                            value="{{ $row->id }}">{{ $row->name }}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
 
