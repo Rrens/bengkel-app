@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             Alert::error($validator->messages()->all());
-            return redirect()->route('auth.login.index');
+            return redirect()->route('auth.login');
         }
 
         $data = [
