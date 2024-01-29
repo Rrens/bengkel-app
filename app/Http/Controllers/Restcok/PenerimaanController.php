@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Restcok;
 use App\Http\Controllers\Controller;
 use App\Models\Minmax;
 use App\Models\Pembelian;
+use App\Models\PembelianDetail;
 use App\Models\Penerimaan;
+use App\Models\PenerimaanDetail;
 use App\Models\ProductItems;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,8 +23,9 @@ class PenerimaanController extends Controller
         $active_detail = 'penerimaan';
         $data = DB::table('penerimaans as pn')
             ->join('pembelians as pb', 'pb.id', '=', 'pn.pembelian_id')
+            ->join('pembelian_details as pd', 'pb.id', '=', 'pd.pembelian_id')
             ->join('suppliers as s', 's.id', '=', 'pb.supplier_id')
-            ->join('product_items as pi', 'pi.id', '=', 'pb.item_id')
+            ->join('product_items as pi', 'pi.id', '=', 'pd.item_id')
             ->select(
                 'pb.id as id_pembelian',
                 'pn.id as id_penerimaan',
@@ -31,14 +34,21 @@ class PenerimaanController extends Controller
                 'pn.tanggal_penerimaan',
                 'pb.tanggal_pembelian',
                 'pn.jumlah_penerimaan',
-                'pb.jumlah_pembelian',
+                'pd.jumlah_pembelian',
+                'pn.pembelian_id'
             )
+            ->where('pd.pembelian_id', '!=', null)
+            ->whereNull('pd.deleted_at')
             ->whereNull('pb.deleted_at')
             ->whereNull('pn.deleted_at')
+            ->groupBy('pn.pembelian_id')
             ->orderBy('pb.tanggal_pembelian', 'desc')
             ->get();
-        // dd($data);
-        return view('pages.restock.penerimaan', compact('active', 'active_detail', 'data'));
+
+        $pembelian = Pembelian::all();
+        $pembelian_detail = PembelianDetail::with('item')->get();
+        // dd($pembelian_detail[0]->item[0]->name);
+        return view('pages.restock.penerimaan', compact('active', 'active_detail', 'data', 'pembelian_detail', 'pembelian'));
     }
 
     public function update(Request $request)
@@ -46,16 +56,19 @@ class PenerimaanController extends Controller
         $validator = Validator::make($request->all(), [
             'id_pembelian' => 'required|exists:pembelians,id',
             'id' => 'required|exists:penerimaans,id',
-            'jumlah_pembelian' => 'required|numeric',
-            'jumlah_penerimaan' => 'required|numeric|lte:jumlah_pembelian',
+            'jumlah_pembelian.*' => 'required|numeric',
+            'jumlah_penerimaan.*' => 'required|numeric|lte:jumlah_pembelian.*',
             'tanggal_pembelian' => 'required|date',
             'tanggal_penerimaan' => 'required|date'
         ]);
 
         if ($validator->fails()) {
+            // dd($validator->messages()->all());
             Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
+        // dd($request->all());
+
 
         if ($request->tanggal_pembelian > $request->tanggal_penerimaan) {
             Alert::toast('the tanggal penerimaan must not exceed the tanggal pembelian', 'error');
@@ -68,15 +81,34 @@ class PenerimaanController extends Controller
         $data->fill($request->all());
         $data->save();
 
+        $count = count($request->jumlah_penerimaan);
+
         $tanggalPembelian = Carbon::createFromFormat('Y-m-d', $request->tanggal_pembelian);
         $tanggalPenerimaan = Carbon::createFromFormat('Y-m-d', $request->tanggal_penerimaan);
         $selisihHari = $tanggalPembelian->diffInDays($tanggalPenerimaan);
 
-        $item = ProductItems::findOrFail(Pembelian::where('id', $request->id_pembelian)->first()['item_id']);
-        $item->stock += $request->jumlah_penerimaan;
-        $item->lead_time = $selisihHari;
-        $item->save();
+        for ($i = 0; $i < $count; $i++) {
 
+
+            $item = ProductItems::findOrFail(PembelianDetail::where('pembelian_id', $request->id_pembelian)->first()['item_id']);
+            $item->stock += $request->jumlah_penerimaan[$i];
+            $item->lead_time = $selisihHari;
+            $item->save();
+
+            $detail = PenerimaanDetail::where('item_id', $item->id)
+                ->where('date', $data->tanggal_penerimaan)
+                ->first();
+            if (empty($detail)) {
+                $detail = new PenerimaanDetail();
+                $detail->penerimaan_id = $data->id;
+                $detail->date = $data->tanggal_penerimaan;
+            }
+            $detail->item_id = $item->id;
+            $detail->jumlah_penerimaan = $request->jumlah_penerimaan[$i];
+            $detail->save();
+        }
+
+        // dd($request->all(), $item);
         // $minmax = Minmax::where('item_id', $item->id)->first();
 
         // if (empty($minmax)) {

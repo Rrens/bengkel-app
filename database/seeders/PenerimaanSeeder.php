@@ -13,6 +13,6 @@ class PenerimaanSeeder extends Seeder
      */
     public function run(): void
     {
-        Penerimaan::factory(10)->create();
+        // Penerimaan::factory(10)->create();
     }
 }

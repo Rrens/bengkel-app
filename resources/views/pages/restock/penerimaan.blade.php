@@ -27,8 +27,6 @@
                                         {{-- <th>Pembelian ID</th> --}}
                                         <th>Tanggal Pembelian</th>
                                         <th>Supplier Nama</th>
-                                        <th>Nama Produk</th>
-                                        <th>Jumlah Pembelian</th>
                                         <th>Jumlah Penerimaan</th>
                                         <th>Tanggal Penerimaan</th>
                                         <th>Aksi</th>
@@ -41,8 +39,6 @@
                                             {{-- <td>{{ $item->id_pembelian }}</td> --}}
                                             <td>{{ $item->tanggal_pembelian }}</td>
                                             <td>{{ $item->supplier_name }}</td>
-                                            <td>{{ $item->item_name }}</td>
-                                            <td>{{ $item->jumlah_pembelian }}</td>
                                             <td>{{ check_empty($item->jumlah_penerimaan) }}</td>
                                             <td>{{ check_empty($item->tanggal_penerimaan) }}
                                             </td>
@@ -98,22 +94,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="jumlah_pembelian">Stok Dibeli</label>
-                                        <input type="number" name="jumlah_pembelian" id="jumlah_pembelian"
-                                            value="{{ $item->jumlah_pembelian }}" class="form-control" readonly="">
-                                    </div>
+                            @foreach ($pembelian_detail->where('pembelian_id', $item->pembelian_id) as $row)
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="nama_sparepart">Nama Sparepart</label>
+                                            <input type="text" name="nama_sparepart[]" id="nama_sparepart"
+                                                value="{{ $row->item[0]->name }}" class="form-control" readonly="">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="jumlah_pembelian">Stok Dibeli</label>
+                                            <input type="number" name="jumlah_pembelian[]" id="jumlah_pembelian"
+                                                value="{{ $row->jumlah_pembelian }}" class="form-control" readonly="">
+                                        </div>
 
-                                    <div class="col-md-6">
-                                        <label>Stok Diterima</label>
-                                        <input type="number" name="jumlah_penerimaan"
-                                            value="{{ check_empty($item->jumlah_penerimaan) }}" class="form-control"
-                                            required="">
+                                        <div class="col-md-4">
+                                            <label>Stok Diterima</label>
+                                            <input type="number" name="jumlah_penerimaan[]"
+                                                value="{{ check_empty($item->jumlah_penerimaan) }}" class="form-control"
+                                                required="">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                             {{-- <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">

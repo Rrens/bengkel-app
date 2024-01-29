@@ -25,6 +25,7 @@ class SupplierController extends Controller
             'name' => 'required',
             'phone' => 'required|numeric',
             'address' => 'required',
+            'norek' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -50,6 +51,7 @@ class SupplierController extends Controller
             'name' => 'required',
             'phone' => 'required|numeric',
             'address' => 'required',
+            'norek' => 'required',
         ]);
 
         if ($validator->fails()) {

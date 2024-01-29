@@ -18,6 +18,7 @@ use App\Http\Controllers\Service\SalesController;
 use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiServiceController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -106,6 +107,8 @@ Route::group(
                 Route::get('', [PembelianController::class, 'index'])->name('restock.pembelian.index');
                 Route::post('', [PembelianController::class, 'store'])->name('restock.pembelian.store');
                 Route::post('update', [PembelianController::class, 'update'])->name('restock.pembelian.update');
+                Route::post('delete', [PembelianController::class, 'delete'])->name('restock.pembelian.delete');
+                Route::post('store-pembelian', [PembelianController::class, 'store_pembelian'])->name('restock.pembelian.store-pembelian');
             });
 
             Route::group([

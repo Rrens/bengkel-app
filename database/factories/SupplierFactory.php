@@ -20,6 +20,7 @@ class SupplierFactory extends Factory
             'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
+            'norek' => $this->faker->bankAccountNumber
         ];
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->longText('address');
+            $table->longText('norek');
             $table->softDeletes();
             $table->timestamps();
         });

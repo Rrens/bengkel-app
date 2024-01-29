@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Restcok;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pembelian;
+use App\Models\PembelianDetail;
 use App\Models\Penerimaan;
 use App\Models\ProductItems;
 use App\Models\Supplier;
@@ -21,11 +22,13 @@ class PembelianController extends Controller
         $active_detail = 'pembelian';
         $supplier = Supplier::all();
         $items = ProductItems::all();
-        $data = Pembelian::with('supplier', 'item')
-            ->orderBy('tanggal_pembelian', 'desc')
+        // $data = Pembelian::with('supplier', 'item')
+        //     ->orderBy('tanggal_pembelian', 'desc')
+        //     ->get();
+        $data = PembelianDetail::with('item')
+            ->where('pembelian_id', null)
             ->get();
         $date = Carbon::today()->toDateString();
-
         return view('pages.restock.pembelian', compact(
             'active',
             'active_detail',
@@ -34,6 +37,115 @@ class PembelianController extends Controller
             'date',
             'data',
         ));
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tanggal_pembelian' => 'required|date',
+            // 'supplier_id' => 'required|exists:suppliers,id',
+            'item_id' => 'required|exists:product_items,id',
+            'stock' => 'required',
+            'jumlah_pembelian' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+            return back()->withInput();
+        }
+
+        // dd($request->all());
+
+        // unset($request['_token']);
+        // $pembelian = new Pembelian();
+        // $pembelian->tanggal_pembelian = Carbon::today()->toDateString();
+        // $pembelian->supplier_id = $request->supplier_id;
+        // $pembelian->save();
+        // $pembelian->fill($request->all());
+
+
+        $pembelian_detail = PembelianDetail::where('item_id', $request->item_id)->where('pembelian_id', null)->first();
+        if (empty($pembelian_detail)) {
+            $pembelian_detail = new PembelianDetail();
+            $pembelian_detail->jumlah_pembelian = $request->jumlah_pembelian;
+            $pembelian_detail->item_id = $request->item_id;
+        } else {
+            $pembelian_detail->jumlah_pembelian += $request->jumlah_pembelian;
+        }
+        // dd($pembelian_detail);
+        $pembelian_detail->save();
+
+        // $penerimaan = new Penerimaan();
+        // $penerimaan->pembelian_id = $pembelian->id;
+        // $penerimaan->save();
+
+        Alert::toast('Sukses Menyimpan', 'success');
+        return back()->withInput();
+    }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:pembelian_details,id',
+            'jumlah_pembelian' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+            return back()->withInput();
+        }
+        $data = PembelianDetail::findOrFail($request->id);
+        $data->jumlah_pembelian = $request->jumlah_pembelian;
+        $data->save();
+
+        Alert::toast('Sukses Mengupdate', 'success');
+        return back()->withInput();
+    }
+
+    public function delete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:pembelian_details,id',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+            return back()->withInput();
+        }
+
+        PembelianDetail::where('id', $request->id)->delete();
+
+        Alert::toast('Sukses Menghapus', 'success');
+        return back();
+    }
+
+    public function store_pembelian(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            // 'tanggal_pembelian' => 'required|date',
+            'supplier_id_pembelian' => 'required|exists:suppliers,id',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+            return back()->withInput();
+        }
+
+        $data = new Pembelian();
+        $data->tanggal_pembelian = Carbon::today()->toDateString();
+        $data->supplier_id = $request->supplier_id_pembelian;
+        $data->save();
+
+        PembelianDetail::where('pembelian_id', null)->update([
+            'pembelian_id' => $data->id
+        ]);
+
+        $penerimaan = new Penerimaan();
+        $penerimaan->pembelian_id = $data->id;
+        $penerimaan->save();
+
+        Alert::toast('Sukses Menyimpan', 'success');
+        return back();
     }
 
     public function data_hitung($id)
@@ -92,38 +204,5 @@ class PembelianController extends Controller
         }
 
         return response()->json($data);
-    }
-
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'tanggal_pembelian' => 'required|date',
-            'supplier_id' => 'required|exists:suppliers,id',
-            'item_id' => 'required|exists:product_items,id',
-            'stock' => 'required|exists:product_items,stock',
-            'jumlah_pembelian' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            Alert::toast($validator->messages()->all(), 'error');
-            return back()->withInput();
-        }
-
-        unset($request['_token']);
-        $pembelian = new Pembelian();
-        $pembelian->fill($request->all());
-        $pembelian->save();
-
-        $penerimaan = new Penerimaan();
-        $penerimaan->pembelian_id = $pembelian->id;
-        $penerimaan->save();
-
-        Alert::toast('Sukses Menyimpan', 'success');
-        return back();
-    }
-
-    public function update(Request $request)
-    {
-        //
     }
 }

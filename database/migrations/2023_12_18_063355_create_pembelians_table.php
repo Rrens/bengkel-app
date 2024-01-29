@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('pembelians', function (Blueprint $table) {
             $table->id();
-            $table->integer('jumlah_pembelian')->nullable();
+            // $table->integer('jumlah_pembelian')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->foreign('supplier_id')->references('id')->on('suppliers');
-            $table->unsignedBigInteger('item_id')->nullable();
-            $table->foreign('item_id')->references('id')->on('product_items');
+            // $table->unsignedBigInteger('item_id')->nullable();
+            // $table->foreign('item_id')->references('id')->on('product_items');
             $table->date('tanggal_pembelian');
             $table->softDeletes();
             $table->timestamps();

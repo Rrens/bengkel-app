@@ -33,10 +33,10 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label>Supplier *</label>
-                                            <select name="supplier_id" class="form-control">
+                                            <select name="supplier_id" id="supplier_id" class="form-control">
                                                 <option selected hidden>- Pilih -</option>
                                                 @foreach ($supplier as $item)
-                                                    <option {{ !empty(old('supplier_id')) ? 'selected' : '' }}
+                                                    <option {{ old('supplier_id') == $item->id ? 'selected' : '' }}
                                                         value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
@@ -97,18 +97,15 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal Pembelian</th>
-                                        <th>Nama Toko</th>
                                         <th>Name Item</th>
                                         <th>Jumlah Pembelian</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->tanggal_pembelian }}</td>
-                                            <td>{{ $item->supplier[0]->name }}</td>
                                             <td>{{ $item->item[0]->name }}</td>
                                             <td>{{ $item->jumlah_pembelian }}</td>
                                             <td>
@@ -116,11 +113,25 @@
                                                     data-target="#modalEdit{{ $item->id }}">
                                                     <i class="fa fa-pencil"> Edit</i>
                                                 </button>
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#modalDelete{{ $item->id }}">
+                                                    <i class="fa fa-trash"> Delete</i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class="form-group" style="margin-top: 10px;">
+                                <div style="float: right;">
+                                    <form action="{{ route('restock.pembelian.store-pembelian') }}" method="post">
+                                        @csrf
+                                        <input type="text" id="supplier_id_pembelian" name="supplier_id_pembelian"
+                                            hidden>
+                                        <button type="submit" class="btn btn-primary">Proses</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -134,57 +145,24 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Edit Penerimaan</h4>
+                        <h4 class="modal-title">Edit Pembelian</h4>
                     </div>
                     <div class="modal-body">
                         <form action="{{ route('restock.pembelian.update') }}" method="post">
                             @csrf
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Tanggal Pembelian *</label>
-                                        <input type="date" name="tanggal_pembelian" value="{{ $date }}"
-                                            class="form-control" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Supplier *</label>
-                                        <select name="supplier_id" class="form-control">
-                                            <option selected hidden>- Pilih -</option>
-                                            @foreach ($supplier as $item)
-                                                <option {{ !empty(old('supplier_id')) ? 'selected' : '' }}
-                                                    value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="name_item">Cari Item</label>
-                            </div>
-                            <div class="form-group input-group">
-                                <input type="hidden" name="item_id" id="item_id" value="">
-                                <input type="text" name="name_item" id="name_item" value=""
-                                    class="form-control" readonly="">
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                        data-target="#modalItemAdd">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
 
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="stock">Stok Sekarang</label>
-                                        <input type="text" name="stock" id="stock" value=""
-                                            class="form-control" readonly="">
+                                        <label for="item">Nama Item</label>
+                                        <input type="text" name="item" id="item"
+                                            value="{{ $item->item[0]->name }}" class="form-control" readonly>
+                                        <input type="number" name="id" value="{{ $item->id }}" hidden>
                                     </div>
-
                                     <div class="col-md-6">
                                         <label>Stok Dibeli</label>
                                         <input type="number" name="jumlah_pembelian"
-                                            value="{{ old('jumlah_pembelian') }}" class="form-control" required>
+                                            value="{{ $item->jumlah_pembelian }}" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +179,55 @@
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </div> --}}
                     </div>
-                    </form>
+                    {{-- </form> --}}
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalDelete{{ $item->id }}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Hapus {{ $item->item[0]->name }}?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('restock.pembelian.delete') }}" method="post">
+                            @csrf
+
+                            {{-- <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="item">Nama Item</label>
+                                        <input type="text" name="item" id="item"
+                                            value="{{ $item->item[0]->name }}" class="form-control" readonly>
+                                        <input type="number" name="id" value="{{ $item->id }}" hidden>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Stok Dibeli</label>
+                                        <input type="number" name="jumlah_pembelian"
+                                            value="{{ $item->jumlah_pembelian }}" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div> --}}
+                            <div class="form-group">
+                                <div style="float: right;">
+                                    <input type="number" value="{{ $item->id }}" name="id" hidden>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        {{-- <div style="float: right;">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div> --}}
+                    </div>
+                    {{-- </form> --}}
                 </div>
             </div>
         </div>
@@ -290,6 +316,13 @@
                         }
                     })
                 })
+            })
+        </script>
+
+        <script>
+            $('#supplier_id').on('change', function() {
+                var id = $('#supplier_id').val();
+                $('#supplier_id_pembelian').val(id);
             })
         </script>
     @endpush

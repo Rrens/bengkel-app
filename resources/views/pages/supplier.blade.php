@@ -35,6 +35,7 @@
                                         <th>Name Toko</th>
                                         <th>No Telp</th>
                                         <th>Alamat</th>
+                                        <th>Nomor Rekening</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -45,6 +46,7 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->phone }}</td>
                                             <td>{{ $item->address }}</td>
+                                            <td>{{ $item->norek }}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm" data-toggle="modal"
                                                     data-target="#modalEdit{{ $item->id }}">
@@ -84,12 +86,17 @@
 
                         <div class="form-group">
                             <label>Nomor Telp *</label>
-                            <input type="number" name="phone" value="{{ old('phone') }}" class="form-control" required>
+                            <input type="text" name="phone" value="{{ old('phone') }}" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label>Alamat *</label>
                             <textarea name="address" class="form-control" required>{{ old('address') }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="norek">Nomor Rekening</label>
+                            <input type="text" type="number" name="norek" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -125,7 +132,7 @@
 
                             <div class="form-group">
                                 <label>No Telp *</label>
-                                <input type="number" name="phone"
+                                <input type="text" name="phone"
                                     value="{{ empty(old('phone')) ? $item->phone : old('phone') }}" class="form-control"
                                     required>
                             </div>
@@ -135,10 +142,17 @@
                                 <textarea name="address" class="form-control" required>{{ empty(old('address')) ? $item->address : old('address') }}</textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="norek">Nomor Rekening</label>
+                                <input type="text" type="number" name="norek" class="form-control"
+                                    value="{{ empty(old('norek')) ? $item->norek : old('norek') }}" required>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <div style="float: right;">
-                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
+                                <button type="button" class="btn btn-default pull-left"
+                                    data-dismiss="modal">Tutup</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </div>

@@ -59,4 +59,9 @@ class ProductItems extends Model
     {
         return $this->belongsTo(Minmax::class);
     }
+
+    public function pembelian_detail()
+    {
+        return $this->belongsTo(PembelianDetail::class);
+    }
 }

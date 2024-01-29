@@ -15,7 +15,7 @@ class Penerimaan extends Model
 
     protected $fillable = [
         'pembelian_id',
-        'jumlah_penerimaan',
+        // 'jumlah_penerimaan',
         'tanggal_penerimaan',
         'created_at',
         'updated_at'
@@ -24,5 +24,10 @@ class Penerimaan extends Model
     public function pembelian()
     {
         return $this->hasMany(Pembelian::class, 'id', 'pembelian_id');
+    }
+
+    public function penerimaan_detail()
+    {
+        return $this->belongsTo(PenerimaanDetail::class);
     }
 }
