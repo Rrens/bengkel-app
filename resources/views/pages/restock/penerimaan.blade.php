@@ -27,7 +27,6 @@
                                         {{-- <th>Pembelian ID</th> --}}
                                         <th>Tanggal Pembelian</th>
                                         <th>Supplier Nama</th>
-                                        <th>Jumlah Penerimaan</th>
                                         <th>Tanggal Penerimaan</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -39,7 +38,6 @@
                                             {{-- <td>{{ $item->id_pembelian }}</td> --}}
                                             <td>{{ $item->tanggal_pembelian }}</td>
                                             <td>{{ $item->supplier_name }}</td>
-                                            <td>{{ check_empty($item->jumlah_penerimaan) }}</td>
                                             <td>{{ check_empty($item->tanggal_penerimaan) }}
                                             </td>
                                             <td>
@@ -113,7 +111,7 @@
                                         <div class="col-md-4">
                                             <label>Stok Diterima</label>
                                             <input type="number" name="jumlah_penerimaan[]"
-                                                value="{{ $penerimaan_detail->where('pembelian_detail_id', $row->id)->first()['jumlah_penerimaan'] }}"
+                                                value="{{ check_empty($penerimaan_detail->where('pembelian_detail_id', $row->id)->first()['jumlah_penerimaan']) }}"
                                                 class="form-control" required="">
                                         </div>
                                     </div>
