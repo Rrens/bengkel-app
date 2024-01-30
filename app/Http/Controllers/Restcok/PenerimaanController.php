@@ -44,11 +44,12 @@ class PenerimaanController extends Controller
             ->groupBy('pn.pembelian_id')
             ->orderBy('pb.tanggal_pembelian', 'desc')
             ->get();
+        // dd($data);
 
         $pembelian = Pembelian::all();
         $pembelian_detail = PembelianDetail::with('item')->get();
-        // dd($pembelian_detail[0]->item[0]->name);
-        return view('pages.restock.penerimaan', compact('active', 'active_detail', 'data', 'pembelian_detail', 'pembelian'));
+        $penerimaan_detail = PenerimaanDetail::with('penerimaan')->get();
+        return view('pages.restock.penerimaan', compact('active', 'active_detail', 'data', 'pembelian_detail', 'pembelian', 'penerimaan_detail'));
     }
 
     public function update(Request $request)
@@ -58,6 +59,7 @@ class PenerimaanController extends Controller
             'id' => 'required|exists:penerimaans,id',
             'jumlah_pembelian.*' => 'required|numeric',
             'jumlah_penerimaan.*' => 'required|numeric|lte:jumlah_pembelian.*',
+            'pembelian_detail_id.*' => 'required|numeric',
             'tanggal_pembelian' => 'required|date',
             'tanggal_penerimaan' => 'required|date'
         ]);
@@ -76,6 +78,7 @@ class PenerimaanController extends Controller
         }
 
         unset($request['_token']);
+        // dd($request->all());
 
         $data = Penerimaan::findOrFail($request->id);
         $data->fill($request->all());
@@ -90,7 +93,7 @@ class PenerimaanController extends Controller
         for ($i = 0; $i < $count; $i++) {
 
 
-            $item = ProductItems::findOrFail(PembelianDetail::where('pembelian_id', $request->id_pembelian)->first()['item_id']);
+            $item = ProductItems::where('name', $request->nama_sparepart[$i])->first();
             $item->stock += $request->jumlah_penerimaan[$i];
             $item->lead_time = $selisihHari;
             $item->save();
@@ -98,10 +101,13 @@ class PenerimaanController extends Controller
             $detail = PenerimaanDetail::where('item_id', $item->id)
                 ->where('date', $data->tanggal_penerimaan)
                 ->first();
+            // // dd($detail);
+
             if (empty($detail)) {
                 $detail = new PenerimaanDetail();
                 $detail->penerimaan_id = $data->id;
                 $detail->date = $data->tanggal_penerimaan;
+                $detail->pembelian_detail_id = $request->pembelian_detail_id[$i];
             }
             $detail->item_id = $item->id;
             $detail->jumlah_penerimaan = $request->jumlah_penerimaan[$i];

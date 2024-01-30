@@ -17,6 +17,7 @@ class PenerimaanDetail extends Model
     protected $fillable = [
         'penerimaan_id',
         'item_id',
+        'pembelian_detail_id',
         'jumlah_penerimaan',
         'date',
         'created_at',
@@ -25,6 +26,11 @@ class PenerimaanDetail extends Model
 
     public function penerimaan()
     {
-        return $this->hasMany(penerimaan::class, 'penerimaan_id', 'id');
+        return $this->hasMany(penerimaan::class, 'id', 'penerimaan_id');
+    }
+
+    public function pembelian_detail()
+    {
+        return $this->hasMany(PembelianDetail::class,  'id', 'pembelian_detail_id');
     }
 }

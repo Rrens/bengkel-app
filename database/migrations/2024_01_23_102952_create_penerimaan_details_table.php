@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('penerimaan_id')->references('id')->on('penerimaans');
             $table->unsignedBigInteger('item_id')->nullable();
             $table->foreign('item_id')->references('id')->on('product_items');
+            $table->unsignedBigInteger('pembelian_detail_id')->nullable();
+            $table->foreign('pembelian_detail_id')->references('id')->on('pembelian_details');
             $table->integer('jumlah_penerimaan');
             $table->date('date')->nullable();
             $table->softDeletes();

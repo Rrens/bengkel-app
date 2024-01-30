@@ -99,6 +99,8 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="nama_sparepart">Nama Sparepart</label>
+                                            <input type="number" value="{{ $row->id }}" name="pembelian_detail_id[]"
+                                                hidden>
                                             <input type="text" name="nama_sparepart[]" id="nama_sparepart"
                                                 value="{{ $row->item[0]->name }}" class="form-control" readonly="">
                                         </div>
@@ -111,8 +113,8 @@
                                         <div class="col-md-4">
                                             <label>Stok Diterima</label>
                                             <input type="number" name="jumlah_penerimaan[]"
-                                                value="{{ check_empty($item->jumlah_penerimaan) }}" class="form-control"
-                                                required="">
+                                                value="{{ $penerimaan_detail->where('pembelian_detail_id', $row->id)->first()['jumlah_penerimaan'] }}"
+                                                class="form-control" required="">
                                         </div>
                                     </div>
                                 </div>
