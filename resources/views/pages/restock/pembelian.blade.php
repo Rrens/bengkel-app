@@ -3,9 +3,10 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
+            {{-- <h1>
                 Pembelian / Kulakan
-            </h1>
+            </h1> --}}
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Pembelian</li>
@@ -85,15 +86,10 @@
             </div>
 
             <div class="row">
-                <div class="col-md-12">
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">Data Pembelian</h3>
-                            <div class="pull-right">
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <table id="example1" class="table table-bordered table-striped">
+                <div class="col-lg-12">
+                    <div class="box box-widget">
+                        <div class="box-body table-responsive">
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -102,6 +98,7 @@
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
@@ -109,12 +106,9 @@
                                             <td>{{ $item->item[0]->name }}</td>
                                             <td>{{ $item->jumlah_pembelian }}</td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#modalEdit{{ $item->id }}">
-                                                    <i class="fa fa-pencil"> Edit</i>
-                                                </button>
-                                                <button class="btn btn-danger btn-sm" data-toggle="modal"
-                                                    data-target="#modalDelete{{ $item->id }}">
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalEdit{{ $item->id }}">
+                                                    <i class="fa fa-pencil"> Edit</i></button>
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDelete{{ $item->id }}">
                                                     <i class="fa fa-trash"> Delete</i>
                                                 </button>
                                             </td>
@@ -122,6 +116,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+
                             <div class="form-group" style="margin-top: 10px;">
                                 <div style="float: right;">
                                     <form action="{{ route('restock.pembelian.store-pembelian') }}" method="post">
@@ -138,6 +133,7 @@
             </div>
         </section>
     </div>
+
     @foreach ($data as $item)
         <div class="modal fade" id="modalEdit{{ $item->id }}">
             <div class="modal-dialog">
@@ -243,10 +239,11 @@
                     <h4 class="modal-title">Cari Produk</h4>
                 </div>
                 <div class="modal-body table-responsive">
-                    <table class="table table-bordered table-striped" id="example2">
+                    <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Nama Produk</th>
+                                <th>Sparepart</th>
+                                <th>Kategori</th>
                                 <th>Harga</th>
                                 <th>Stok</th>
                                 <th>Aksi</th>
@@ -256,11 +253,13 @@
                             @foreach ($items as $item)
                                 <tr>
                                     <td>{{ $item->name }}</td>
+                                    <td>{{ $item->category[0]->name }}</td>
                                     <td class="text-right">Rp {{ number_format($item->price) }}</td>
                                     <td class="text-right">{{ $item->stock }}</td>
                                     <td>
                                         <button class="btn btn-xs btn-info" id="select"
-                                            data-item_id="{{ $item->id }}" data-name_item="{{ $item->name }}"
+                                            data-item_id="{{ $item->id }}"
+                                            data-name_item="{{ $item->name }}"
                                             data-stock="{{ $item->stock }}">
                                             <i class="fa fa-check"> Select</i>
                                         </button>
@@ -294,6 +293,7 @@
                 })
             })
         </script>
+
         <script>
             $(document).ready(function() {
                 $(document).on('click', '#select', function() {

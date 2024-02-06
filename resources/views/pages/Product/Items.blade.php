@@ -3,13 +3,14 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
+            {{-- <h1>
                 Items
                 <small>Data Barang</small>
-            </h1>
+            </h1> --}}
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Produk</li>
+                <li class="active"> Sparepart</li>
             </ol>
         </section>
 
@@ -18,7 +19,7 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Produk</h3>
+                            <h3 class="box-title">Data Sparepart</h3>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">

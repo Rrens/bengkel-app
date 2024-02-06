@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\History;
 use App\Models\Minmax;
 use App\Models\ProductItems;
+use App\Models\ProductCategory;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Models\Supplier;
@@ -87,6 +88,7 @@ class SalesController extends Controller
         $customers = Customer::all();
         $carts = Cart::with('item')->where('user_id', 1)->get();
         $product_item = ProductItems::all();
+        $product_kategori = ProductCategory::all();
         $invoice = $this->invoice();
         // dd($invoice);
         $date = Carbon::today()->format('Y-m-d');
@@ -98,6 +100,7 @@ class SalesController extends Controller
             'customers',
             'carts',
             'product_item',
+            'product_kategori',
             'invoice',
             'date',
         ));
@@ -114,6 +117,7 @@ class SalesController extends Controller
         $validator = Validator::make($request->all(), [
             'item_id' => 'required|exists:product_items,id',
             'price' => 'required|numeric',
+            'jual' => 'required|numeric',
             'qty' => 'required|numeric',
             'user_id' => 'required|exists:users,name'
         ]);
@@ -132,17 +136,17 @@ class SalesController extends Controller
                 ->first();
 
             if (!empty($data)) {
-                $data->jumlah_jual += $request['jumlah_jual'];
+                $data->jumlah_jual += $request['jual'];
                 $data->quantity += $request['qty'];
             } else {
                 $data = new Cart();
                 $data->item_id = $request['item_id'];
                 $data->user_id = $user[0];
                 $data->price = $request['price'];
+                $data->jumlah_jual  = $request['jual'];
                 $data->quantity  = $request['qty'];
-                $data->jumlah_jual  = $request['jumlah_jual'];
             }
-            $data->total = $data->price * $data->quantity;
+            $data->total = $data->price * $data->jumlah_jual;
             $data->save();
 
             return response()->json([
@@ -166,6 +170,7 @@ class SalesController extends Controller
             'discount' => 'nullable|numeric',
             'item_id' => 'required|exists:product_items,id',
             'price' => 'required',
+            'jumlah_jual' => 'required',
             'quantity' => 'required',
             'total' => 'required',
         ]);
@@ -178,6 +183,7 @@ class SalesController extends Controller
             $data = Cart::where('item_id', $request['item_id'])->first();
             $data->discount_item = $request['discount'];
             $data->price = $request['price'];
+            $data->jumlah_jual = $request['jumlah_jual'];
             $data->quantity = $request['quantity'];
             $data->total = $request['total'];
             $data->save();
@@ -255,6 +261,7 @@ class SalesController extends Controller
                 $data_detail->price = $item->price;
                 // dd($item);
                 $data_detail->qty = $item->quantity;
+                // $data_detail->jual = $item->jumlah_jual;
                 $data_detail->discount_item = $item->discount_item;
                 $data_detail->total = $item->total;
                 $data_detail->save();

@@ -3,9 +3,10 @@
 @section('container')
     <div class="content-wrapper" style="min-height: 822px;">
         <section class="content-header">
-            <h1>Sales
+            {{-- <h1>Sales
                 <small>Penjualan</small>
-            </h1>
+            </h1> --}}
+            <br>
             <ol class=" breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i></a></li>
                 <li>Transaction</li>
@@ -48,6 +49,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="barcode">Barcode</label>
@@ -55,6 +57,7 @@
                                             <input type="hidden" id="item_id">
                                             <input type="hidden" id="price">
                                             <input type="hidden" id="stock">
+                                            <input type="hidden" id="jual_cart">
                                             <input type="hidden" id="qty_cart">
                                             <input type="text" id="barcode" class="form-control" autofocus="">
                                             <span class="input-group-btn">
@@ -80,8 +83,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jumlah_permintaan">Jumlah Permintaan</label>
-                                        <input type="number" class="form-control" name="jumlah_permintaan"
-                                            id="jumlah_permintaan">
+                                        <input type="number" class="form-control" name="jumlah_permintaan" id="jumlah_permintaan">
                                     </div>
                                 </div>
                             </div>
@@ -104,13 +106,14 @@
                                         <th>Barcode</th>
                                         <th>Product Item</th>
                                         <th>Price</th>
-                                        <th>Jumlah Permintaan</th>
                                         <th>Jumlah Jual</th>
+                                        <th>Jumlah Permintaan</th>
                                         <th width="10%">Diskon Produk</th>
                                         <th width="15%">Total</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+
                                 <tbody id="cart_table">
                                     @foreach ($carts as $item)
                                         <tr>
@@ -118,8 +121,8 @@
                                             <td class="barcode">{{ $item->item[0]->barcode }}</td>
                                             <td>{{ $item->item[0]->name }}</td>
                                             <td>{{ $item->price }}</td>
-                                            <td>{{ $item->quantity }}</td>
                                             <td>{{ $item->jumlah_jual }}</td>
+                                            <td>{{ $item->quantity }}</td>
                                             <td>{{ $item->discount_item }}</td>
                                             <td id="total">{{ $item->total }}</td>
                                             <td class="text-center" width="160px">
@@ -128,7 +131,9 @@
                                                     data-barcode="{{ $item->item[0]->barcode }}"
                                                     data-product="{{ $item->item[0]->name }}"
                                                     data-stock="{{ $item->item[0]->stock }}"
-                                                    data-price="{{ $item->price }}" data-qty="{{ $item->quantity }}"
+                                                    data-price="{{ $item->price }}"
+                                                    data-jual="{{ $item->jumlah_jual }}"
+                                                    data-qty="{{ $item->quantity }}"
                                                     data-discount="{{ $item->discount_item }}"
                                                     data-total="{{ $item->total }}" class="btn btn-xs btn-primary">
                                                     <i class="fa fa-pencil"></i> Update
@@ -215,7 +220,8 @@
                             <thead>
                                 <tr>
                                     <th>Barcode</th>
-                                    <th>Nama</th>
+                                    <th>Sparepart</th>
+                                    <th>Kategori</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
                                     <th>Aksi</th>
@@ -226,12 +232,15 @@
                                     <tr>
                                         <td>{{ $item->barcode }}</td>
                                         <td>{{ $item->name }}</td>
+                                        <td>{{ $item->category[0]->name }}</td>
                                         <td class="text-right">Rp. {{ number_format($item->price) }}</td>
                                         <td class="text-right">{{ $item->stock }}</td>
                                         <td class="text-right">
                                             <button class="btn btn-xs btn-info" id="select"
-                                                data-id="{{ $item->id }}" data-barcode="{{ $item->barcode }}"
-                                                data-price="{{ $item->price }}" data-stock="{{ $item->stock }}">
+                                                data-id="{{ $item->id }}"
+                                                data-barcode="{{ $item->barcode }}"
+                                                data-price="{{ $item->price }}"
+                                                data-stock="{{ $item->stock }}">
                                                 <i class="fa fa-check"></i> Select
                                             </button>
                                         </td>
@@ -273,11 +282,15 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-7">
-                                    <label for="qty_item">Qty</label>
+                                <div class="col-md-4">
+                                    <label for="jual_item">Jual</label>
+                                    <input type="number" id="jual_item" min="1" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="qty_item">Permintaan</label>
                                     <input type="number" id="qty_item" min="1" class="form-control">
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <label for="qty_item">Stok</label>
                                     <input type="number" id="stock_item" class="form-control" readonly="">
                                 </div>
@@ -333,10 +346,10 @@
             $('#jumlah_jual').on('change', function() {
                 let stock = parseInt($('#stock').val());
                 let jumlah_jual = parseInt($('#jumlah_jual').val());
-                let jumlah_permintaan = parseInt($('#jumlah_permintaan').val());
+                // let jumlah_permintaan = parseInt($('#jumlah_permintaan').val());
                 console.log(stock)
                 console.log(jumlah_jual)
-                console.log(jumlah_permintaan)
+                // console.log(jumlah_permintaan)
 
                 if (jumlah_jual >= stock) {
                     $('#jumlah_jual').val(stock);
@@ -407,19 +420,30 @@
                 }
             }
 
+            function get_jual_cart(barcode) {
+                //
+                let jual_cart = $("#cart_table td.barcode:contains('" + barcode + "')").parent().find("td").eq(4).html()
+                if (jual_cart != null) {
+                    $('#jual_cart').val(jual_cart)
+                } else {
+                    $('#jual_cart').val(0)
+                }
+            }
+
             //menambahkan data di cart
             $(document).on('click', '#add_cart', function() {
                 let item_id = $('#item_id').val()
                 let price = $('#price').val()
                 let stock = $('#stock').val()
+                let jual = $('#jumlah_jual').val()
                 let qty = $('#jumlah_permintaan').val()
-                let jumlah_jual = $('#jumlah_jual').val()
+                let jual_cart = $('#jual_cart').val()
                 let qty_cart = $('#qty_cart').val()
                 let user_id = $('#user_id').val()
                 if (item_id == '') {
                     alert('Product belum dipilih')
                     $('#barcode').focus()
-                } else if (stock < 1 || parseInt(stock) < (parseInt(qty_cart) + parseInt(jumlah_jual))) {
+                } else if (stock < 1 || parseInt(stock) < (parseInt(jual_cart) + parseInt(jumlah_jual))) {
                     alert('Stock tidak mencukupi')
                     $('#barcode').focus()
                 } else {
@@ -430,8 +454,8 @@
                             'add_cart': true,
                             'item_id': item_id,
                             'price': price,
+                            'jual': jual,
                             'qty': qty,
-                            'jumlah_jual': jumlah_jual,
                             'user_id': user_id,
                             '_token': '{{ csrf_token() }}',
                         },
@@ -443,8 +467,8 @@
                                 })
                                 $('#item_id').val('')
                                 $('#barcode').val('')
-                                $('#jumlah_permintaan').val('')
                                 $('#jumlah_jual').val('')
+                                $('#jumlah_permintaan').val('')
                                 $('#qty').val(1)
                                 $('#barcode').focus()
                             } else {
@@ -487,8 +511,9 @@
                 $('#product_item').val($(this).data('product'))
                 $('#stock_item').val($(this).data('stock'))
                 $('#price_item').val($(this).data('price'))
+                $('#jual_item').val($(this).data('jual'))
                 $('#qty_item').val($(this).data('qty'))
-                $('#total_before').val($(this).data('price') * $(this).data('qty'))
+                $('#total_before').val($(this).data('price') * $(this).data('jual'))
                 $('#discount_item').val($(this).data('discount'))
                 $('#total_item').val($(this).data('total'))
             })
@@ -496,13 +521,14 @@
             //hitung yang di cart
             function count_edit_modal() {
                 let price = $('#price_item').val()
-                let qty = $('#qty_item').val()
+                let jual = $('#jual_item').val()
+                // let qty = $('#qty_item').val()
                 let discount = $('#discount_item').val()
 
-                total_before = price * qty
+                total_before = price * jual
                 $('#total_before').val(total_before)
 
-                total = (price - discount) * qty
+                total = (price - discount) * jual
                 $('#total_item').val(total)
 
                 if (discount == '') {
@@ -511,7 +537,7 @@
             }
 
             //saat ditekan atau di click
-            $(document).on('keyup mouseup', '#price_item, #qty_item, #discount_item', function() {
+            $(document).on('keyup mouseup', '#price_item, #qty_item, #jual_item, #discount_item', function() {
                 count_edit_modal()
             })
 
@@ -519,6 +545,7 @@
             $(document).on('click', '#edit_cart', function() {
                 let item_id = $('#cartid_item').val()
                 let price = $('#price_item').val()
+                let jual = $('#jual_item').val()
                 let qty = $('#qty_item').val()
                 let discount = $('#discount_item').val()
                 let total = $('#total_item').val()
@@ -526,12 +553,12 @@
                 if (price == '' || price < 1) {
                     alert('Harga tidak boleh kosong')
                     $('#pice_item').focus()
-                } else if (qty == '' || qty < 1) {
-                    alert('Qty tidak boleh kosong')
-                    $('#qty_item').focus()
-                } else if (parseInt(qty) > parseInt(stock)) {
+                } else if (jual == '' || jual < 1) {
+                    alert('Jumlah jual tidak boleh kosong')
+                    $('#jual_item').focus()
+                } else if (parseInt(jual) > parseInt(stock)) {
                     alert('Stock tidak mencukupi')
-                    $('#qty_item').focus()
+                    $('#jual_item').focus()
                 } else {
                     $.ajax({
                         type: 'POST',
@@ -540,6 +567,7 @@
                             'edit_cart': true,
                             'item_id': item_id,
                             'price': price,
+                            'jumlah_jual': jual,
                             'quantity': qty,
                             'discount': discount,
                             'total': total,

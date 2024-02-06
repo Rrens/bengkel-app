@@ -3,10 +3,11 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
+            {{-- <h1>
                 Suppliers Spare Part
                 <small>Tambahan norek mungkin</small>
-            </h1>
+            </h1> --}}
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Supplier</li>

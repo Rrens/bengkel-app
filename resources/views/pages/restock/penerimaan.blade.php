@@ -3,9 +3,10 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
+            {{-- <h1>
                 Penerimaan Kulakan
-            </h1>
+            </h1> --}}
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Penerimaan</li>
@@ -111,7 +112,7 @@
                                         <div class="col-md-4">
                                             <label>Stok Diterima</label>
                                             <input type="number" name="jumlah_penerimaan[]"
-                                                value="{{ check_empty($penerimaan_detail->where('pembelian_detail_id', $row->id)->first()['jumlah_penerimaan']) }}"
+                                                {{-- value="{{ check_empty($penerimaan_detail->where('pembelian_detail_id', $row->id)->first()['jumlah_penerimaan']) }}" --}}
                                                 class="form-control" required="">
                                         </div>
                                     </div>

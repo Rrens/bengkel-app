@@ -3,7 +3,7 @@
 @section('container')
     <div class="login-box">
         <div class="login-logo">
-            <a href="javascript:void"><b>Admin</b>LTE</a>
+            <a href="javascript:void"><b>AWR Motor</b></a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
