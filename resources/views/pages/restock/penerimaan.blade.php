@@ -94,6 +94,7 @@
                                 </div>
                             </div>
                             @foreach ($pembelian_detail->where('pembelian_id', $item->pembelian_id) as $row)
+                                {{-- @dd($row) --}}
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -108,11 +109,11 @@
                                             <input type="number" name="jumlah_pembelian[]" id="jumlah_pembelian"
                                                 value="{{ $row->jumlah_pembelian }}" class="form-control" readonly="">
                                         </div>
-
+                                        {{-- @dd($penerimaan_detail->where('pembelian_detail_id', $row->id)->first() == null) --}}
                                         <div class="col-md-4">
                                             <label>Stok Diterima</label>
                                             <input type="number" name="jumlah_penerimaan[]"
-                                                {{-- value="{{ check_empty($penerimaan_detail->where('pembelian_detail_id', $row->id)->first()['jumlah_penerimaan']) }}" --}}
+                                                value="{{ $penerimaan_detail->where('pembelian_detail_id', $row->id)->first() == null ? '-' : $penerimaan_detail->where('pembelian_detail_id', $row->id)->first()['jumlah_penerimaan'] }}"
                                                 class="form-control" required="">
                                         </div>
                                     </div>

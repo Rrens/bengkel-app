@@ -259,6 +259,7 @@ class SalesController extends Controller
                 $data_detail->sale_id = $data->id;
                 $data_detail->item_id = $item->item_id;
                 $data_detail->price = $item->price;
+                $data_detail->jual = $item->jumlah_jual;
                 // dd($item);
                 $data_detail->qty = $item->quantity;
                 // $data_detail->jual = $item->jumlah_jual;

@@ -27,8 +27,8 @@ class CartFactory extends Factory
             'price' => $this->faker->numberBetween(10000, 1000000),
             'discount_item' => Arr::random($discount),
             'total' => $this->faker->numberBetween(10000, 1000000),
-            'quantity' =>
-            $this->faker->numberBetween(1, 12),
+            'quantity' => $this->faker->numberBetween(1, 12),
+            'jumlah_jual' => $this->faker->numberBetween(1, 12),
         ];
     }
 }

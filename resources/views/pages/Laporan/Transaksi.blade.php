@@ -124,14 +124,17 @@
                                                     <tr>
                                                         <th>Item</th>
                                                         <th>Price</th>
-                                                        <th>Qty</th>
+                                                        <th>Jual </th>
+                                                        <th>Permintaan</th>
                                                         <th>Disc</th>
                                                         <th>Total</th>
                                                     </tr>
                                                     @foreach ($data_detail->where('sale_id', $item->id) as $row)
+                                                        {{-- @dd($row) --}}
                                                         <tr>
                                                             <td>{{ $row->item[0]->name }}</td>
                                                             <td>{{ format_rupiah($row->item[0]->price) }}</td>
+                                                            <td>{{ $row->jual }}</td>
                                                             <td>{{ $row->qty }}</td>
                                                             <td>{{ format_rupiah($row->discount_row) }}</td>
                                                             <td>{{ format_rupiah($row->total) }}</td>

@@ -87,10 +87,10 @@
                 @foreach ($data_detail as $item)
                     <tr>
                         <td style="width: 165px">{{ $item->item[0]->name }}</td>
-                        <td>{{ $item->qty }}</td>
+                        <td>{{ $item->jual }}</td>
                         <td style="text-align:right; width:60px">{{ format_rupiah($item->price) }}</td>
                         <td style="text-align:right; width:60px">
-                            {{ format_rupiah(($item->price - $item->discount_item) * $item->qty) }}
+                            {{ format_rupiah(($item->price - $item->discount_item) * $item->jual) }}
                         </td>
                     </tr>
                 @endforeach

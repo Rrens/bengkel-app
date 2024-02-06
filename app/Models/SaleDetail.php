@@ -17,6 +17,7 @@ class SaleDetail extends Model
         'sale_id',
         'item_id',
         'price',
+        'jual',
         'qty',
         'discount_item',
         'total',

@@ -62,6 +62,10 @@ class PembelianController extends Controller
         // $pembelian->supplier_id = $request->supplier_id;
         // $pembelian->save();
         // $pembelian->fill($request->all());
+        if ($request->jumlah_pembelian <= 0) {
+            Alert::toast('Stok yang dibeli tidak boleh kurang dari 1', 'error');
+            return back()->withInput();
+        }
 
 
         $pembelian_detail = PembelianDetail::where('item_id', $request->item_id)->where('pembelian_id', null)->first();

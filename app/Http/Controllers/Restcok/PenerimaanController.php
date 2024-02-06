@@ -49,6 +49,7 @@ class PenerimaanController extends Controller
         $pembelian = Pembelian::all();
         $pembelian_detail = PembelianDetail::with('item')->get();
         $penerimaan_detail = PenerimaanDetail::with('penerimaan')->get();
+        // dd($penerimaan_detail);
         return view('pages.restock.penerimaan', compact('active', 'active_detail', 'data', 'pembelian_detail', 'pembelian', 'penerimaan_detail'));
     }
 
@@ -92,6 +93,10 @@ class PenerimaanController extends Controller
 
         for ($i = 0; $i < $count; $i++) {
 
+            if ($request->jumlah_penerimaan[$i] <= 0) {
+                Alert::toast('Stok yang diterima tidak boleh kurang dari 1', 'error');
+                return back()->withInput();
+            }
 
             $item = ProductItems::where('name', $request->nama_sparepart[$i])->first();
             $item->stock += $request->jumlah_penerimaan[$i];

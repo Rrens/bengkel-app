@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('item_id')->nullable();
             $table->foreign('item_id')->references('id')->on('product_items');
             $table->double('price');
+            $table->integer('jual');
             $table->integer('qty');
             $table->integer('discount_item');
             $table->double('total');
