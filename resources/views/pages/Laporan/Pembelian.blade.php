@@ -46,8 +46,10 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->tanggal_pembelian }}</td>
                                             <td>{{ $item->supplier[0]->name }}</td>
-                                            <td>{{ $item->item[0]->name }}</td>
-                                            <td>{{ $item->jumlah_pembelian }}</td>
+                                            <td>{{ $data_datail->where('pembelian_id', $item->id)->first()['item'][0]['name'] }}
+                                            </td>
+                                            <td>{{ $data_datail->where('pembelian_id', $item->id)->first()['jumlah_pembelian'] }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
