@@ -28,6 +28,7 @@ class PenerimaanController extends Controller
                 )
                 ->selectRaw('COUNT(pnd.jumlah_penerimaan) as jumlah_penerimaan')
                 ->groupBy('pn.tanggal_penerimaan')
+                ->groupBy('pd.item_id')
                 ->get();
             // dd($data);
         } else {
@@ -47,6 +48,7 @@ class PenerimaanController extends Controller
                     // 'pnd.jumlah_penerimaan'
                 )
                 ->groupBy('pn.tanggal_penerimaan')
+                ->groupBy('pd.item_id')
                 ->selectRaw('COUNT(pnd.jumlah_penerimaan) as jumlah_penerimaan')
                 ->get();
         }
