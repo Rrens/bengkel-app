@@ -154,7 +154,7 @@ class PembelianController extends Controller
 
     public function data_hitung($id)
     {
-        $current = Carbon::now()->subMonth(0)->format('m');
+        $current = Carbon::now()->subMonth(1)->format('m');
 
         $jum_hari = DB::table('history')
             ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))

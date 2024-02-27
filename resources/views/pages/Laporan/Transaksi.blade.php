@@ -52,7 +52,8 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->date }}</td>
-                                            <td>{{ $item->customer[0]->name }}</td>
+                                            <td>{{ empty($item->customer[0]->name) ? 'Umum' : $item->customer[0]->name }}
+                                            </td>
                                             <td>{{ format_rupiah($item->total_price) }}</td>
                                             <td>{{ format_rupiah($item->service) }}</td>
                                             <td>{{ format_rupiah($item->final_price) }}</td>

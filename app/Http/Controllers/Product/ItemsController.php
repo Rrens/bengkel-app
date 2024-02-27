@@ -48,7 +48,7 @@ class ItemsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 
@@ -65,8 +65,8 @@ class ItemsController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required|exists:product_items,id',
-            'barcode' => 'required|unique:product_items,barcode',
+            'id' => 'required',
+            'barcode' => 'required',
             'name' => 'required',
             'category_id' => 'required|exists:product_categories,id',
             'price' => 'required',
@@ -74,18 +74,27 @@ class ItemsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 
-        unset($request['_token']);
+        $check_barcode = ProductItems::where('barcode', $request->barcode)
+            ->where('id', $request->id)
+            ->first();
 
-        $data = ProductItems::findOrFail($request->id);
-        $data->fill($request->all());
-        $data->save();
+        if (!empty($check_barcode)) {
+            unset($request['_token']);
 
-        Alert::toast('Sukses Merubah', 'success');
-        return back();
+            $data = ProductItems::findOrFail($request->id);
+            $data->fill($request->all());
+            $data->save();
+
+            Alert::toast('Sukses Merubah', 'success');
+            return back();
+        }
+
+        Alert::toast('Barcode sudah dipakai', 'error');
+        return back()->withInput();
     }
 
     public function delete(Request $request)
@@ -95,7 +104,7 @@ class ItemsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 

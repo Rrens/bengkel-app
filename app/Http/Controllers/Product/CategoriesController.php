@@ -25,7 +25,7 @@ class CategoriesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back();
         }
 
@@ -47,7 +47,7 @@ class CategoriesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back();
         }
 
@@ -68,7 +68,7 @@ class CategoriesController extends Controller
             ]);
 
             if ($validator->fails()) {
-                Alert::toast($validator->messages()->all());
+                Alert::toast($validator->messages()->all(), 'error');
                 return back();
             }
 

@@ -42,7 +42,7 @@ class SalesInController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 

@@ -176,7 +176,7 @@ class SalesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
         }
 
         try {
@@ -229,7 +229,6 @@ class SalesController extends Controller
             'change' => 'required',
             'customer_id' => 'required'
         ]);
-        // dd($request->all());
 
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
@@ -238,6 +237,8 @@ class SalesController extends Controller
         if ($request['customer_id'] == "Umum") {
             $request['customer_id'] = null;
         }
+
+        // dd($request->all());
 
         $cart = Cart::where('user_id', Auth::user()->id)->get();
 
@@ -266,6 +267,10 @@ class SalesController extends Controller
                 $data_detail->discount_item = $item->discount_item;
                 $data_detail->total = $item->total;
                 $data_detail->save();
+
+                $product_item = ProductItems::where('id', $item->item_id)->first();
+                $product_item->stock -= $item->jumlah_jual;
+                $product_item->save();
 
                 $history = new History();
                 $history->item_id = $item->item_id;

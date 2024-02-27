@@ -80,10 +80,10 @@
                                                 </td>
                                             @endif
                                         </tr>
+                                        @php
+                                            $i++;
+                                        @endphp
                                     @endforeach
-                                    @php
-                                        $i++;
-                                    @endphp
                                 </tbody>
                             </table>
                         </div>

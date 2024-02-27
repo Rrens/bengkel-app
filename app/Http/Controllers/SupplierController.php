@@ -29,7 +29,7 @@ class SupplierController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 
@@ -55,7 +55,7 @@ class SupplierController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 
@@ -76,7 +76,7 @@ class SupplierController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::toast($validator->messages()->all());
+            Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 
