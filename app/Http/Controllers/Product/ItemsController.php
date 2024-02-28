@@ -65,7 +65,7 @@ class ItemsController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
+            'id' => 'required|exists:product_items,id',
             'barcode' => 'required',
             'name' => 'required',
             'category_id' => 'required|exists:product_categories,id',
@@ -79,10 +79,9 @@ class ItemsController extends Controller
         }
 
         $check_barcode = ProductItems::where('barcode', $request->barcode)
-            ->where('id', $request->id)
             ->first();
 
-        if (!empty($check_barcode)) {
+        if (empty($check_barcode)) {
             unset($request['_token']);
 
             $data = ProductItems::findOrFail($request->id);
