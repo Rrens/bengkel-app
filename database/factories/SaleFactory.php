@@ -26,7 +26,7 @@ class SaleFactory extends Factory
             'cash' => $this->faker->numberBetween(10000, 1000000),
             'remaining' => $this->faker->randomFloat(2, 0, 500),
             'note' => $this->faker->text,
-            'date' => $this->faker->date(),
+            'date' => $this->faker->dateTimeBetween('2024-01-01', '2024-12-31')->format('Y-m-d'),
         ];
     }
 }

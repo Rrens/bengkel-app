@@ -19,6 +19,7 @@ class RealtimeController extends Controller
         $jum_hari = DB::table('history')
             ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
             ->whereMonth('date', $current)
+            ->whereNull('deleted_at')
             ->get();
         foreach ($jum_hari as $data) {
             $jum_hari = $data->jum_hari;
@@ -32,6 +33,8 @@ class RealtimeController extends Controller
             ->select(DB::raw('*,MAX(total) as besar, SUM(total) as rata'))
             ->whereMonth('date', $current)
             ->groupBy('product_items.id')
+            ->whereNull('product_items.deleted_at')
+            ->whereNull('history.deleted_at')
             ->get();
         // dd($hitung);
 
@@ -45,6 +48,8 @@ class RealtimeController extends Controller
             ->whereMonth('history.date', $current)
             ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "product_items.lead_time as time")
             ->groupBy('product_items.id')
+            ->whereNull('product_items.deleted_at')
+            ->whereNull('history.deleted_at')
             ->get();
         // dd($hitung, $data_part);
         // dd($data_part, $hitung, $jum_hari);
@@ -68,6 +73,7 @@ class RealtimeController extends Controller
         $jum_hari = DB::table('history')
             ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
             ->whereMonth('date', $current)
+            ->whereNull('deleted_at')
             ->get();
         foreach ($jum_hari as $data) {
             $jum_hari = $data->jum_hari;
@@ -81,6 +87,8 @@ class RealtimeController extends Controller
             ->select(DB::raw('*,MAX(total) as besar, SUM(total) as rata'))
             ->whereMonth('date', $current)
             ->groupBy('product_items.id')
+            ->whereNull('product_items.deleted_at')
+            ->whereNull('history.deleted_at')
             ->get();
         // dd($hitung->where('name', 'Busi Audi'), $current);
 
@@ -94,8 +102,11 @@ class RealtimeController extends Controller
             ->whereMonth('history.date', $current)
             ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "product_items.lead_time as time")
             ->groupBy('product_items.id')
+            ->whereNull('product_items.deleted_at')
+            ->whereNull('history.deleted_at')
             ->get();
         // dd($data_part, $hitung, $jum_hari);
+        // dd($data_part->where('nm_motor', 'Wiper Volkswagen'));
 
         return view('pages.Minmax.realtime', compact(
             'active',

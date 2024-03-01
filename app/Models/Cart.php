@@ -17,7 +17,6 @@ class Cart extends Model
         'item_id',
         'user_id',
         'price',
-        'user_id',
         'total',
         'quantity',
         'jumlah_jual',

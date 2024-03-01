@@ -78,22 +78,25 @@ class ItemsController extends Controller
             return back()->withInput();
         }
 
+        unset($request['_token']);
         $check_barcode = ProductItems::where('barcode', $request->barcode)
             ->first();
 
+        // dd($this->generate_id());
         if (empty($check_barcode)) {
-            unset($request['_token']);
 
             $data = ProductItems::findOrFail($request->id);
             $data->fill($request->all());
             $data->save();
-
             Alert::toast('Sukses Merubah', 'success');
             return back();
+        } else {
+            unset($request['barcode']);
+            $check_barcode->fill($request->all());
+            $check_barcode->save();
+            Alert::toast('Gagal Merubah', 'error');
+            return back();
         }
-
-        Alert::toast('Barcode sudah dipakai', 'error');
-        return back()->withInput();
     }
 
     public function delete(Request $request)
