@@ -47,5 +47,9 @@
                 });
             });
         </script>
+
+        <script>
+            alert('user: admin, password: admin')
+        </script>
     @endpush
 @endsection
