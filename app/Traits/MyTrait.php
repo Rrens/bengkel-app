@@ -16,11 +16,12 @@ trait MyTrait
         // dd($item_id, $jumlah);
         try {
             $today = date("Y-m-d");
-            $current = Carbon::now()->subMonth()->format('m');
+            $current = Carbon::now()->format('m');
 
             $jum_hari = DB::table('history')
                 ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
                 ->whereMonth('date', $current)
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($jum_hari as $data) {
@@ -33,6 +34,7 @@ trait MyTrait
                 ->select(DB::raw('MAX(total) as terbesar, SUM(total) as rata'))
                 ->whereMonth('date', $current)
                 ->where('item_id', $item_id)
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($hitung as $data) {
@@ -49,7 +51,7 @@ trait MyTrait
                 ->get();
 
             foreach ($data_stok as $data) {
-                $dt_stok =  $data->stok;
+                $dt_stok =  $data->stock;
                 $time =  $data->time;
             }
 
@@ -60,6 +62,7 @@ trait MyTrait
 
 
             $cek = ceil($dt_stok - $jumlah);
+            // dd($data_stok, $dt_stok, $jumlah);
 
             //ss=(maksimum permintaan - rata2 permintaan K ) x lead time W
             $ss = ($terbesar - $rata2) * $time;
@@ -79,6 +82,7 @@ trait MyTrait
             $tgl = DB::table('history')
                 ->select(DB::raw('COUNT(date) as tgl'))
                 ->where('date', $today)
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($tgl as $data) {
@@ -89,6 +93,7 @@ trait MyTrait
                 ->select(DB::raw('COUNT(item_id) as part'))
                 ->where('item_id', $item_id)
                 ->where('date', $today)
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($part as $data) {
@@ -100,11 +105,13 @@ trait MyTrait
                     return back()->withErrors('Stock Tidak Mencukupi ' . $Q . '');
                 } else if ($cek > $min) {
 
-                    DB::table('history')->insert([
-                        'date' => $today,
-                        'item_id' => $item_id,
-                        'total' => $jumlah
-                    ]);
+                    DB::table('history')
+                        ->whereNull('deleted_at')
+                        ->insert([
+                            'date' => $today,
+                            'item_id' => $item_id,
+                            'total' => $jumlah
+                        ]);
                 } else if ($cek < $ss) {
                     if ($dt_stok <= $ss) {
                         return back()->withErrors('Sudah Mencapai Safety Stock Tidak Dapat Dilayani');
@@ -118,11 +125,13 @@ trait MyTrait
                         //     'item_id' => $item_id,
                         //     'jumlah' => $sisa
                         // ]);
-                        DB::table('history')->insert([
-                            'date' => $today,
-                            'item_id' => $item_id,
-                            'total' => $sisa
-                        ]);
+                        DB::table('history')
+                            ->whereNull('deleted_at')
+                            ->insert([
+                                'date' => $today,
+                                'item_id' => $item_id,
+                                'total' => $sisa
+                            ]);
 
                         // DB::table('sparepart')
                         //     ->where('item_id', $item_id)
@@ -141,11 +150,13 @@ trait MyTrait
                     //     'item_id' => $item_id,
                     //     'jumlah' => $jumlah
                     // ]);
-                    DB::table('history')->insert([
-                        'date' => $today,
-                        'item_id' => $item_id,
-                        'total' => $jumlah
-                    ]);
+                    DB::table('history')
+                        ->whereNull('deleted_at')
+                        ->insert([
+                            'date' => $today,
+                            'item_id' => $item_id,
+                            'total' => $jumlah
+                        ]);
 
                     // DB::table('sparepart')
                     //     ->where('item_id', $item_id)
@@ -157,6 +168,12 @@ trait MyTrait
                     return back()->with('toast_success', 'Minimal Stock, Waktunya Restock Spare Part');
                 }
             } else {
+                // dd(
+                //     $tgl,
+                //     $part,
+                //     $cek
+                // );
+
                 ///CEK HISTORY PART ADA TIDAK
                 if ($part == 1) {
                     if ($cek < 0) {
@@ -310,11 +327,13 @@ trait MyTrait
                         //     'item_id' => $item_id,
                         //     'jumlah' => $jumlah
                         // ]);
-                        DB::table('history')->insert([
-                            'date' => $today,
-                            'item_id' => $item_id,
-                            'total' => $jumlah
-                        ]);
+                        DB::table('history')
+                            ->whereNull('deleted_at')
+                            ->insert([
+                                'date' => $today,
+                                'item_id' => $item_id,
+                                'total' => $jumlah
+                            ]);
 
                         // DB::table('sparepart')
                         //     ->where('item_id', $item_id)

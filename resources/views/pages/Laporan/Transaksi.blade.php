@@ -18,21 +18,28 @@
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">Data Laporan</h3>
-                            {{-- <div class="pull-right d-flex justify-items-center align-content-center">
-                                <input type="month" class="form-control">
-                                <button class="btn btn-primary">Filter</button>
-                            </div> --}}
+                            {{-- <form action="" method="GET"> --}}
                             <div class="pull-right d-flex">
-                                {{-- <input type="month" class="form-control"> --}}
-                                <select class="form-control" id="bulan_pilihan" name="bulan_pilihan">
-                                    <option selected hidden>Filter Bulan</option>
-                                    <option value="all">Semua</option>
+                                <button class="btn btn-primary" id="btn-filter">Filter</button>
+                            </div>
+                            <div class="pull-right d-flex">
+                                <select class="form-control" id="month" name="bulan_pilihan">
+                                    <option value="all">Bulan Semua</option>
                                     @for ($i = 1; $i <= 12; $i++)
                                         <option {{ (empty($month) ? '' : $month == $i) ? 'selected' : '' }}
                                             value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
                                     @endfor
                                 </select>
                             </div>
+                            <div class="pull-right d-flex">
+                                <select name="year" id="year" class="form-control">
+                                    <option value="all">Tahun Semua</option>
+                                    @foreach ($year as $item)
+                                        <option value="{{ $item }}">{{ $item }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- </form> --}}
                         </div>
                         <div class="box-body">
                             <table id="example1" class="table table-bordered table-striped">
@@ -201,15 +208,11 @@
 
         <script>
             $(document).ready(function() {
-                $('#bulan_pilihan').on('change', function() {
-                    var selectedValue = $(this).val();
-                    if (selectedValue != 'all') {
-
-                        var url = '/laporan/transaction-service/' + selectedValue;
-                    } else {
-                        var url = '/laporan/transaction-service';
-
-                    }
+                $('#btn-filter').on('click', function() {
+                    let month = $('#month').val()
+                    let year = $('#year').val()
+                    // alert()
+                    var url = `/laporan/transaction-service/${month}/${year}`;
                     window.location.href = url;
                 });
             });

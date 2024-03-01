@@ -230,6 +230,7 @@ class SalesController extends Controller
             'customer_id' => 'required'
         ]);
 
+
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
         }
@@ -279,6 +280,7 @@ class SalesController extends Controller
                 $history->save();
 
                 $this->minmax($item->item_id, $item->quantity);
+                // dd($request->all(), $item);
             }
 
             Cart::where('user_id', Auth::user()->id)->delete();
