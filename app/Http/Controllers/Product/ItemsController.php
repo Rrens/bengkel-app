@@ -25,7 +25,7 @@ class ItemsController extends Controller
         $active = 'product';
         $active_detail = 'items';
         $data = ProductItems::with('category')
-            ->orderBy('id', 'DESC')
+            ->orderBy('barcode', 'ASC')
             ->whereHas(
                 'category',
                 function ($query) {
