@@ -30,7 +30,7 @@
                                         <div class="col-md-6">
                                             <label>Tanggal Pembelian *</label>
                                             <input type="date" name="tanggal_pembelian" value="{{ $date }}"
-                                                class="form-control" required>
+                                                class="form-control" id="tanggal_pembelian" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label>Supplier *</label>
@@ -103,12 +103,14 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->item[0]->name }}</td>
+                                            <td>{{ !empty($item->item[0]) ? $item->item[0]->name : '-' }}</td>
                                             <td>{{ $item->jumlah_pembelian }}</td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalEdit{{ $item->id }}">
+                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                    data-target="#modalEdit{{ $item->id }}">
                                                     <i class="fa fa-pencil"> Edit</i></button>
-                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDelete{{ $item->id }}">
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#modalDelete{{ $item->id }}">
                                                     <i class="fa fa-trash"> Delete</i>
                                                 </button>
                                             </td>
@@ -123,6 +125,8 @@
                                         @csrf
                                         <input type="text" id="supplier_id_pembelian" name="supplier_id_pembelian"
                                             hidden>
+                                        <input type="date" id="supplier_tanggal_pembelian"
+                                            name="supplier_tanggal_pembelian" hidden>
                                         <button type="submit" class="btn btn-primary">Proses</button>
                                     </form>
                                 </div>
@@ -253,13 +257,12 @@
                             @foreach ($items as $item)
                                 <tr>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->category[0]->name }}</td>
+                                    <td>{{ !empty($item->category[0]) ? $item->category[0]->name : '-' }}</td>
                                     <td class="text-right">Rp {{ number_format($item->price) }}</td>
                                     <td class="text-right">{{ $item->stock }}</td>
                                     <td>
                                         <button class="btn btn-xs btn-info" id="select"
-                                            data-item_id="{{ $item->id }}"
-                                            data-name_item="{{ $item->name }}"
+                                            data-item_id="{{ $item->id }}" data-name_item="{{ $item->name }}"
                                             data-stock="{{ $item->stock }}">
                                             <i class="fa fa-check"> Select</i>
                                         </button>
@@ -323,6 +326,12 @@
             $('#supplier_id').on('change', function() {
                 var id = $('#supplier_id').val();
                 $('#supplier_id_pembelian').val(id);
+            })
+
+            $('#tanggal_pembelian').on('change', function() {
+                var date = $('#tanggal_pembelian').val();
+                // alert(date)
+                $('#supplier_tanggal_pembelian').val(date);
             })
         </script>
     @endpush
