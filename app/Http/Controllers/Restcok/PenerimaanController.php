@@ -142,6 +142,7 @@ class PenerimaanController extends Controller
             'id_pembelian' => 'required|exists:pembelians,id'
         ]);
 
+
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
             return back();
@@ -149,7 +150,8 @@ class PenerimaanController extends Controller
 
 
         $penerimaan = Penerimaan::where('id', $request->id_penerimaan)->first();
-        $item = ProductItems::findOrFail(Pembelian::where('id', $request->id_pembelian)->first()['item_id']);
+        $item = ProductItems::find(PembelianDetail::where('pembelian_id', $request->id_pembelian)->first()['item_id']);
+        // dd($item, $request->all());
         // dd($item, $penerimaan->jumlah_penerimaan);
         $item->stock -= $penerimaan->jumlah_penerimaan;
         $item->save();

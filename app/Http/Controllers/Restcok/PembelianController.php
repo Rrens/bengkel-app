@@ -54,8 +54,6 @@ class PembelianController extends Controller
             return back()->withInput();
         }
 
-        // dd($request->all());
-
         // unset($request['_token']);
         // $pembelian = new Pembelian();
         // $pembelian->tanggal_pembelian = Carbon::today()->toDateString();
@@ -126,17 +124,19 @@ class PembelianController extends Controller
     public function store_pembelian(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'tanggal_pembelian' => 'required|date',
+            'supplier_tanggal_pembelian' => 'required|date',
             'supplier_id_pembelian' => 'required|exists:suppliers,id',
         ]);
 
+        // dd($request->all());
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
 
         $data = new Pembelian();
-        $data->tanggal_pembelian = Carbon::today()->toDateString();
+        // $data->tanggal_pembelian = Carbon::today()->toDateString();
+        $data->tanggal_pembelian = $request->supplier_tanggal_pembelian;
         $data->supplier_id = $request->supplier_id_pembelian;
         $data->save();
 
