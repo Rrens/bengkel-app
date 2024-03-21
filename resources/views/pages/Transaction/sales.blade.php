@@ -24,7 +24,8 @@
                                     <div class="form-group">
                                         <label for="date">Tanggal Transaksi</label>
                                         <input type="date" class="form-control"
-                                            value="{{ old('date') == null ? $date : old('date') }}" name="date" readonly>
+                                            value="{{ old('date') == null ? $date : old('date') }}" name="date"
+                                            id="date">
                                     </div>
                                     <div class="form-group">
                                         <label for="kasir">Kasir</label>
@@ -189,6 +190,8 @@
                                         <label for="note">Catatan</label>
                                         <textarea id="note" rows="16" class="form-control"></textarea>
                                     </div>
+                                    <input type="date" name="date" id="date_id" value="{{ old('date') }}"
+                                        hidden>
                                 </div>
                             </div>
                             <div style="float: right; margin-top: 10px;">
@@ -330,6 +333,11 @@
         <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
         <script>
+            $('#date').on('change', function() {
+                let date = $('#date').val();
+                $('#date_id').val(date)
+            })
+
             $(function() {
                 $('#example1').DataTable()
                 $('#example2').DataTable({

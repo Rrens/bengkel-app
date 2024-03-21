@@ -230,7 +230,6 @@ class SalesController extends Controller
             'customer_id' => 'required'
         ]);
 
-
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
         }
@@ -254,7 +253,7 @@ class SalesController extends Controller
             $data->cash = $request['cash'];
             $data->remaining = $request['change'];
             $data->note = $request['note'];
-            $data->date = Carbon::today();
+            $data->date = $request['date'];
             $data->save();
             foreach ($cart as $item) {
                 $data_detail = new SaleDetail();
@@ -275,7 +274,7 @@ class SalesController extends Controller
 
                 $history = new History();
                 $history->item_id = $item->item_id;
-                $history->date = Carbon::today();
+                $history->date = $request['date'];
                 $history->total = $item->quantity;
                 $history->save();
 
