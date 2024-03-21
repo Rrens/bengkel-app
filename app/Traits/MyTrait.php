@@ -100,6 +100,7 @@ trait MyTrait
                 $part = $data->part;
             }
 
+
             if ($tgl == 0) {
                 if ($cek < 0) {
                     return back()->withErrors('Stock Tidak Mencukupi ' . $Q . '');
@@ -118,13 +119,7 @@ trait MyTrait
                     } else {
 
                         $sisa = $dt_stok - $ss;
-                        // DB::table('transaksi')->insert([
-                        //     'id_tran' => $value->id_tran,
-                        //     'tgl_tran' => $today,
-                        //     'id' => $value->id,
-                        //     'item_id' => $item_id,
-                        //     'jumlah' => $sisa
-                        // ]);
+
                         DB::table('history')
                             ->whereNull('deleted_at')
                             ->insert([
@@ -133,13 +128,6 @@ trait MyTrait
                                 'total' => $sisa
                             ]);
 
-                        // DB::table('sparepart')
-                        //     ->where('item_id', $item_id)
-                        //     ->update(
-                        //         [
-                        //             'stok' => $ss
-                        //         ]
-                        //     );
                         return back()->withSuccess('Sudah Mencapai Safety Stock, Hanya Dapat Dilayani ' . $sisa . ' Item');
                     }
                 } else {
@@ -168,10 +156,8 @@ trait MyTrait
                     return back()->with('toast_success', 'Minimal Stock, Waktunya Restock Spare Part');
                 }
             } else {
-                // dd(
-                //     $tgl,
-                //     $part,
-                //     $cek
+
+
                 // );
 
                 ///CEK HISTORY PART ADA TIDAK
@@ -195,13 +181,16 @@ trait MyTrait
                             $total = $data->total;
                         }
                         $hasil = $total + $jumlah;
+                        // dd($tgl, $jumlah, $cek, $min, $part, 'TGL > 0', $hasil);
+
 
                         DB::table('history')
                             ->where('date', $today)
                             ->where('item_id', $item_id)
                             ->update(
                                 [
-                                    'total' => $hasil
+                                    // 'total' => $hasil
+                                    'total' => $total
                                 ]
                             );
 
@@ -293,9 +282,12 @@ trait MyTrait
 
                     ///TIDAK ADA PART YA INPUT
                 } else {
+
                     if ($cek < 0) {
                         return back()->withSuccess('Stock Tidak Mencukupi');
                     } else if ($cek > $min) {
+
+
                         // DB::table('transaksi')->insert([
                         //     'id_tran' => $value->id_tran,
                         //     'tgl_tran' => $today,

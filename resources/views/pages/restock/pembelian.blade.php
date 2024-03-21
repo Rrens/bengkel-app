@@ -29,7 +29,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label>Tanggal Pembelian *</label>
-                                            <input type="date" name="tanggal_pembelian" value="{{ $date }}"
+                                            <input type="date" name="tanggal_pembelian" value="{{ now() }}"
                                                 class="form-control" id="tanggal_pembelian" required>
                                         </div>
                                         <div class="col-md-6">
@@ -124,8 +124,10 @@
                                     <form action="{{ route('restock.pembelian.store-pembelian') }}" method="post">
                                         @csrf
                                         <input type="text" id="supplier_id_pembelian" name="supplier_id_pembelian"
+                                            value="{{ !empty(old('supplier_id_pembelian')) ? old('supplier_id_pembelian') : '' }}"
                                             hidden>
                                         <input type="date" id="supplier_tanggal_pembelian"
+                                            value="{{ !empty(old('supplier_tanggal_pembelian')) ? old('supplier_tanggal_pembelian') : '' }}"
                                             name="supplier_tanggal_pembelian" hidden>
                                         <button type="submit" class="btn btn-primary">Proses</button>
                                     </form>
