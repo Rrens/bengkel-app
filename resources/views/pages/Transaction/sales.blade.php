@@ -24,7 +24,7 @@
                                     <div class="form-group">
                                         <label for="date">Tanggal Transaksi</label>
                                         <input type="date" class="form-control"
-                                            value="{{ old('date') == null ? $date : old('date') }}" name="date" readonly>
+                                            value="{{ old('date') == null ? $date : old('date') }}" name="date">
                                     </div>
                                     <div class="form-group">
                                         <label for="kasir">Kasir</label>
