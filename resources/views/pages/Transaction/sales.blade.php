@@ -83,7 +83,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jumlah_permintaan">Jumlah Permintaan</label>
-                                        <input type="number" class="form-control" name="jumlah_permintaan" id="jumlah_permintaan">
+                                        <input type="number" class="form-control" name="jumlah_permintaan"
+                                            id="jumlah_permintaan">
                                     </div>
                                 </div>
                             </div>
@@ -232,15 +233,13 @@
                                     <tr>
                                         <td>{{ $item->barcode }}</td>
                                         <td>{{ $item->name }}</td>
-                                        <td>{{ $item->category[0]->name }}</td>
+                                        <td>{{ !empty($item->category[0]) ? $item->category[0]->name : '-' }}</td>
                                         <td class="text-right">Rp. {{ number_format($item->price) }}</td>
                                         <td class="text-right">{{ $item->stock }}</td>
                                         <td class="text-right">
                                             <button class="btn btn-xs btn-info" id="select"
-                                                data-id="{{ $item->id }}"
-                                                data-barcode="{{ $item->barcode }}"
-                                                data-price="{{ $item->price }}"
-                                                data-stock="{{ $item->stock }}">
+                                                data-id="{{ $item->id }}" data-barcode="{{ $item->barcode }}"
+                                                data-price="{{ $item->price }}" data-stock="{{ $item->stock }}">
                                                 <i class="fa fa-check"></i> Select
                                             </button>
                                         </td>
