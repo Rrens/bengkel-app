@@ -381,7 +381,7 @@
                         let stock = $('#stock').val()
                         console.log(data)
                         // console.log(stock)
-                        if (stock == data['stock_min'] && stock > data['safety_stock'] && stock > 0) {
+                        if (stock <= data['stock_min'] && stock > data['safety_stock'] && stock > 0) {
                             if (!confirm('Sudah Sampai Batas Stock Min, Apakah anda yakin?')) {
                                 // get_cart_qty($(this).data('barcode'))
                                 $('#item_id').val('')

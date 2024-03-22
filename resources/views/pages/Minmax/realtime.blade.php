@@ -76,7 +76,8 @@
                                                 {{-- @dd(ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time, ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time * 2 + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time, ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time * 2 + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time - (ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time)) --}}
                                                 {{-- @dd(ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time * 2 + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time - (ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time)) --}}
                                                 <td>
-                                                    <center><span class="badge badge-warning">RESTOCK</span></center>
+                                                    <center><span class="badge badge-warning"
+                                                            style="color: black">RESTOCK</span></center>
                                                 </td>
                                             @else
                                                 <td>
