@@ -106,13 +106,14 @@ trait MyTrait
                     return back()->withErrors('Stock Tidak Mencukupi ' . $Q . '');
                 } else if ($cek > $min) {
 
-                    DB::table('history')
-                        ->whereNull('deleted_at')
-                        ->insert([
-                            'date' => $today,
-                            'item_id' => $item_id,
-                            'total' => $jumlah
-                        ]);
+                    // INSERT IKI
+                    // DB::table('history')
+                    //     ->whereNull('deleted_at')
+                    //     ->insert([
+                    //         'date' => $today,
+                    //         'item_id' => $item_id,
+                    //         'total' => $jumlah
+                    //     ]);
                 } else if ($cek < $ss) {
                     if ($dt_stok <= $ss) {
                         return back()->withErrors('Sudah Mencapai Safety Stock Tidak Dapat Dilayani');
@@ -120,13 +121,14 @@ trait MyTrait
 
                         $sisa = $dt_stok - $ss;
 
-                        DB::table('history')
-                            ->whereNull('deleted_at')
-                            ->insert([
-                                'date' => $today,
-                                'item_id' => $item_id,
-                                'total' => $sisa
-                            ]);
+                        // INSERT IKI
+                        // DB::table('history')
+                        //     ->whereNull('deleted_at')
+                        //     ->insert([
+                        //         'date' => $today,
+                        //         'item_id' => $item_id,
+                        //         'total' => $sisa
+                        //     ]);
 
                         return back()->withSuccess('Sudah Mencapai Safety Stock, Hanya Dapat Dilayani ' . $sisa . ' Item');
                     }
@@ -138,13 +140,15 @@ trait MyTrait
                     //     'item_id' => $item_id,
                     //     'jumlah' => $jumlah
                     // ]);
-                    DB::table('history')
-                        ->whereNull('deleted_at')
-                        ->insert([
-                            'date' => $today,
-                            'item_id' => $item_id,
-                            'total' => $jumlah
-                        ]);
+
+                    // INSERT IKI
+                    // DB::table('history')
+                    //     ->whereNull('deleted_at')
+                    //     ->insert([
+                    //         'date' => $today,
+                    //         'item_id' => $item_id,
+                    //         'total' => $jumlah
+                    //     ]);
 
                     // DB::table('sparepart')
                     //     ->where('item_id', $item_id)
@@ -295,11 +299,13 @@ trait MyTrait
                         //     'item_id' => $item_id,
                         //     'jumlah' => $jumlah
                         // ]);
-                        DB::table('history')->insert([
-                            'date' => $today,
-                            'item_id' => $item_id,
-                            'total' => $jumlah
-                        ]);
+
+                        // INSERT IKI
+                        // DB::table('history')->insert([
+                        //     'date' => $today,
+                        //     'item_id' => $item_id,
+                        //     'total' => $jumlah
+                        // ]);
 
                         // DB::table('sparepart')
                         //     ->where('item_id', $item_id)
@@ -319,13 +325,15 @@ trait MyTrait
                         //     'item_id' => $item_id,
                         //     'jumlah' => $jumlah
                         // ]);
-                        DB::table('history')
-                            ->whereNull('deleted_at')
-                            ->insert([
-                                'date' => $today,
-                                'item_id' => $item_id,
-                                'total' => $jumlah
-                            ]);
+
+                        // INSERT IKI
+                        // DB::table('history')
+                        //     ->whereNull('deleted_at')
+                        //     ->insert([
+                        //         'date' => $today,
+                        //         'item_id' => $item_id,
+                        //         'total' => $jumlah
+                        //     ]);
 
                         // DB::table('sparepart')
                         //     ->where('item_id', $item_id)
