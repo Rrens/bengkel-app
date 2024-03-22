@@ -37,7 +37,7 @@ class SalesController extends Controller
 
     public function check_min_stock($id)
     {
-        $current = Carbon::now()->format('m');
+        $current = Carbon::now()->subMonth(1)->format('m');
 
         $jum_hari = DB::table('history')
             ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
