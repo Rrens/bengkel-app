@@ -162,14 +162,14 @@ Route::group(
                 'prefix' => 'pembelian',
             ], function () {
                 Route::get('', [LaporanPembelianController::class, 'index'])->name('laporan.pembelian.index');
-                Route::get('{month}', [LaporanPembelianController::class, 'filter'])->name('laporan.pembelian.filter');
+                Route::get('{month}/{year}', [LaporanPembelianController::class, 'filter'])->name('laporan.pembelian.filter');
             });
 
             Route::group([
                 'prefix' => 'penerimaan'
             ], function () {
                 Route::get('', [LaporanPenerimaanController::class, 'index'])->name('laporan.penerimaan.index');
-                Route::get('{month}', [LaporanPenerimaanController::class, 'filter'])->name('laporan.penerimaan.filter');
+                Route::get('{month}/{year}', [LaporanPenerimaanController::class, 'filter'])->name('laporan.penerimaan.filter');
             });
         });
     }
