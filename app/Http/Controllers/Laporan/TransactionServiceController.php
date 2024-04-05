@@ -78,7 +78,6 @@ class TransactionServiceController extends Controller
     {
         $data = Sale::where('id', $id)->with('customer', 'user')->first();
         $data_detail = SaleDetail::where('sale_id', $id)->with('item')->get();
-        // dd($data);
         return view('pages.Laporan.print', compact('data', 'data_detail'));
     }
 }

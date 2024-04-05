@@ -154,7 +154,7 @@ Route::group(
                 'prefix' => 'transaction-service'
             ], function () {
                 Route::get('', [TransactionServiceController::class, 'index'])->name('laporan.transaction.index');
-                Route::get('{month}/{year}', [TransactionServiceController::class, 'filter'])->name('laporan.transaction.filter');
+                Route::get('filter/{month}/{year}', [TransactionServiceController::class, 'filter'])->name('laporan.transaction.filter');
                 Route::get('print/{id}', [TransactionServiceController::class, 'print'])->name('laporan.transaction.print');
             });
 
