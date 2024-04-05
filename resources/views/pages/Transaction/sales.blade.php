@@ -123,22 +123,23 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td class="barcode">{{ $item->item[0]->barcode }}</td>
                                                 <td>{{ $item->item[0]->name }}</td>
-                                                <td>{{ $item->price }}</td>
+                                                <td>{{ format_rupiah_tanpa_rp($item->price) }}</td>
                                                 <td>{{ $item->jumlah_jual }}</td>
                                                 <td>{{ $item->quantity }}</td>
                                                 <td>{{ $item->discount_item }}</td>
-                                                <td id="total">{{ $item->total }}</td>
+                                                <td id="total">{{ format_rupiah_tanpa_rp($item->total) }}</td>
                                                 <td class="text-center" width="160px">
                                                     <button id="update_cart" data-toggle="modal"
                                                         data-target="#modal-item-edit" data-cartid="{{ $item->item_id }}"
                                                         data-barcode="{{ $item->item[0]->barcode }}"
                                                         data-product="{{ $item->item[0]->name }}"
                                                         data-stock="{{ $item->item[0]->stock }}"
-                                                        data-price="{{ $item->price }}"
+                                                        data-price="{{ format_rupiah_tanpa_rp($item->price) }}"
                                                         data-jual="{{ $item->jumlah_jual }}"
                                                         data-qty="{{ $item->quantity }}"
                                                         data-discount="{{ $item->discount_item }}"
-                                                        data-total="{{ $item->total }}" class="btn btn-xs btn-primary">
+                                                        data-total="{{ format_rupiah_tanpa_rp($item->total) }}"
+                                                        class="btn btn-xs btn-primary">
                                                         <i class="fa fa-pencil"></i> Update
                                                     </button>
                                                     <button id="del_cart" data-cartid="{{ $item->id }}"
@@ -163,26 +164,26 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="sub_total">Sub Total</label>
-                                            <input type="number" id="sub_total" value="" class="form-control"
+                                            <input type="text" id="sub_total" value="" class="form-control"
                                                 readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label for="jasa">Jasa</label>
-                                            <input type="number" id="discount" value="0" min="0"
+                                            <input type="text" id="discount" value="0" min="0"
                                                 class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label for="grand_total">Total Harga Akhir</label>
-                                            <input type="number" id="grand_total" class="form-control" readonly="">
+                                            <input type="text" id="grand_total" class="form-control" readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label for="cash">Dibayarkan</label>
-                                            <input type="number" id="cash" value="0" min="0"
+                                            <input type="text" id="cash" value="0" min="0"
                                                 class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label for="cash">Kembalian</label>
-                                            <input type="number" id="change" value="0" min="0"
+                                            <input type="text" id="change" value="0" min="0"
                                                 class="form-control" readonly>
                                         </div>
                                     </div>
@@ -335,6 +336,13 @@
         <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
         <script>
+            function formatRupiah(angka) {
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }
+
             $('#date').on('change', function() {
                 let date = $('#date').val();
                 $('#date_id').val(date)
@@ -604,9 +612,9 @@
             function calculate() {
                 let subtotal = 0;
                 $('#cart_table tr').each(function() {
-                    subtotal += parseInt($(this).find('#total').text())
+                    subtotal += parseInt($(this).find('#total').text().replace(/\./g, ''))
                 })
-                isNaN(subtotal) ? $('#sub_total').val(0) : $('#sub_total').val(subtotal)
+                isNaN(subtotal) ? $('#sub_total').val(0) : $('#sub_total').val(formatRupiah(subtotal))
 
                 let discount = $('#discount').val()
                 let grand_total = 0
@@ -618,12 +626,12 @@
                     $('#grand_total').val(0)
                     $('#grand_total2').val(0)
                 } else {
-                    $('#grand_total').val(grand_total)
-                    $('#grand_total2').val(grand_total)
+                    $('#grand_total').val(formatRupiah(grand_total))
+                    $('#grand_total2').val(formatRupiah(grand_total))
                 }
 
                 let cash = $('#cash').val();
-                cash != 0 ? $('#change').val(cash - grand_total) : $('#change').val(0)
+                cash != 0 ? $('#change').val(formatRupiah(cash - grand_total)) : $('#change').val(0)
 
                 if (discount == '') {
                     $('#discount').val(0)

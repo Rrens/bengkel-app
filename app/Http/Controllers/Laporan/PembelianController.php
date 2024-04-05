@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
 {
-
     public function index()
     {
         $active = 'laporan';
