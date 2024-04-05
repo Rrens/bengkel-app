@@ -16,12 +16,23 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class PembelianController extends Controller
 {
+    public function kode_pembelian()
+    {
+        // $lastRecord = Sale::latest()->first();
+        $lastRecord = Pembelian::count();
+        $lastID = $lastRecord ? $lastRecord : 0;
+
+        $newID = 'PB' . date('ym') . str_pad($lastID + 1, 4, '0', STR_PAD_LEFT);
+        return $newID;
+    }
+
     public function index()
     {
         $active = 'restock';
         $active_detail = 'pembelian';
         $supplier = Supplier::all();
         $items = ProductItems::all();
+        $kode_pembelian = $this->kode_pembelian();
         // $data = Pembelian::with('supplier', 'item')
         //     ->orderBy('tanggal_pembelian', 'desc')
         //     ->get();
@@ -36,6 +47,7 @@ class PembelianController extends Controller
             'items',
             'date',
             'data',
+            'kode_pembelian',
         ));
     }
 
@@ -137,6 +149,7 @@ class PembelianController extends Controller
         $data = new Pembelian();
         // $data->tanggal_pembelian = Carbon::today()->toDateString();
         $data->tanggal_pembelian = $request->supplier_tanggal_pembelian;
+        $data->kode_pembelian = $this->kode_pembelian();
         $data->supplier_id = $request->supplier_id_pembelian;
         $data->save();
 

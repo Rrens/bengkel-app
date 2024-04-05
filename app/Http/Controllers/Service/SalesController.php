@@ -227,7 +227,8 @@ class SalesController extends Controller
             'note' => 'nullable',
             'cash' => 'required',
             'change' => 'required',
-            'customer_id' => 'required'
+            'customer_id' => 'required',
+            'date' => 'required|date'
         ]);
 
         if ($validator->fails()) {

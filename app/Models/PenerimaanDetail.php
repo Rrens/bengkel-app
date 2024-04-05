@@ -20,6 +20,7 @@ class PenerimaanDetail extends Model
         'pembelian_detail_id',
         'jumlah_penerimaan',
         'date',
+        'lead_time',
         'created_at',
         'updated_at'
     ];

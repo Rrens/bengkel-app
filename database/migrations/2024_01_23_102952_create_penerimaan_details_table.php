@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pembelian_detail_id')->nullable();
             $table->foreign('pembelian_detail_id')->references('id')->on('pembelian_details');
             $table->integer('jumlah_penerimaan');
+            $table->integer('lead_time')->nullable();
             $table->date('date')->nullable();
             $table->softDeletes();
             $table->timestamps();
