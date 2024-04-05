@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('pembelian_id')->references('id')->on('pembelians');
             $table->integer('jumlah_penerimaan')->nullable();
             $table->date('tanggal_penerimaan')->nullable();
+            $table->boolean('is_visible')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

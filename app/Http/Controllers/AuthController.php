@@ -18,8 +18,8 @@ class AuthController extends Controller
         if (!Auth::check()) {
             return view('auth.pages.login');
         }
-
-        return back();
+        return redirect()->route('service.sales.index');
+        // return back();
     }
 
     public function post_login(Request $request)

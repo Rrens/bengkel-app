@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pembelians', function (Blueprint $table) {
             $table->id();
             // $table->integer('jumlah_pembelian')->nullable();
+            $table->text('kode_pembelian');
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             // $table->unsignedBigInteger('item_id')->nullable();

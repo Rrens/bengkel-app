@@ -25,7 +25,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        {{-- <th>Pembelian ID</th> --}}
+                                        <th>Kode Pembelian</th>
                                         <th>Tanggal Pembelian</th>
                                         <th>Supplier Nama</th>
                                         <th>Tanggal Penerimaan</th>
@@ -36,7 +36,7 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            {{-- <td>{{ $item->id_pembelian }}</td> --}}
+                                            <td>{{ $item->kode_pembelian }}</td>
                                             <td>{{ $item->tanggal_pembelian }}</td>
                                             <td>{{ $item->supplier_name }}</td>
                                             <td>{{ check_empty($item->tanggal_penerimaan) }}

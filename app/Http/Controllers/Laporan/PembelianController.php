@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Laporan;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pembelian;
 use App\Models\PembelianDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PembelianController extends Controller
 {
+
     public function index()
     {
         $active = 'laporan';

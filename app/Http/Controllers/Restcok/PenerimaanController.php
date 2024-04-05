@@ -35,16 +35,17 @@ class PenerimaanController extends Controller
                 'pb.tanggal_pembelian',
                 'pn.jumlah_penerimaan',
                 'pd.jumlah_pembelian',
-                'pn.pembelian_id'
+                'pn.pembelian_id',
+                'pb.kode_pembelian',
             )
             ->where('pd.pembelian_id', '!=', null)
             ->whereNull('pd.deleted_at')
             ->whereNull('pb.deleted_at')
             ->whereNull('pn.deleted_at')
+            ->where('pn.is_visible', true)
             ->groupBy('pn.pembelian_id')
             ->orderBy('pb.tanggal_pembelian', 'desc')
             ->get();
-        // dd($data);
 
         $pembelian = Pembelian::all();
         $pembelian_detail = PembelianDetail::with('item')->get();
@@ -83,6 +84,7 @@ class PenerimaanController extends Controller
 
         $data = Penerimaan::findOrFail($request->id);
         $data->fill($request->all());
+        $data->is_visible = false;
         $data->save();
 
         $count = count($request->jumlah_penerimaan);
@@ -100,7 +102,7 @@ class PenerimaanController extends Controller
 
             $item = ProductItems::where('name', $request->nama_sparepart[$i])->first();
             $item->stock += $request->jumlah_penerimaan[$i];
-            $item->lead_time = $selisihHari;
+            // $item->lead_time = $selisihHari;
             $item->save();
 
             $detail = PenerimaanDetail::where('item_id', $item->id)
@@ -113,10 +115,20 @@ class PenerimaanController extends Controller
                 $detail->penerimaan_id = $data->id;
                 $detail->date = $data->tanggal_penerimaan;
                 $detail->pembelian_detail_id = $request->pembelian_detail_id[$i];
+                $detail->lead_time = $selisihHari;
             }
+
             $detail->item_id = $item->id;
             $detail->jumlah_penerimaan = $request->jumlah_penerimaan[$i];
             $detail->save();
+
+            $avg_lead_time = PenerimaanDetail::whereMonth('date', Carbon::now()->format('m'))
+                ->where('item_id', $item->id)
+                ->avg('lead_time');
+
+            $item = ProductItems::where('name', $request->nama_sparepart[$i])->first();
+            $item->lead_time = $avg_lead_time;
+            $item->save();
         }
 
         // dd($request->all(), $item);
