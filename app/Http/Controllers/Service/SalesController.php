@@ -35,6 +35,11 @@ class SalesController extends Controller
         return $newID;
     }
 
+    public function remove_point($data)
+    {
+        return str_replace(".", "", $data);
+    }
+
     public function check_min_stock($id)
     {
         $current = Carbon::now()->subMonth(1)->format('m');
@@ -231,6 +236,7 @@ class SalesController extends Controller
             'date' => 'required|date'
         ]);
 
+
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
         }
@@ -248,13 +254,14 @@ class SalesController extends Controller
             $data->invoice = $this->invoice();
             $data->customer_id = $request['customer_id'];
             $data->user_id = Auth::user()->id;
-            $data->total_price = $request['subtotal'];
+            $data->total_price = $this->remove_point($request['subtotal']);
             $data->service = $request['service'];
-            $data->final_price = $request['grandtotal'];
+            $data->final_price = $this->remove_point($request['grandtotal']);
             $data->cash = $request['cash'];
             $data->remaining = $request['change'];
             $data->note = $request['note'];
             $data->date = $request['date'];
+
             $data->save();
             foreach ($cart as $item) {
                 $data_detail = new SaleDetail();
