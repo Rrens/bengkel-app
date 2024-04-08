@@ -212,7 +212,7 @@
                     let month = $('#month').val()
                     let year = $('#year').val()
                     // alert()
-                    var url = `/laporan/transaction-service/${month}/${year}`;
+                    var url = `/laporan/transaction-service/filter/${month}/${year}`;
                     window.location.href = url;
                 });
             });

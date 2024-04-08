@@ -19,13 +19,24 @@
                         <div class="box-header">
                             <h3 class="box-title">Data Laporan Pembelian</h3>
                             <div class="pull-right d-flex">
-                                <select class="form-control" id="bulan_pilihan" name="bulan_pilihan">
-                                    <option selected hidden>Filter Bulan</option>
-                                    <option value="all">Semua</option>
+                                <button class="btn btn-primary" id="btn-filter">Filter</button>
+                            </div>
+                            <div class="pull-right d-flex">
+                                <select class="form-control" id="month" name="bulan_pilihan">
+                                    <option value="all">Bulan Semua</option>
                                     @for ($i = 1; $i <= 12; $i++)
                                         <option {{ (empty($month) ? '' : $month == $i) ? 'selected' : '' }}
                                             value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
                                     @endfor
+                                </select>
+                            </div>
+                            <div class="pull-right d-flex">
+                                <select name="year" id="year" class="form-control">
+                                    <option value="all">Tahun Semua</option>
+                                    @foreach ($year as $item)
+                                        <option {{ empty($tahun) ? '' : 'selected' }} value="{{ $item }}">
+                                            {{ $item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -120,15 +131,10 @@
 
         <script>
             $(document).ready(function() {
-                $('#bulan_pilihan').on('change', function() {
-                    var selectedValue = $(this).val();
-                    if (selectedValue != 'all') {
-
-                        var url = '/laporan/pembelian/' + selectedValue;
-                    } else {
-                        var url = '/laporan/pembelian';
-
-                    }
+                $('#btn-filter').on('click', function() {
+                    let month = $('#month').val()
+                    let year = $('#year').val()
+                    var url = `/laporan/pembelian/filter/${month}/${year}`;
                     window.location.href = url;
                 });
             });

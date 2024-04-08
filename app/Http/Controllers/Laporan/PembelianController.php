@@ -24,14 +24,25 @@ class PembelianController extends Controller
             ->groupBy('p.id')
             ->groupBy('pi.id')
             ->get();
-        return view('pages.Laporan.Pembelian', compact('active', 'active_detail', 'data'));
+
+        $year = $this->year();
+        return view('pages.Laporan.Pembelian', compact('active', 'active_detail', 'data', 'year'));
     }
 
-    public function filter($month)
+    public function filter($month, $tahun)
     {
         $active = 'laporan';
         $active_detail = 'pembelian';
-        $data = DB::table('pembelians as p')
+
+        $data = $this->data($month, $tahun);
+        $year = $this->year();
+
+        return view('pages.Laporan.Pembelian', compact('active', 'active_detail', 'data', 'month', 'tahun', 'year'));
+    }
+
+    public function data($month, $year)
+    {
+        $query = DB::table('pembelians as p')
             ->join('pembelian_details as pd', 'p.id', '=', 'pd.pembelian_id')
             ->join('product_items as pi', 'pd.item_id', '=', 'pi.id')
             ->join('suppliers as s', 'p.supplier_id', '=', 's.id')
@@ -41,10 +52,33 @@ class PembelianController extends Controller
                 'pi.name as sparepart',
                 'pd.jumlah_pembelian'
             )
-            ->whereMonth('p.tanggal_pembelian', $month)
             ->groupBy('p.id')
-            ->groupBy('pi.id')
-            ->get();
-        return view('pages.Laporan.Pembelian', compact('active', 'active_detail', 'data', 'month'));
+            ->groupBy('pi.id');
+
+        if (!empty($month)) {
+            $query->whereMonth('p.tanggal_pembelian', $month);
+        }
+
+        if (!empty($year)) {
+            $query->whereYear('p.tanggal_pembelian', $year);
+        }
+
+        if (!empty($year) && !empty($month)) {
+            $query->whereYear('p.tanggal_pembelian', $year)
+                ->whereMonth('p.tanggal_pembelian', $month);
+        }
+
+        $data = $query->get();
+        return $data;
+    }
+
+    public function year()
+    {
+        $year = DB::table('pembelians')
+            ->selectRaw('YEAR(tanggal_pembelian) as year')
+            ->groupBy('year')
+            ->pluck('year');
+
+        return $year;
     }
 }
