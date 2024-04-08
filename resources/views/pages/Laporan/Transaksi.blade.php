@@ -22,6 +22,7 @@
                             <div class="pull-right d-flex">
                                 <button class="btn btn-primary" id="btn-filter">Filter</button>
                             </div>
+
                             <div class="pull-right d-flex">
                                 <select class="form-control" id="month" name="bulan_pilihan">
                                     <option value="all">Bulan Semua</option>
@@ -31,6 +32,7 @@
                                     @endfor
                                 </select>
                             </div>
+
                             <div class="pull-right d-flex">
                                 <select name="year" id="year" class="form-control">
                                     <option value="all">Tahun Semua</option>
@@ -41,6 +43,7 @@
                             </div>
                             {{-- </form> --}}
                         </div>
+                        
                         <div class="box-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>

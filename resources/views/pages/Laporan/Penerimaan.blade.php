@@ -18,7 +18,6 @@
                     <div class="box">
                         <div class="box-header">
                             <h3 class="box-title">Data Laporan Penerimaan</h3>
-                            {{-- <form action="" method="GET"> --}}
                             <div class="pull-right d-flex">
                                 <button class="btn btn-primary" id="btn-filter">Filter</button>
                             </div>
