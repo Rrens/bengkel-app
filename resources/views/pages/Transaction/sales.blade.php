@@ -336,11 +336,34 @@
         <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
         <script>
             function formatRupiah(angka) {
+                var isNegative = angka < 0; // Periksa apakah angka negatif
+                angka = Math.abs(angka); // Ubah ke nilai absolut
+
                 var reverse = angka.toString().split('').reverse().join(''),
                     ribuan = reverse.match(/\d{1,3}/g);
                 ribuan = ribuan.join('.').split('').reverse().join('');
+
+                // Tambahkan tanda minus jika angka negatif
+                if (isNegative) {
+                    ribuan = '-' + ribuan;
+                }
+
                 return ribuan;
             }
+
+            $('#cash').on('change', function() {
+                var cash = $(this).val();
+
+                // Konversi ke format rupiah dan tampilkan pada input
+                $(this).val(formatRupiah(cash));
+            });
+
+            $('#discount').on('change', function() {
+                var cash = $(this).val();
+
+                // Konversi ke format rupiah dan tampilkan pada input
+                $(this).val(formatRupiah(cash));
+            });
 
             $('#date').on('change', function() {
                 let date = $('#date').val();
@@ -631,6 +654,8 @@
 
                 let cash = $('#cash').val();
                 cash != 0 ? $('#change').val(formatRupiah(cash - grand_total)) : $('#change').val(0)
+                // console.log(cash - grand_total)
+
 
                 if (discount == '') {
                     $('#discount').val(0)
