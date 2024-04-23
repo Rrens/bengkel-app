@@ -351,17 +351,16 @@
                 return ribuan;
             }
 
-            $('#cash').on('change', function() {
-                var cash = $(this).val();
-
-                // Konversi ke format rupiah dan tampilkan pada input
-                $(this).val(formatRupiah(cash));
-            });
 
             $('#discount').on('change', function() {
-                var cash = $(this).val();
+                let discount = $(this).val();
 
-                // Konversi ke format rupiah dan tampilkan pada input
+                console.log(discount)
+                $(this).val(formatRupiah(discount));
+            });
+
+            $('#cash').on('change', function() {
+                let cash = $(this).val();
                 $(this).val(formatRupiah(cash));
             });
 
@@ -386,8 +385,8 @@
                 let stock = parseInt($('#stock').val());
                 let jumlah_jual = parseInt($('#jumlah_jual').val());
                 // let jumlah_permintaan = parseInt($('#jumlah_permintaan').val());
-                console.log(stock)
-                console.log(jumlah_jual)
+                // console.log(stock)
+                // console.log(jumlah_jual)
                 // console.log(jumlah_permintaan)
 
                 if (jumlah_jual >= stock) {
@@ -630,6 +629,12 @@
                 }
             })
 
+            function removePoint(number) {
+                let data = number.includes('.') ? number.replace(/\./g, '') : number
+                console.log(data)
+                return data
+            }
+
             //hitung yang dibawah cart
             function calculate() {
                 let subtotal = 0;
@@ -638,11 +643,12 @@
                 })
                 isNaN(subtotal) ? $('#sub_total').val(0) : $('#sub_total').val(formatRupiah(subtotal))
 
-                let discount = $('#discount').val()
+                let discount = removePoint($('#discount').val());
+
+                // console.log(discount);
                 let grand_total = 0
 
                 grand_total += (parseInt(subtotal) + parseInt(discount))
-                // console.log((discount))
 
                 if (isNaN(grand_total)) {
                     $('#grand_total').val(0)
