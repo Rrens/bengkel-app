@@ -631,7 +631,7 @@
 
             function removePoint(number) {
                 let data = number.includes('.') ? number.replace(/\./g, '') : number
-                console.log(data)
+                // console.log(data)
                 return data
             }
 
@@ -681,11 +681,11 @@
             // process payment
             $(document).on('click', '#process_payment', function() {
                 let customer_id = $('#customer').val()
-                let subtotal = $('#sub_total').val()
-                let discount = $('#discount').val()
-                let grandtotal = $('#grand_total').val()
-                let cash = $('#cash').val()
-                let change = $('#change').val()
+                let subtotal = removePoint($('#sub_total').val())
+                let discount = removePoint($('#discount').val())
+                let grandtotal = removePoint($('#grand_total').val())
+                let cash = removePoint($('#cash').val())
+                let change = removePoint($('#change').val())
                 let note = $('#note').val()
                 let date = $('#date').val()
                 if (subtotal < 1) {
