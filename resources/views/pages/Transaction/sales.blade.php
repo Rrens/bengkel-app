@@ -713,6 +713,7 @@
                             },
                             dataType: 'json',
                             success: function(result) {
+                                // console.log(result);
                                 if (result.success) {
                                     let sales_id = result.sale_id ? result.sale_id : 1;
                                     alert('Transaksi berhasil');

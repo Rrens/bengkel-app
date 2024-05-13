@@ -227,7 +227,7 @@ class SalesController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'grandtotal' => 'required',
-            'service' => 'nullable',
+            'discount' => 'nullable',
             'subtotal' => 'required',
             'note' => 'nullable',
             'cash' => 'required',
@@ -235,7 +235,6 @@ class SalesController extends Controller
             'customer_id' => 'required',
             'date' => 'required|date'
         ]);
-
 
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
@@ -245,8 +244,6 @@ class SalesController extends Controller
             $request['customer_id'] = null;
         }
 
-        // dd($request->all());
-
         $cart = Cart::where('user_id', Auth::user()->id)->get();
 
         try {
@@ -255,7 +252,7 @@ class SalesController extends Controller
             $data->customer_id = $request['customer_id'];
             $data->user_id = Auth::user()->id;
             $data->total_price = $this->remove_point($request['subtotal']);
-            $data->service = $request['service'];
+            $data->service = $request['discount'];
             $data->final_price = $this->remove_point($request['grandtotal']);
             $data->cash = $request['cash'];
             $data->remaining = $request['change'];
