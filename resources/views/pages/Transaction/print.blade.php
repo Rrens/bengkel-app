@@ -1,7 +1,7 @@
 <html moznomarginboxes mozdisallowselectionprint>
 
 <head>
-    <title>myPos - Print Nota</title>
+    <title>AWR Motor - Print Nota</title>
     <style type="text/css">
         html {
             font-family: "Verdana, Arial";
@@ -51,9 +51,9 @@
 <body onload="window.print()">
     <div class="content">
         <div class="title">
-            <b>YukStore</b>
+            <b>AWR Motor</b>
             <br>
-            Jl.Makmur Sudimogo Gg.II
+            Jl.Makmur Sudimoro Sidoarjo
         </div>
 
         <div class="head">
@@ -62,7 +62,7 @@
                     <td style="width: 200px">
                         {{ $data->date }}
                     </td>
-                    <td>Cashier</td>
+                    <td>Kasir</td>
                     <td style="text-align:center; width:10px">:</td>
                     <td style="text-align:right;">
                         {{ $data->user[0]->name }}
@@ -108,28 +108,28 @@
                 </tr>
                 <tr>
                     <td colspan="2"></td>
-                    <td style="text-align: right; padding: 5px 0;">Service. Sale</td>
+                    <td style="text-align: right; padding: 5px 0;">Diskon</td>
                     <td style="text-align: right; padding: 5px 0;">
                         {{ format_rupiah($data->service) }}
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
-                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">Grand Total</td>
+                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">Total Akhir</td>
                     <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">
                         {{ format_rupiah($data->final_price) }}
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
-                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">Cash</td>
+                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">Diabayarkan</td>
                     <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">
                         {{ format_rupiah($data->cash) }}
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
-                    <td style="text-align:right;">Change</td>
+                    <td style="text-align:right;">Kembalian</td>
                     <td style="text-align:right;">
                         {{ format_rupiah($data->remaining) }}
                     </td>

@@ -3,12 +3,10 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
-                DAFTAR STOCK SPARE PART MIN MAX REALTIME
-            </h1>
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Pembelian</li>
+                <li class="active">Min Max</li>
             </ol>
         </section>
 
@@ -17,7 +15,7 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Real Time</h3>
+                            <h3 class="box-title">Data Min Max</h3>
                             <div class="pull-right">
                             </div>
                         </div>

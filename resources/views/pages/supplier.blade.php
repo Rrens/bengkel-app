@@ -33,7 +33,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Name Toko</th>
+                                        <th>Nama Toko</th>
                                         <th>No Telp</th>
                                         <th>Alamat</th>
                                         <th>Nomor Rekening</th>

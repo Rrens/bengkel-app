@@ -3,9 +3,7 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
-                LAPORAN PEMBELIAN
-            </h1>
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Laporan Pembelian</li>
@@ -55,12 +53,10 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->tanggal_pembelian }}</td>
+                                            <td>{{ indo_date($item->tanggal_pembelian) }}</td>
                                             <td>{{ $item->supplier_name }}</td>
-                                            <td>{{ $item->sparepart }}
-                                            </td>
-                                            <td>{{ $item->jumlah_pembelian }}
-                                            </td>
+                                            <td>{{ $item->sparepart }}</td>
+                                            <td>{{ $item->jumlah_pembelian }}</td>
                                             {{-- <td>{{ $data_datail->where('pembelian_id', $item->id)->first()['item'][0]['name'] }}
                                             </td>
                                             <td>{{ $data_datail->where('pembelian_id', $item->id)->first()['jumlah_pembelian'] }}
@@ -115,7 +111,7 @@
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                    "buttons": ["csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
                 $('#example2').DataTable({
                     "paging": true,

@@ -12,83 +12,115 @@
 
         <section class="content">
             <div class="container">
-                <div class="row">
+                <div class="row align-items-center">
                     <form action="{{ route('restock.pembelian.store') }}" method="post">
-                        <div class="col-md-6">
-                            <div class="box">
-                                <div class="box-body">
-                                    @csrf
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-6" style="margin-bottom: 15px;">
-                                                <label for="kode_pembelian">Kode Pembelian</label>
-                                                <input type="text" class="form-control" value="{{ $kode_pembelian }}"
-                                                    id="kode_pembelian" readonly>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Tanggal Pembelian *</label>
-                                                <input type="date" name="tanggal_pembelian"
-                                                    value="{{ now()->toDateString() }}" class="form-control"
-                                                    id="tanggal_pembelian" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label>Supplier *</label>
-                                                <select name="supplier_id" id="supplier_id" class="form-control">
-                                                    <option selected hidden>- Pilih -</option>
-                                                    @foreach ($supplier as $item)
-                                                        <option {{ old('supplier_id') == $item->id ? 'selected' : '' }}
-                                                            value="{{ $item->id }}">{{ $item->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                        @csrf
+                            <div class="col-md-6">
+                                <div class="box box-widget">
+                                    <div class="box-body">
+                                        <table>
+                                            <tr>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="kode_pembelian">Kode Pembelian</label>
+                                                        <input type="text" class="form-control" value="{{ $kode_pembelian }}"
+                                                            id="kode_pembelian" readonly>
+                                                    </div>
+                                                </div>
+                                            </tr>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="box">
-                                <div class="box-body">
-                                    <div>
-                                        <label for="name_item">Cari Item</label>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <input name="item_id" id="item_id" value="{{ old('item_id') }}" hidden>
-                                        <input type="text" name="name_item" id="name_item" value="{{ old('name_item') }}"
-                                            class="form-control" readonly="">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                                data-target="#modalItemAdd">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </span>
-                                    </div>
+                                            <tr>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Tanggal Pembelian *</label>
+                                                        <input type="date" name="tanggal_pembelian"
+                                                            value="{{ now() }}" class="form-control"
+                                                            id="tanggal_pembelian">
+                                                    </div>
 
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="stock">Stok Sekarang</label>
-                                                <input type="text" name="stock" id="stock"
-                                                    value="{{ old('stock') }}" class="form-control" readonly="">
-                                            </div>
+                                                    {{-- <div class="form-group">
+                                                        <label>Tanggal Pembelian *</label>
+                                                        <input type="date" name="tanggal_pembelian"
+                                                            value="{{ now()->toDateString() }}" class="form-control"
+                                                            id="tanggal_pembelian" required>
+                                                    </div> --}}
+                                                </div>
+                                            </tr>
 
-                                            <div class="col-md-6">
-                                                <label>Stok Dibeli</label>
-                                                <input type="number" name="jumlah_pembelian" id="stok_dibeli"
-                                                    value="{{ old('jumlah_pembelian') }}" class="form-control" required>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div style="float: right;">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </div>
+                                            <tr>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Supplier *</label>
+                                                        <select name="supplier_id" id="supplier_id" class="form-control">
+                                                            <option selected hidden>- Pilih -</option>
+                                                            @foreach ($supplier as $item)
+                                                                <option {{ old('supplier_id') == $item->id ? 'selected' : '' }}
+                                                                    value="{{ $item->id }}">{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="col-md-6">
+                                <div class="box body-widget">
+                                    <div class="box-body">
+                                        <table>
+                                            <tr>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="name_item">Cari Item</label>
+                                                        <div class="form-group input-group">
+                                                            <input name="item_id" id="item_id" value="{{ old('item_id') }}" hidden>
+                                                            <input type="text" name="name_item" id="name_item" value="{{ old('name_item') }}"
+                                                                class="form-control" readonly="">
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
+                                                                    data-target="#modalItemAdd">
+                                                                    <i class="fa fa-search"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </tr>
+
+                                            <tr>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label for="stock">Stok Sekarang</label>
+                                                        <input type="text" name="stock" id="stock"
+                                                            value="{{ old('stock') }}" class="form-control" readonly="">
+                                                    </div>
+                                                </div>
+                                            </tr>
+
+                                            <tr>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <label>Stok Dibeli</label>
+                                                        <input type="number" name="jumlah_pembelian" id="stok_dibeli"
+                                                            value="{{ old('jumlah_pembelian') }}" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                            </tr>
+
+                                            <tr>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <br>
+                                                        <button type="submit" class="btn btn-primary" style="float: right;">Simpan</button>
+                                                    </div>
+                                                </div>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                     </form>
                 </div>
 

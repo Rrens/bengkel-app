@@ -33,7 +33,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Barcode</th>
-                                        <th>Nama</th>
+                                        <th>Nama Sparepart</th>
                                         <th>Kategori</th>
                                         <th>Harga</th>
                                         <th>Stok</th>
