@@ -287,6 +287,9 @@ class SalesController extends Controller
             'date' => 'required|date'
         ]);
 
+        // return response()->json($request->all());
+
+
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
         }

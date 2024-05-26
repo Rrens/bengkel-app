@@ -18,7 +18,7 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Pelanggan</h3>
+                            <h3 class="box-title">Data Customer</h3>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
                                     data-target="#modalAdd">
@@ -31,7 +31,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama</th>
+                                        <th>Nama Customer</th>
                                         <th>Jenis Kelamin</th>
                                         <th>No. Telp</th>
                                         <th>ALamat</th>

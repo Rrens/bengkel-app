@@ -45,6 +45,7 @@ class TransactionServiceController extends Controller
         // dd($year);
         $active = 'laporan';
         $active_detail = 'transaction service';
+
         if ($month == 'all' && $year == 'all') {
             $data = Sale::with('customer', 'user')->get();
         }

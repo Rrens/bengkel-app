@@ -54,7 +54,7 @@ class PembelianController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'tanggal_pembelian' => 'required|date',
+            // 'tanggal_pembelian' => 'required|date',
             // 'supplier_id' => 'required|exists:suppliers,id',
             'item_id' => 'required|exists:product_items,id',
             'stock' => 'required',

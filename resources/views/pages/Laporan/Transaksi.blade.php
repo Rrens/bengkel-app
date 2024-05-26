@@ -3,12 +3,10 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
-                LAPORAN TRANSAKSI SERVIS
-            </h1>
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Laporan Transaksi</li>
+                <li class="active">Laporan Transaksi Servis Motor</li>
             </ol>
         </section>
 
@@ -17,11 +15,12 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Laporan</h3>
+                            <h3 class="box-title">Data Laporan Transaksi Servis Motor</h3>
                             {{-- <form action="" method="GET"> --}}
                             <div class="pull-right d-flex">
                                 <button class="btn btn-primary" id="btn-filter">Filter</button>
                             </div>
+
                             <div class="pull-right d-flex">
                                 <select class="form-control" id="month" name="bulan_pilihan">
                                     <option value="all">Bulan Semua</option>
@@ -31,6 +30,7 @@
                                     @endfor
                                 </select>
                             </div>
+
                             <div class="pull-right d-flex">
                                 <select name="year" id="year" class="form-control">
                                     <option value="all">Tahun Semua</option>
@@ -41,6 +41,7 @@
                             </div>
                             {{-- </form> --}}
                         </div>
+
                         <div class="box-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
@@ -58,7 +59,7 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->date }}</td>
+                                            <td>{{ indo_date($item->date) }}</td>
                                             <td>{{ empty($item->customer[0]->name) ? 'Umum' : $item->customer[0]->name }}
                                             </td>
                                             <td>{{ format_rupiah($item->total_price) }}</td>

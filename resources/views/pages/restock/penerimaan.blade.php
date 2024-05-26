@@ -3,9 +3,6 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            {{-- <h1>
-                Penerimaan Kulakan
-            </h1> --}}
             <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -25,21 +22,22 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Kode Pembelian</th>
+                                        <th>Kode Transaksi Pembelian</th>
                                         <th>Tanggal Pembelian</th>
                                         <th>Supplier Nama</th>
                                         <th>Tanggal Penerimaan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->kode_pembelian }}</td>
-                                            <td>{{ $item->tanggal_pembelian }}</td>
+                                            <td>{{ indo_date($item->tanggal_pembelian) }}</td>
                                             <td>{{ $item->supplier_name }}</td>
-                                            <td>{{ check_empty($item->tanggal_penerimaan) }}
+                                            <td>{{ indo_date(check_empty($item->tanggal_penerimaan)) }}
                                             </td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm" data-toggle="modal"
@@ -81,7 +79,7 @@
                                     <input type="number" value="{{ $item->id_pembelian }}" name="id_pembelian" hidden>
                                     <div class="col-md-6">
                                         <label for="tanggal_pembelian">Tanggal Pembelian</label>
-                                        <input type="text" name="tanggal_pembelian" id="tanggal_pembelian"
+                                        <input type="date" name="tanggal_pembelian" id="tanggal_pembelian"
                                             value="{{ $item->tanggal_pembelian }}" class="form-control" readonly="">
                                     </div>
 
