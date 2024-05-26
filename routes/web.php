@@ -137,6 +137,8 @@ Route::group(
                 Route::get('print/{id}', [SalesController::class, 'print'])->name('service.sales.print');
 
                 Route::get('check-min-stock/{id}', [SalesController::class, 'check_min_stock']);
+
+                Route::get('data-restock/{item}', [SalesController::class, 'data_restock']);
             });
         });
 

@@ -230,17 +230,25 @@
                                     <th>Kategori</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
+                                    <th>Restock</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($product_item as $item)
+                                    {{-- @dd($hitung, $product_item, $hitung->where('item_id', $item->id)) --}}
+                                    {{-- @php
+                                        $check_null = $hitung->where('item_id', $item->id);
+                                        $hitung_hasil = !empty($check_null[0]) ? $check_null[0] : 0;
+                                        dd($hitung);
+                                    @endphp --}}
                                     <tr>
                                         <td>{{ $item->barcode }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ !empty($item->category[0]) ? $item->category[0]->name : '-' }}</td>
                                         <td class="text-right">Rp. {{ number_format($item->price) }}</td>
                                         <td class="text-right">{{ $item->stock }}</td>
+                                        <td class="text-right"></td>
                                         <td class="text-right">
                                             <button class="btn btn-xs btn-info" id="select"
                                                 data-id="{{ $item->id }}" data-barcode="{{ $item->barcode }}"
@@ -668,14 +676,35 @@
                 }
             }
 
+            function fetchRestockData() {
+                $('#example1 tbody tr').each(function() {
+                    let barcode = $(this).find('td:first').text();
+
+                    $.ajax({
+                        url: `/transaction/sales/data-restock/${barcode}`,
+                        method: 'GET',
+                        success: function(data) {
+                            console.log(data)
+                            $(this).find('td').eq(5).text(
+                                data);
+                        }.bind(this),
+                        error: function() {
+                            console.log('fail', barcode)
+                        }
+                    });
+                });
+            }
+
 
             $(document).on('keyup mouseup', '#discount, #cash', function() {
                 calculate()
+                fetchRestockData()
             })
 
             // panggil fungsi hitung
             $(document).ready(function() {
                 calculate()
+                fetchRestockData()
             })
 
             // process payment
