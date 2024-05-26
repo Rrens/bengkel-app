@@ -97,6 +97,8 @@ class SalesController extends Controller
         $invoice = $this->invoice();
         // dd($invoice);
         $date = Carbon::today()->format('Y-m-d');
+
+
         // dd($date);
 
         return view('pages.Transaction.sales', compact(
@@ -109,6 +111,55 @@ class SalesController extends Controller
             'invoice',
             'date',
         ));
+    }
+
+    public function data_restock($item)
+    {
+        $barcode = ProductItems::where('barcode', $item)->first();
+        $current = Carbon::now()->format('m');
+
+        $hitung = DB::table('history')
+            ->rightJoin("product_items", function ($join) {
+                $join->on("product_items.id", "=", "history.item_id");
+            })
+            ->select(DB::raw('*, MAX(total) as besar, SUM(total) as rata'))
+            ->whereMonth('date', $current)
+            ->groupBy('product_items.id')
+            ->whereNull('product_items.deleted_at')
+            ->whereNull('history.deleted_at')
+            ->get();
+
+        $jum_hari = DB::table('history')
+            ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
+            ->whereMonth('date', $current)
+            ->whereNull('deleted_at')
+            ->get();
+
+        foreach ($jum_hari as $item) {
+            $jum_hari = $item->jum_hari;
+        }
+
+        $check_null = $hitung->where('item_id', $barcode->id)->first();
+        $hitung_hasil = !empty($check_null) ? $check_null : 0;
+        $data = 0;
+
+        try {
+            if ($barcode->stock <= ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time) {
+                $data = ceil($hitung_hasil->rata / $jum_hari) * $barcode->lead_time * 2 + ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time - (ceil($hitung_hasil->rata / $jum_hari) * $barcode->lead_time + ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time);
+            } else if (
+                $barcode->stock <=
+                ceil($hitung_hasil->rata / $jum_hari) * $barcode->lead_time +
+                ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time
+            ) {
+                $data = ceil($hitung_hasil->rata / $jum_hari) * $barcode->lead_time * 2 + ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time - (ceil($hitung_hasil->rata / $jum_hari) * $barcode->lead_time + ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time);
+            } else {
+                $data = ceil($hitung_hasil->rata / $jum_hari) * $barcode->lead_time * 2 + ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time - (ceil($hitung_hasil->rata / $jum_hari) * $barcode->lead_time + ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time);
+            }
+        } catch (Exception $error) {
+            return response()->json(0);
+        }
+
+        return response()->json($data);
     }
 
     public function cart_data()

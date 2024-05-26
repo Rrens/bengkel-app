@@ -68,9 +68,6 @@
                                                 $data->stok <=
                                                     ceil($hitung[$i]->rata / $jum_hari) * $data->time +
                                                         ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time)
-                                                {{-- <td>{{ ceil($hitung[$i]->rata / $jum_hari) * $data->time * 2 + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time - (ceil($hitung[$i]->rata / $jum_hari) * $data->time + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time) }}
-                                                    Item</td>
-                                                <td> --}}
                                                 <td>{{ ceil($hitung[$i]->rata / $jum_hari) * $data->time * 2 + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time - (ceil($hitung[$i]->rata / $jum_hari) * $data->time + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time) }}
                                                     Item</td>
                                                 {{-- @dd(ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time, ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time * 2 + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time, ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time * 2 + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time - (ceil($hitung[1]->rata / $jum_hari) * $data_part[1]->time + ($hitung[1]->besar - ceil($hitung[1]->rata / $jum_hari)) * $data_part[1]->time)) --}}
