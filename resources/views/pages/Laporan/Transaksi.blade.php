@@ -46,31 +46,23 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Pelanggan</th>
+                                        <th>Item</th>
+                                        <th>Price</th>
+                                        <th>Jual </th>
+                                        <th>Permintaan</th>
+                                        <th>Disc</th>
                                         <th>Total</th>
-                                        <th>Diskon</th>
-                                        <th>Total Akhir</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data as $item)
+                                    @foreach ($data_detail as $row)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ indo_date($item->date) }}</td>
-                                            <td>{{ empty($item->customer[0]->name) ? 'Umum' : $item->customer[0]->name }}
-                                            </td>
-                                            <td>{{ format_rupiah($item->total_price) }}</td>
-                                            <td>{{ format_rupiah($item->service) }}</td>
-                                            <td>{{ format_rupiah($item->final_price) }}</td>
-                                            <td>
-                                                <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                    data-target="#modalDetail{{ $item->id }}">Detail</button>
-                                                <a href="{{ route('laporan.transaction.print', $item->id) }}"
-                                                    target="_blank" class="btn btn-success btn-sm">Print</a>
-                                            </td>
+                                            <td>{{ $row->item[0]->name }}</td>
+                                            <td>{{ format_rupiah($row->item[0]->price) }}</td>
+                                            <td>{{ $row->jual }}</td>
+                                            <td>{{ $row->qty }}</td>
+                                            <td>{{ format_rupiah($row->discount_row) }}</td>
+                                            <td>{{ format_rupiah($row->total) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -82,7 +74,7 @@
         </section>
     </div>
 
-    @foreach ($data as $item)
+    {{-- @foreach ($data as $item)
         <div class="modal fade" id="modalDetail{{ $item->id }}">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -139,7 +131,6 @@
                                                         <th>Total</th>
                                                     </tr>
                                                     @foreach ($data_detail->where('sale_id', $item->id) as $row)
-                                                        {{-- @dd($row) --}}
                                                         <tr>
                                                             <td>{{ $row->item[0]->name }}</td>
                                                             <td>{{ format_rupiah($row->item[0]->price) }}</td>
@@ -161,14 +152,13 @@
                     <div class="modal-footer">
                         <div style="float: right;">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Tutup</button>
-                            {{-- <button type="submit" class="btn btn-primary">Simpan</button> --}}
                         </div>
                     </div>
                     </form>
                 </div>
             </div>
         </div>
-    @endforeach
+    @endforeach --}}
 
     @push('head')
         <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
@@ -191,8 +181,37 @@
     @endpush
 
     @push('scripts')
-        <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
+        <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+        <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+        <script>
+            $(function() {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    "autoWidth": false,
+                    "buttons": ["csv", "excel", "pdf", "print"]
+                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                $('#example2').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                });
+            });
+        </script>
         <script>
             $(function() {
                 $('#example1').DataTable()

@@ -26,7 +26,7 @@ class TransactionServiceController extends Controller
     {
         $active = 'laporan';
         $active_detail = 'transaction service';
-        $data = Sale::with('customer', 'user')->get();
+        // $data = Sale::with('customer', 'user')->get();
         $data_detail = SaleDetail::with('item')->get();
         $year = $this->year();
 
@@ -34,7 +34,7 @@ class TransactionServiceController extends Controller
         return view('pages.Laporan.Transaksi', compact(
             'active',
             'active_detail',
-            'data',
+            // 'data',
             'data_detail',
             'year'
         ));
@@ -47,27 +47,42 @@ class TransactionServiceController extends Controller
         $active_detail = 'transaction service';
 
         if ($month == 'all' && $year == 'all') {
-            $data = Sale::with('customer', 'user')->get();
+            // $data = Sale::with('customer', 'user')->get();
+            $data_detail = SaleDetail::with('item')
+                ->get();
         }
 
         if ($month == 'all' && $year != 'all') {
-            $data = Sale::with('customer', 'user')->where(DB::raw('YEAR(date)'), '=', $year)->get();
+            // $data = Sale::with('customer', 'user')->where(DB::raw('YEAR(date)'), '=', $year)->get();
+            $data_detail = SaleDetail::with('item')
+                ->whereHas('sale', function ($query) use ($month, $year) {
+                    $query->where(DB::raw('YEAR(date)'), '=', $year);
+                })
+                ->get();
         }
 
         if ($month != 'all' && $year == 'all') {
-            $data = Sale::with('customer', 'user')->whereMonth('date', $month)->get();
+            // $data = Sale::with('customer', 'user')->whereMonth('date', $month)->get();
+            $data_detail = SaleDetail::with('item')
+                ->whereHas('sale', function ($query) use ($month, $year) {
+                    $query->whereMonth('date', $month);
+                })->get();
         }
 
         if ($month != 'all' && $year != 'all') {
-            $data = Sale::with('customer', 'user')->whereMonth('date', $month)->where(DB::raw('YEAR(date)'), '=', $year)->get();
+            // $data = Sale::with('customer', 'user')->whereMonth('date', $month)->where(DB::raw('YEAR(date)'), '=', $year)->get();
+            $data_detail = SaleDetail::with('item')
+                ->whereHas('sale', function ($query) use ($month, $year) {
+                    $query->whereMonth('date', $month)->where(DB::raw('YEAR(date)'), '=', $year);
+                })
+                ->get();
         }
 
-        $data_detail = SaleDetail::with('item')->get();
         $year = $this->year();
         return view('pages.Laporan.Transaksi', compact(
             'active',
             'active_detail',
-            'data',
+            // 'data',
             'data_detail',
             'month',
             'year'
