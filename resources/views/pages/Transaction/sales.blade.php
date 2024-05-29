@@ -103,10 +103,11 @@
                                                     <input type="hidden" id="stock">
                                                     <input type="hidden" id="jual_cart">
                                                     <input type="hidden" id="qty_cart">
-                                                    <input type="text" id="barcode" class="form-control" autofocus="">
+                                                    <input type="text" id="barcode" class="form-control"
+                                                        autofocus="">
                                                     <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                                            data-target="#modal-item">
+                                                        <button type="button" class="btn btn-info btn-flat"
+                                                            data-toggle="modal" data-target="#modal-item">
                                                             <i class="fa fa-search"></i>
                                                         </button>
                                                     </span>
@@ -138,7 +139,8 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <br>
-                                                <button type="button" id="add_cart" class="btn btn-primary" style="float: right;">
+                                                <button type="button" id="add_cart" class="btn btn-primary"
+                                                    style="float: right;">
                                                     <i class="fa fa-cart-plus"> Add</i>
                                                 </button>
                                             </div>
@@ -233,7 +235,8 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="grand_total">Total Harga Akhir</label>
-                                                <input type="text" id="grand_total" class="form-control" readonly="">
+                                                <input type="text" id="grand_total" class="form-control"
+                                                    readonly="">
                                             </div>
                                         </div>
                                     </tr>
@@ -272,8 +275,8 @@
                                                 <label for="note">Catatan</label>
                                                 <textarea id="note" rows="13" class="form-control"></textarea>
                                             </div>
-                                            <input type="date" name="date" id="date_id" value="{{ old('date') }}"
-                                            hidden>
+                                            <input type="date" name="date" id="date_id"
+                                                value="{{ old('date') }}" hidden>
                                         </div>
                                     </tr>
 
@@ -281,13 +284,15 @@
                                         <div class="pull-right d-flex">
                                             <div class="form-group">
                                                 <div style="float: right; padding:10px">
-                                                    <button id="cancel_payment" class="btn btn-block btn-flat btn-warning">
+                                                    <button id="cancel_payment"
+                                                        class="btn btn-block btn-flat btn-warning">
                                                         <i class="fa fa-refresh"> Cancel</i>
                                                     </button>
                                                 </div>
 
                                                 <div style="float: right; padding:10px">
-                                                    <button id="process_payment" class="btn btn-block btn-flat btn-flat btn-success">
+                                                    <button id="process_payment"
+                                                        class="btn btn-block btn-flat btn-flat btn-success">
                                                         <i class="fa fa-paper-plane-o"> Process Payment</i>
                                                     </button>
                                                 </div>
@@ -444,7 +449,7 @@
                     // split   = number_string.split(','),
                     // sisa    = reverse.match[0].length % 3,
                     // rupiah  = reverse.match[0].substr(0, sisa),
-                    ribuan  = reverse.match(/\d{1,3}/g);
+                    ribuan = reverse.match(/\d{1,3}/g);
 
                 ribuan = ribuan.join('.').split('').reverse().join('');
 

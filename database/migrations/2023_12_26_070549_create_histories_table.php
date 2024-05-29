@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('item_id')->references('id')->on('product_items');
             $table->date('date');
             $table->integer('total');
+            $table->integer('result_total')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

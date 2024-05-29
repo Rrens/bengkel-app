@@ -15,14 +15,29 @@ class ProductItemsSeeder extends Seeder
      */
     protected $faker;
 
-    public function __construct(FakerFactory $faker)
-    {
-        // parent::__construct();
-        $this->faker = FakerFactory::create();
-    }
+    // public function __construct(FakerFactory $faker)
+    // {
+    //     // parent::__construct();
+    //     $this->faker = FakerFactory::create();
+    // }
 
     public function run(): void
     {
-        
+        DB::table('product_items')->insert([
+            [
+                'barcode' => 'A001',
+                'name' => 'Busi',
+                'category_id' => 1,
+                'price' => 10000,
+                'stock' => 100,
+            ],
+            [
+                'barcode' => 'A002',
+                'name' => 'Rantai',
+                'category_id' => 1,
+                'price' => 25000,
+                'stock' => 300,
+            ],
+        ]);
     }
 }

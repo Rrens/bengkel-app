@@ -27,7 +27,7 @@ class TransactionServiceController extends Controller
         $active = 'laporan';
         $active_detail = 'transaction service';
         // $data = Sale::with('customer', 'user')->get();
-        $data_detail = SaleDetail::with('item')->get();
+        $data_detail = SaleDetail::all();
         $year = $this->year();
 
         // dd($data, $data_detail);
