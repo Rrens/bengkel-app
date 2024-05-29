@@ -3,9 +3,7 @@
 @section('container')
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>
-                LAPORAN PENERIMAAN
-            </h1>
+            <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="active">Laporan Penerimaan</li>
@@ -57,8 +55,8 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->tanggal_pembelian }}</td>
-                                            <td>{{ $item->tanggal_penerimaan }}</td>
+                                            <td>{{ indo_date($item->tanggal_pembelian) }}</td>
+                                            <td>{{ indo_date($item->tanggal_penerimaan) }}</td>
                                             <td>{{ $item->supplier }}</td>
                                             <td>{{ $item->product }}</td>
                                             <td>{{ $item->jumlah_pembelian }}</td>
@@ -113,7 +111,7 @@
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                    "buttons": ["csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
                 $('#example2').DataTable({
                     "paging": true,

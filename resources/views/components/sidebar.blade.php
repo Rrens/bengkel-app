@@ -74,7 +74,7 @@
 
              <li class="{{ $active == 'transaction' ? 'active' : '' }}">
                  <a href="{{ route('service.sales.index') }}">
-                     <i class="fa fa-shopping-cart"></i> <span> Transaksi Servis</span>
+                     <i class="fa fa-shopping-cart"></i> <span> Transaksi Servis Motor</span>
                  </a>
              </li>
 
@@ -112,14 +112,14 @@
 
                  <ul class="treeview-menu">
                      <li class="{{ $active_detail == 'transaction service' ? 'active' : '' }}">
-                         <a href="{{ route('laporan.transaction.index') }}"><i class="fa fa-circle-o"></i> Laporan Transaksi Service</a>
+                         <a href="{{ route('laporan.transaction.index') }}"><i class="fa fa-circle-o"></i> Laporan Transaksi Servis Motor</a>
                      </li>
 
                      <li class="{{ $active_detail == 'pembelian' ? 'active' : '' }}">
                          <a href="{{ route('laporan.pembelian.index') }}"><i class="fa fa-circle-o"></i> Laporan Pembelian
                          </a>
                      </li>
-                     
+
                      <li class="{{ $active_detail == 'penerimaan' ? 'active' : '' }}">
                          <a href="{{ route('laporan.penerimaan.index') }}"><i class="fa fa-circle-o"></i> Laporan Penerimaan
                          </a>

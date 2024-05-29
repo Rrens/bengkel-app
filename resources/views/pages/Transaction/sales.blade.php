@@ -9,97 +9,147 @@
             <br>
             <ol class=" breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i></a></li>
-                <li>Transaction</li>
+                <li>Transaksi Servis Motor</li>
                 <!-- <li class="active">Stock In</li> -->
             </ol>
         </section>
 
         <section class="content">
-            <div class="container">
+            <div class="container center">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="box">
+                    <div class="col-md-6">
+                        <div class="box box-widget">
                             <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="date">Tanggal Transaksi</label>
-                                            <input type="date" class="form-control"
-                                                value="{{ old('date') == null ? $date : old('date') }}" name="date"
-                                                id="date">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="kasir">Kasir</label>
-                                            <input type="text" name="user_id" id="user_id"
-                                                value="{{ auth()->user()->name }}" readonly class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="kode_transaksi">Kode Transaksi</label>
-                                            <input type="text" name="kode_transaksi" id="kode_transaksi"
-                                                class="form-control" value="{{ $invoice }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="customer">Pelanggan</label>
-                                            <select id="customer" class="form-control">
-                                                <option selected>Umum</option>
-                                                @foreach ($customers as $item)
-                                                    <option {{ $item->id == old('customer') ? 'selected' : '' }}
-                                                        value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="barcode">Barcode</label>
-                                            <div class="form-group input-group">
-                                                <input type="hidden" id="item_id">
-                                                <input type="hidden" id="price">
-                                                <input type="hidden" id="stock">
-                                                <input type="hidden" id="jual_cart">
-                                                <input type="hidden" id="qty_cart">
-                                                <input type="text" id="barcode" class="form-control" autofocus="">
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                                        data-target="#modal-item">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </span>
+                                <table>
+                                    <tr>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="kode_transaksi">Kode Transaksi</label>
+                                                <input type="text" name="kode_transaksi" id="kode_transaksi"
+                                                    class="form-control" value="{{ $invoice }}" readonly>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{-- <div class="form-group">
-                                        <label for="grand_total2">Jumlah Jual</label>
-                                        <input type="text" class="form-control" id="grand_total2" readonly>
-                                    </div> --}}
-                                        <div class="form-group">
-                                            <label for="jumlah_jual">Jumlah Jual</label>
-                                            <input type="number" class="form-control" id="jumlah_jual">
-                                        </div>
+                                    </tr>
 
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="jumlah_permintaan">Jumlah Permintaan</label>
-                                            <input type="number" class="form-control" name="jumlah_permintaan"
-                                                id="jumlah_permintaan">
+                                    {{-- <tr>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="date">Tanggal Transaksi</label>
+                                                <input type="date" class="form-control"
+                                                    value="{{ old('date') == null ? $date : old('date') }}" name="date"
+                                                    id="date">
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <button type="button" id="add_cart" class="btn btn-primary" style="float: right;">
-                                    <i class="fa fa-cart-plus"> Add</i>
-                                </button>
+                                    </tr> --}}
+
+                                    <tr>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="date">Tanggal Transaksi</label>
+                                                <input type="date" class="form-control"
+                                                    value="{{ old('date') == null ? $date : old('date') }}" name="date"
+                                                    id="date">
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    {{-- <div class="form-group">
+                                        <label>Tanggal Pembelian *</label>
+                                        <input type="date" name="tanggal_pembelian"
+                                            value="{{ now() }}" class="form-control"
+                                            id="tanggal_pembelian">
+                                    </div> --}}
+
+                                    <tr>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="kasir">Kasir</label>
+                                                <input type="text" name="user_id" id="user_id"
+                                                    value="{{ auth()->user()->name }}" readonly class="form-control">
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="customer">Pelanggan</label>
+                                                <select id="customer" class="form-control">
+                                                    <option selected>Umum</option>
+                                                    @foreach ($customers as $item)
+                                                        <option {{ $item->id == old('customer') ? 'selected' : '' }}
+                                                            value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-md-6">
+                        <div class="box box-widget">
+                            <div class="box-body">
+                                <table>
+                                    <tr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="barcode">Barcode</label>
+                                                <div class="form-group input-group">
+                                                    <input type="hidden" id="item_id">
+                                                    <input type="hidden" id="price">
+                                                    <input type="hidden" id="stock">
+                                                    <input type="hidden" id="jual_cart">
+                                                    <input type="hidden" id="qty_cart">
+                                                    <input type="text" id="barcode" class="form-control" autofocus="">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
+                                                            data-target="#modal-item">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="jumlah_jual">Jumlah Jual</label>
+                                                <input type="number" class="form-control" id="jumlah_jual">
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="jumlah_permintaan">Jumlah Permintaan</label>
+                                                <input type="number" class="form-control" name="jumlah_permintaan"
+                                                    id="jumlah_permintaan">
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <br>
+                                                <button type="button" id="add_cart" class="btn btn-primary" style="float: right;">
+                                                    <i class="fa fa-cart-plus"> Add</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
                         <div class="box box-widget">
                             <div class="box-body table-responsive">
                                 <table class="table table-bordered table-striped">
@@ -126,7 +176,7 @@
                                                 <td>{{ format_rupiah_tanpa_rp($item->price) }}</td>
                                                 <td>{{ $item->jumlah_jual }}</td>
                                                 <td>{{ $item->quantity }}</td>
-                                                <td>{{ $item->discount_item }}</td>
+                                                <td>{{ format_rupiah_tanpa_rp($item->discount_item) }}</td>
                                                 <td id="total">{{ format_rupiah_tanpa_rp($item->total) }}</td>
                                                 <td class="text-center" width="160px">
                                                     <button id="update_cart" data-toggle="modal"
@@ -141,6 +191,7 @@
                                                         data-total="{{ $item->total }}" class="btn btn-xs btn-primary">
                                                         <i class="fa fa-pencil"></i> Update
                                                     </button>
+
                                                     <button id="del_cart" data-cartid="{{ $item->id }}"
                                                         class="btn btn-xs btn-danger">
                                                         <i class="fa fa-trash"></i>Delete
@@ -153,60 +204,99 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-md-4">
                         <div class="box box-widget">
                             <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="sub_total">Sub Total</label>
-                                            <input type="text" id="sub_total" value="" class="form-control"
-                                                readonly="">
+                                <table>
+                                    <tr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="sub_total">Sub Total</label>
+                                                <input type="text" id="sub_total" value="" class="form-control"
+                                                    readonly="">
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="jasa">Jasa</label>
-                                            <input type="text" id="discount" value="0" min="0"
-                                                class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="grand_total">Total Harga Akhir</label>
-                                            <input type="text" id="grand_total" class="form-control" readonly="">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="cash">Dibayarkan</label>
-                                            <input type="text" id="cash" value="0" min="0"
-                                                class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="cash">Kembalian</label>
-                                            <input type="text" id="change" value="0" min="0"
-                                                class="form-control" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="from-group">
-                                            <label for="note">Catatan</label>
-                                            <textarea id="note" rows="16" class="form-control"></textarea>
-                                        </div>
-                                        <input type="date" name="date" id="date_id" value="{{ old('date') }}"
-                                            hidden>
-                                    </div>
-                                </div>
-                                <div style="float: right; margin-top: 10px;">
-                                    <button id="cancel_payment" class="btn btn-block btn-flat btn-warning">
-                                        <i class="fa fa-refresh"> Cancel</i>
-                                    </button>
-                                    <button id="process_payment" class="btn btn-block btn-flat btn-flat btn-success">
-                                        <i class="fa fa-paper-plane-o"> Process Payment</i>
-                                    </button>
-                                </div>
-                            </div>
-                            </dv>
-                        </div>
+                                    </tr>
 
+                                    <tr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="discount">Diskon</label>
+                                                <input type="text" id="discount" value="0" min="0"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="grand_total">Total Harga Akhir</label>
+                                                <input type="text" id="grand_total" class="form-control" readonly="">
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="cash">Dibayarkan</label>
+                                                <input type="text" id="cash" value="0" min="0"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="cash">Kembalian</label>
+                                                <input type="text" id="change" value="0" min="0"
+                                                    class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="box box-widget">
+                            <div class="box-body">
+                                <table>
+                                    <tr>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="note">Catatan</label>
+                                                <textarea id="note" rows="13" class="form-control"></textarea>
+                                            </div>
+                                            <input type="date" name="date" id="date_id" value="{{ old('date') }}"
+                                            hidden>
+                                        </div>
+                                    </tr>
+
+                                    <tr>
+                                        <div class="pull-right d-flex">
+                                            <div class="form-group">
+                                                <div style="float: right; padding:10px">
+                                                    <button id="cancel_payment" class="btn btn-block btn-flat btn-warning">
+                                                        <i class="fa fa-refresh"> Cancel</i>
+                                                    </button>
+                                                </div>
+
+                                                <div style="float: right; padding:10px">
+                                                    <button id="process_payment" class="btn btn-block btn-flat btn-flat btn-success">
+                                                        <i class="fa fa-paper-plane-o"> Process Payment</i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
         </section>
@@ -221,6 +311,7 @@
                         </button>
                         <h4 class="modal-title">Pilih Produk</h4>
                     </div>
+
                     <div class="modal-body table-responsive">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
@@ -275,6 +366,7 @@
                         </button>
                         <h4 class="modal-title">Update Product Item</h4>
                     </div>
+
                     <div class="modal-body">
                         <input type="hidden" id="cartid_item">
                         <div class="form-group">
@@ -283,44 +375,53 @@
                                 <div class="col-md-5">
                                     <input type="text" id="barcode_item" class="form-control" readonly="">
                                 </div>
+
                                 <div class="col-md-7">
                                     <input type="text" id="product_item" class="form-control" readonly="">
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="price_item">Harga</label>
-                            <input type="number" id="price_item" min="0" class="form-control">
+                            <input type="text" id="price_item" min="0" class="form-control">
                         </div>
+
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="jual_item">Jual</label>
                                     <input type="number" id="jual_item" min="1" class="form-control">
                                 </div>
+
                                 <div class="col-md-4">
                                     <label for="qty_item">Permintaan</label>
                                     <input type="number" id="qty_item" min="1" class="form-control">
                                 </div>
+
                                 <div class="col-md-4">
                                     <label for="qty_item">Stok</label>
                                     <input type="number" id="stock_item" class="form-control" readonly="">
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label for="total_before">Total sebelum diskon</label>
-                            <input type="number" id="total_before" class="form-control" readonly="">
+                            <input type="text" id="total_before" class="form-control" readonly="">
                         </div>
+
                         <div class="form-group">
                             <label for="discount_item">Diskon per barang</label>
-                            <input type="number" id="discount_item" min="0" class="form-control">
+                            <input type="text" id="discount_item" min="0" class="form-control">
                         </div>
+
                         <div class="form-group">
                             <label for="total_item">Total setelah Diskon</label>
-                            <input type="number" id="total_item" class="form-control" readonly="">
+                            <input type="text" id="total_item" class="form-control" readonly="">
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <div class="pull-right">
                             <button type="button" id="edit_cart" class="btn btn-flat btn-success">
@@ -331,8 +432,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
     @push('head')
@@ -348,7 +447,11 @@
                 angka = Math.abs(angka); // Ubah ke nilai absolut
 
                 var reverse = angka.toString().split('').reverse().join(''),
-                    ribuan = reverse.match(/\d{1,3}/g);
+                    // split   = number_string.split(','),
+                    // sisa    = reverse.match[0].length % 3,
+                    // rupiah  = reverse.match[0].substr(0, sisa),
+                    ribuan  = reverse.match(/\d{1,3}/g);
+
                 ribuan = ribuan.join('.').split('').reverse().join('');
 
                 // Tambahkan tanda minus jika angka negatif
@@ -358,7 +461,6 @@
 
                 return ribuan;
             }
-
 
             $('#discount').on('change', function() {
                 let discount = $(this).val();
@@ -389,9 +491,10 @@
                 })
             })
 
-            $('#jumlah_jual').on('change', function() {
+            $('#jumlah_jual').on('keyup', function() {
                 let stock = parseInt($('#stock').val());
                 let jumlah_jual = parseInt($('#jumlah_jual').val());
+                let jumlah_permintaan = parseInt($('#jumlah_permintaan').val());
                 // let jumlah_permintaan = parseInt($('#jumlah_permintaan').val());
                 // console.log(stock)
                 // console.log(jumlah_jual)
@@ -399,9 +502,11 @@
 
                 if (jumlah_jual >= stock) {
                     $('#jumlah_jual').val(stock);
+                    $('#jumlah_permintaan').val(jumlah_jual);
                     alert('Jumlah Jual Melebihi Stok')
                 } else {
                     $('#jumlah_jual').val(jumlah_jual);
+                    $('#jumlah_permintaan').val(jumlah_jual);
                 }
             })
 
@@ -656,7 +761,7 @@
                 // console.log(discount);
                 let grand_total = 0
 
-                grand_total += (parseInt(subtotal) + parseInt(discount))
+                grand_total += (parseInt(subtotal) - parseInt(discount))
 
                 if (isNaN(grand_total)) {
                     $('#grand_total').val(0)
