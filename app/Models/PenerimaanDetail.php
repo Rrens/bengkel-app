@@ -27,7 +27,7 @@ class PenerimaanDetail extends Model
 
     public function penerimaan()
     {
-        return $this->hasMany(penerimaan::class, 'id', 'penerimaan_id');
+        return $this->hasMany(Penerimaan::class, 'id', 'penerimaan_id');
     }
 
     public function pembelian_detail()

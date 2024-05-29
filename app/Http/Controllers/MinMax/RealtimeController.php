@@ -90,11 +90,6 @@ class RealtimeController extends Controller
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
             ->get();
-        // dd($hitung);
-        // dd($hitung->where('name', 'Busi Audi'), $current);
-
-
-        //	echo "<script>console.log('Debug Objects: " . $jum_hari . "' );</script>";
 
         $data_part = DB::table('product_items')
             ->join("history", function ($join) {
