@@ -328,6 +328,8 @@ class SalesController extends Controller
                 $product_item->stock -= $item->jumlah_jual;
                 $product_item->save();
 
+                $history = null;
+
                 $history = new History();
                 $history->item_id = $item->item_id;
                 $history->date = $request['date'];

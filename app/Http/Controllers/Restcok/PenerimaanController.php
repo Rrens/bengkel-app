@@ -102,7 +102,7 @@ class PenerimaanController extends Controller
 
             $item = ProductItems::where('name', $request->nama_sparepart[$i])->first();
             $item->stock += $request->jumlah_penerimaan[$i];
-            // $item->lead_time = $selisihHari;
+            $item->lead_time = $selisihHari;
             $item->save();
 
             $detail = PenerimaanDetail::where('item_id', $item->id)
@@ -125,6 +125,8 @@ class PenerimaanController extends Controller
             $avg_lead_time = PenerimaanDetail::whereMonth('date', Carbon::now()->format('m'))
                 ->where('item_id', $item->id)
                 ->avg('lead_time');
+            // ->get();
+
 
             $item = ProductItems::where('name', $request->nama_sparepart[$i])->first();
             $item->lead_time = $avg_lead_time;

@@ -157,7 +157,8 @@ Route::group(
             ], function () {
                 Route::get('', [TransactionServiceController::class, 'index'])->name('laporan.transaction.index');
                 Route::get('filter/{month}/{year}', [TransactionServiceController::class, 'filter'])->name('laporan.transaction.filter');
-                Route::get('print/{id}', [TransactionServiceController::class, 'print'])->name('laporan.transaction.print');
+                Route::get('print', [TransactionServiceController::class, 'print'])->name('laporan.transaction.print');
+                Route::get('print/{month}/{year}', [TransactionServiceController::class, 'print'])->name('laporan.transaction.print-filter');
             });
 
             Route::group([
@@ -165,6 +166,8 @@ Route::group(
             ], function () {
                 Route::get('', [LaporanPembelianController::class, 'index'])->name('laporan.pembelian.index');
                 Route::get('filter/{month}/{year}', [LaporanPembelianController::class, 'filter'])->name('laporan.pembelian.filter');
+                Route::get('print', [LaporanPembelianController::class, 'print'])->name('laporan.pembelian.print');
+                Route::get('print/{month}/{year}', [LaporanPembelianController::class, 'print'])->name('laporan.pembelian.print-filter');
             });
 
             Route::group([
@@ -172,6 +175,8 @@ Route::group(
             ], function () {
                 Route::get('', [LaporanPenerimaanController::class, 'index'])->name('laporan.penerimaan.index');
                 Route::get('filter/{month}/{year}', [LaporanPenerimaanController::class, 'filter'])->name('laporan.penerimaan.filter');
+                Route::get('print', [LaporanPenerimaanController::class, 'print'])->name('laporan.penerimaan.print');
+                Route::get('print/{month}/{year}', [LaporanPenerimaanController::class, 'print'])->name('laporan.penerimaan.print-filter');
             });
         });
     }

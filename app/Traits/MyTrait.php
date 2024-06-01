@@ -13,7 +13,6 @@ trait MyTrait
 {
     public function minmax($item_id = null, $jumlah = null)
     {
-        // dd($item_id, $jumlah);
         try {
             $today = date("Y-m-d");
             $current = Carbon::now()->format('m');
@@ -28,7 +27,6 @@ trait MyTrait
                 $jum_hari = $data->jum_hari;
             }
 
-
             $hitung = DB::table('history')
                 //->select(DB::raw('MAX(total) as besar, ceil(SUM(total)/30) as rata'))
                 ->select(DB::raw('MAX(total) as terbesar, SUM(total) as rata'))
@@ -42,27 +40,17 @@ trait MyTrait
                 $terbesar = $data->terbesar;
             }
 
-            // $data_stok = DB::table('sparepart')
-            //     ->select("*")
-            //     ->where('item_id', $item_id)
-            //     ->get();
-
             $data_stok = ProductItems::where('id', $item_id)
                 ->get();
 
             foreach ($data_stok as $data) {
                 $dt_stok =  $data->stock;
-                $time =  $data->time;
+                $time =  $data->lead_time;
             }
-
-            // dd($jum_hari);
-            // dd(ceil($rata / $jum_hari));
 
             $rata2 = ceil($rata /  $jum_hari);
 
-
             $cek = ceil($dt_stok - $jumlah);
-            // dd($data_stok, $dt_stok, $jumlah);
 
             //ss=(maksimum permintaan - rata2 permintaan K ) x lead time W
             $ss = ($terbesar - $rata2) * $time;
@@ -75,9 +63,6 @@ trait MyTrait
 
             // = max - min
             $Q = ceil($max - $min);
-
-
-            //echo "<script>console.log('Debug Objects: " . $max . "' );</script>";
 
             $tgl = DB::table('history')
                 ->select(DB::raw('COUNT(date) as tgl'))
@@ -100,8 +85,8 @@ trait MyTrait
                 $part = $data->part;
             }
 
-
             if ($tgl == 0) {
+
                 if ($cek < 0) {
                     return back()->withErrors('Stock Tidak Mencukupi ' . $Q . '');
                 } else if ($cek > $min) {
@@ -121,71 +106,32 @@ trait MyTrait
 
                         $sisa = $dt_stok - $ss;
 
-                        // INSERT IKI
-                        // DB::table('history')
-                        //     ->whereNull('deleted_at')
-                        //     ->insert([
-                        //         'date' => $today,
-                        //         'item_id' => $item_id,
-                        //         'total' => $sisa
-                        //     ]);
-
                         return back()->withSuccess('Sudah Mencapai Safety Stock, Hanya Dapat Dilayani ' . $sisa . ' Item');
                     }
                 } else {
-                    // DB::table('transaksi')->insert([
-                    //     'id_tran' => $value->id_tran,
-                    //     'tgl_tran' => $today,
-                    //     'id' => $value->id,
-                    //     'item_id' => $item_id,
-                    //     'jumlah' => $jumlah
-                    // ]);
 
-                    // INSERT IKI
-                    // DB::table('history')
-                    //     ->whereNull('deleted_at')
-                    //     ->insert([
-                    //         'date' => $today,
-                    //         'item_id' => $item_id,
-                    //         'total' => $jumlah
-                    //     ]);
-
-                    // DB::table('sparepart')
-                    //     ->where('item_id', $item_id)
-                    //     ->update(
-                    //         [
-                    //             'stok' => $cek
-                    //         ]
-                    //     );
                     return back()->with('toast_success', 'Minimal Stock, Waktunya Restock Spare Part');
                 }
             } else {
 
-
-                // );
-
                 ///CEK HISTORY PART ADA TIDAK
-                if ($part == 1) {
+
+                if ($part >= 1) {
                     if ($cek < 0) {
                         return back()->withSuccess('Stock Tidak Mencukupi');
                     } else if ($cek > $min) {
-                        // DB::table('transaksi')->insert([
-                        //     'id_tran' => $value->id_tran,
-                        //     'tgl_tran' => $today,
-                        //     'id' => $value->id,
-                        //     'item_id' => $item_id,
-                        //     'jumlah' => $jumlah
-                        // ]);
                         $up = DB::table('history')
-                            ->select("*")
                             ->where('date', $today)
                             ->where('item_id', $item_id)
-                            ->get();
-                        foreach ($up as $data) {
-                            $total = $data->total;
-                        }
-                        $hasil = $total + $jumlah;
-                        // dd($tgl, $jumlah, $cek, $min, $part, 'TGL > 0', $hasil);
+                            ->sum('total');
+                        // ->get();
+                        // foreach ($up as $data) {
+                        //     $total = $data->total;
+                        // }
+                        $total = $up;
+
+                        // $hasil = $total + $jumlah;
+                        // dd($up);
 
 
                         DB::table('history')
@@ -194,92 +140,58 @@ trait MyTrait
                             ->update(
                                 [
                                     // 'total' => $hasil
-                                    'total' => $total
+                                    'result_total' => $total
                                 ]
                             );
 
-                        // DB::table('sparepart')
-                        //     ->where('item_id', $item_id)
-                        //     ->update(
-                        //         [
-                        //             'stok' => $cek
-                        //         ]
-                        //     );
                         return back()->with('toast_success', 'Data Berhasil Disimpan');
                     } else if ($cek < $ss) {
                         if ($dt_stok <= $ss) {
                             return back()->withErrors('Sudah Mencapai Safety Stock Tidak Dapat Dilayani');
                         } else {
                             $sisa1 = $dt_stok - $ss;
-                            // DB::table('transaksi')->insert([
-                            //     'id_tran' => $value->id_tran,
-                            //     'tgl_tran' => $today,
-                            //     'id' => $value->id,
-                            //     'item_id' => $item_id,
-                            //     'jumlah' => $sisa1
-                            // ]);
+
                             $up12 = DB::table('history')
                                 ->select("*")
                                 ->where('date', $today)
                                 ->where('item_id', $item_id)
-                                ->get();
-                            foreach ($up12 as $data) {
-                                $total12 = $data->total;
-                            }
-                            $hasil12 = $total12 + $sisa1;
+                                ->sum('total');
+                            // foreach ($up12 as $data) {
+                            //     $total12 = $data->total;
+                            // }
+                            $hasil12 = $up12 + $sisa1;
 
                             DB::table('history')
                                 ->where('date', $today)
                                 ->where('item_id', $item_id)
                                 ->update(
                                     [
-                                        'total' => $hasil12
+                                        'result_total' => $hasil12
                                     ]
                                 );
 
-                            // DB::table('sparepart')
-                            //     ->where('item_id', $item_id)
-                            //     ->update(
-                            //         [
-                            //             'stok' => $ss
-                            //         ]
-                            //     );
                             return back()->withSuccess('Sudah Mencapai Safety Stock, Hanya Dapat Dilayani ' . $sisa1 . ' Item');
                         }
                     } else {
-                        // DB::table('transaksi')->insert([
-                        //     'id_tran' => $value->id_tran,
-                        //     'tgl_tran' => $today,
-                        //     'id' => $value->id,
-                        //     'item_id' => $item_id,
-                        //     'jumlah' => $jumlah
-                        // ]);
                         $up1 = DB::table('history')
                             ->select("*")
                             ->where('date', $today)
                             ->where('item_id', $item_id)
-                            ->get();
-                        foreach ($up1 as $data) {
-                            $total1 = $data->total;
-                        }
-                        $hasil1 = $total1 + $jumlah;
+                            ->sum('total');
+                        // foreach ($up1 as $data) {
+                        //     $total1 = $data->total;
+                        // }
+                        $hasil1 = $up1 + $jumlah;
 
                         DB::table('history')
                             ->where('date', $today)
                             ->where('item_id', $item_id)
                             ->update(
                                 [
-                                    'total' => $hasil1
+                                    'result_total' => $hasil1
                                 ]
                             );
 
-                        // DB::table('sparepart')
-                        //     ->where('item_id', $item_id)
-                        //     ->update(
-                        //         [
-                        //             'stok' => $cek
-                        //         ]
-                        //     );
                         return back()->with('toast_success', 'Minimal Stock, Waktunya Restock Spare Part');
                     }
 
@@ -290,58 +202,11 @@ trait MyTrait
                     if ($cek < 0) {
                         return back()->withSuccess('Stock Tidak Mencukupi');
                     } else if ($cek > $min) {
-
-
-                        // DB::table('transaksi')->insert([
-                        //     'id_tran' => $value->id_tran,
-                        //     'tgl_tran' => $today,
-                        //     'id' => $value->id,
-                        //     'item_id' => $item_id,
-                        //     'jumlah' => $jumlah
-                        // ]);
-
-                        // INSERT IKI
-                        // DB::table('history')->insert([
-                        //     'date' => $today,
-                        //     'item_id' => $item_id,
-                        //     'total' => $jumlah
-                        // ]);
-
-                        // DB::table('sparepart')
-                        //     ->where('item_id', $item_id)
-                        //     ->update(
-                        //         [
-                        //             'stok' => $cek
-                        //         ]
-                        //     );
                         return back()->with('toast_success', 'Data Berhasil Disimpan');
                     } else if ($cek <= $ss) {
                         return back()->withWarning('Sudah Mencapai Safety Stock');
                     } else {
-                        // DB::table('transaksi')->insert([
-                        //     'id_tran' => $value->id_tran,
-                        //     'tgl_tran' => $today,
-                        //     'id' => $value->id,
-                        //     'item_id' => $item_id,
-                        //     'jumlah' => $jumlah
-                        // ]);
 
-                        // INSERT IKI
-                        // DB::table('history')
-                        //     ->whereNull('deleted_at')
-                        //     ->insert([
-                        //         'date' => $today,
-                        //         'item_id' => $item_id,
-                        //         'total' => $jumlah
-                        //     ]);
-
-                        // DB::table('sparepart')
-                        //     ->where('item_id', $item_id)
-                        //     ->update(
-                        //         [
-                        //             'stok' => $cek
-                        //         ]
-                        //     );
                         return back()->with('toast_success', 'Sudah Mencapai Minimal Stock');
                     }
                 }

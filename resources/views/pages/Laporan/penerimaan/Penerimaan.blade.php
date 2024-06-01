@@ -6,7 +6,7 @@
             <br>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Laporan Pembelian</li>
+                <li class="active">Laporan Penerimaan</li>
             </ol>
         </section>
 
@@ -15,7 +15,15 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Laporan Pembelian</h3>
+                            <h3 class="box-title" style="margin-right: 10px;">Data Laporan Penerimaan</h3>
+                            @if (!empty($month) && !empty($tahun))
+                                <a target="_blank"
+                                    href="{{ route('laporan.penerimaan.print-filter', ['month' => $month, 'year' => $tahun]) }}"
+                                    class="btn btn-success btn-sm">print</a>
+                            @else
+                                <a target="_blank" href="{{ route('laporan.penerimaan.print') }}"
+                                    class="btn btn-success btn-sm">print</a>
+                            @endif
                             <div class="pull-right d-flex">
                                 <button class="btn btn-primary" id="btn-filter">Filter</button>
                             </div>
@@ -43,10 +51,12 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal Beli</th>
+                                        <th>Tanggal Pembelian</th>
+                                        <th>Tanggal Penerimaan</th>
                                         <th>Pemasok</th>
-                                        <th>Spare part</th>
+                                        <th>Spare Part</th>
                                         <th>Jumlah Dibeli</th>
+                                        <th>Jumlah Diterima</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,13 +64,11 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ indo_date($item->tanggal_pembelian) }}</td>
-                                            <td>{{ $item->supplier_name }}</td>
-                                            <td>{{ $item->sparepart }}</td>
+                                            <td>{{ indo_date($item->tanggal_penerimaan) }}</td>
+                                            <td>{{ $item->supplier }}</td>
+                                            <td>{{ $item->product }}</td>
                                             <td>{{ $item->jumlah_pembelian }}</td>
-                                            {{-- <td>{{ $data_datail->where('pembelian_id', $item->id)->first()['item'][0]['name'] }}
-                                            </td>
-                                            <td>{{ $data_datail->where('pembelian_id', $item->id)->first()['jumlah_pembelian'] }}
-                                            </td> --}}
+                                            <td>{{ $item->jumlah_penerimaan }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -124,13 +132,12 @@
                 });
             });
         </script>
-
         <script>
             $(document).ready(function() {
                 $('#btn-filter').on('click', function() {
                     let month = $('#month').val()
                     let year = $('#year').val()
-                    var url = `/laporan/pembelian/filter/${month}/${year}`;
+                    var url = `/laporan/penerimaan/filter/${month}/${year}`;
                     window.location.href = url;
                 });
             });
