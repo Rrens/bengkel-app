@@ -64,7 +64,7 @@ class PenerimaanController extends Controller
         $data = $this->data();
         $year = $this->year();
         // dd($year);
-        return view('pages.Laporan.Penerimaan', compact('active', 'active_detail', 'data', 'year'));
+        return view('pages.Laporan.penerimaan.Penerimaan', compact('active', 'active_detail', 'data', 'year'));
     }
 
     public function filter($month, $tahun)
@@ -75,6 +75,16 @@ class PenerimaanController extends Controller
         $data = $this->data($month, $tahun);
         $year = $this->year();
 
-        return view('pages.Laporan.Penerimaan', compact('active', 'active_detail', 'data', 'month', 'year', 'tahun'));
+        return view('pages.Laporan.penerimaan.Penerimaan', compact('active', 'active_detail', 'data', 'month', 'year', 'tahun'));
+    }
+
+    public function print($month = null, $year = null)
+    {
+        if (!isset($month) && !isset($year)) {
+            $data = $this->data($month, $year);
+        } else {
+            $data = $this->data();
+        }
+        return view('pages.Laporan.penerimaan.print', compact('data'));
     }
 }

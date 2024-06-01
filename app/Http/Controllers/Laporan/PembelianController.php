@@ -11,6 +11,35 @@ class PembelianController extends Controller
     {
         $active = 'laporan';
         $active_detail = 'pembelian';
+        $data = $this->data();
+
+        $year = $this->year();
+        return view('pages.Laporan.pembelian.Pembelian', compact('active', 'active_detail', 'data', 'year'));
+    }
+
+    public function filter($month, $tahun)
+    {
+        $active = 'laporan';
+        $active_detail = 'pembelian';
+
+        $data = $this->data_filter($month, $tahun);
+        $year = $this->year();
+
+        return view('pages.Laporan.pembelian.Pembelian', compact('active', 'active_detail', 'data', 'month', 'tahun', 'year'));
+    }
+
+    public function print($month = null, $year = null)
+    {
+        if (!isset($month) && !isset($year)) {
+            $data = $this->data_filter($month, $year);
+        } else {
+            $data = $this->data();
+        }
+        return view('pages.Laporan.pembelian.print', compact('data'));
+    }
+
+    public function data()
+    {
         $data = DB::table('pembelians as p')
             ->join('pembelian_details as pd', 'p.id', '=', 'pd.pembelian_id')
             ->join('product_items as pi', 'pd.item_id', '=', 'pi.id')
@@ -25,22 +54,10 @@ class PembelianController extends Controller
             ->groupBy('pi.id')
             ->get();
 
-        $year = $this->year();
-        return view('pages.Laporan.Pembelian', compact('active', 'active_detail', 'data', 'year'));
+        return $data;
     }
 
-    public function filter($month, $tahun)
-    {
-        $active = 'laporan';
-        $active_detail = 'pembelian';
-
-        $data = $this->data($month, $tahun);
-        $year = $this->year();
-
-        return view('pages.Laporan.Pembelian', compact('active', 'active_detail', 'data', 'month', 'tahun', 'year'));
-    }
-
-    public function data($month, $year)
+    public function data_filter($month, $year)
     {
         $query = DB::table('pembelians as p')
             ->join('pembelian_details as pd', 'p.id', '=', 'pd.pembelian_id')

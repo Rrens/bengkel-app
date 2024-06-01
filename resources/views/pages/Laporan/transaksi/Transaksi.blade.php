@@ -15,7 +15,15 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Data Laporan Transaksi Servis Motor</h3>
+                            <h3 class="box-title" style="margin-right: 10px;">Data Laporan Transaksi Servis Motor</h3>
+                            @if (!empty($month) && !empty($tahun))
+                                <a target="_blank"
+                                    href="{{ route('laporan.transaction.print-filter', ['month' => $month, 'year' => $tahun]) }}"
+                                    class="btn btn-success btn-sm">print</a>
+                            @else
+                                <a target="_blank" href="{{ route('laporan.transaction.print') }}"
+                                    class="btn btn-success btn-sm">print</a>
+                            @endif
                             {{-- <form action="" method="GET"> --}}
                             <div class="pull-right d-flex">
                                 <button class="btn btn-primary" id="btn-filter">Filter</button>
@@ -30,12 +38,13 @@
                                     @endfor
                                 </select>
                             </div>
-
                             <div class="pull-right d-flex">
                                 <select name="year" id="year" class="form-control">
                                     <option value="all">Tahun Semua</option>
                                     @foreach ($year as $item)
-                                        <option value="{{ $item }}">{{ $item }}</option>
+                                        <option {{ (empty($tahun) ? '' : $tahun == $item) ? 'selected' : '' }}
+                                            value="{{ $item }}">
+                                            {{ $item }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -46,7 +55,7 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Item</th>
+                                        <th>Tanggal</th>
                                         <th>Item</th>
                                         <th>Price</th>
                                         <th>Jual </th>

@@ -1,145 +1,211 @@
-<html moznomarginboxes mozdisallowselectionprint>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>AWR Motor - Print Nota</title>
-    <style type="text/css">
-        html {
-            font-family: "Verdana, Arial";
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Invoice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        @media print {
+            @page {
+                size: A3;
+            }
         }
 
-        .content {
-            width: 80mm;
-            font-size: 12px;
-            padding: 5px;
+        ul {
+            padding: 0;
+            margin: 0 0 1rem 0;
+            list-style: none;
         }
 
-        .title {
-            text-align: center;
-            font-size: 13px;
-            padding-bottom: 5px;
-            border-bottom: 1px dashed;
-        }
-
-        .head {
-            margin-top: 5px;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid;
+        body {
+            font-family: "Inter", sans-serif;
+            margin: 0;
         }
 
         table {
             width: 100%;
-            font-size: 12px
+            border-collapse: collapse;
         }
 
-        .thanks {
-            margin-top: 10px;
-            padding-top: 10px;
+        table,
+        table th,
+        table td {
+            border: 1px solid silver;
+        }
+
+        table th,
+        table td {
+            text-align: right;
+            padding: 8px;
+        }
+
+        h1,
+        h4,
+        p {
+            margin: 0;
+        }
+
+        .container {
+            padding: 20px 0;
+            width: 1000px;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .inv-title {
+            padding: 10px;
+            border: 1px solid silver;
             text-align: center;
-            border-top: 1px dashed;
+            margin-bottom: 30px;
         }
 
-        @media print {
-            @page {
-                width: 80mm;
-                margin: 0mm;
-            }
+        .inv-logo {
+            width: 150px;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 40px;
+        }
+
+        /* header */
+        .inv-header {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .inv-header> :nth-child(1) {
+            flex: 2;
+        }
+
+        .inv-header> :nth-child(2) {
+            flex: 1;
+        }
+
+        .inv-header h2 {
+            font-size: 20px;
+            margin: 0 0 0.3rem 0;
+        }
+
+        .inv-header ul li {
+            font-size: 15px;
+            padding: 3px 0;
+        }
+
+        /* body */
+        .inv-body table th,
+        .inv-body table td {
+            text-align: left;
+        }
+
+        .inv-body {
+            margin-bottom: 30px;
+        }
+
+        /* footer */
+        .inv-footer {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .inv-footer> :nth-child(1) {
+            flex: 2;
+        }
+
+        .inv-footer> :nth-child(2) {
+            flex: 1;
         }
     </style>
 </head>
 
-<body onload="window.print()">
-    <div class="content">
-        <div class="title">
-            <b>AWR Motor</b>
-            <br>
-            Jl.Makmur Sudimoro Sidoarjo
+<body>
+    <div class="container">
+        <div class="inv-title">
+            <h1>Invoice # 424773</h1>
         </div>
-
-        <div class="head">
-            <table cellspacing="0" cellpadding="0">
-                <tr>
-                    <td style="width: 200px">
-                        {{ $data->date }}
-                    </td>
-                    <td>Kasir</td>
-                    <td style="text-align:center; width:10px">:</td>
-                    <td style="text-align:right;">
-                        {{ $data->user[0]->name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ $data->Kode Transaksi }}
-                    </td>
-                    <td>Customer</td>
-                    <td style="text-align:center;">:</td>
-                    <td style="text-align:right;">
-                        {{ empty($data->customer) == null ? 'Umum' : $data->customer[0]->name }}
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="transaction">
-            <table class="transaction-table" cellspacing="0" cellpadding="0">
-
-                @foreach ($data_detail as $item)
+        <img src="./ZAF.jpg" class="inv-logo" />
+        <div class="inv-header">
+            <div>
+                <h2>ABC Private Limited</h2>
+                <ul>
+                    <li>Birmingom BS -435</li>
+                    <li>United Kingdom</li>
+                    <li>888-555-2311 | eadzhosting@gmail.com</li>
+                </ul>
+                <h2>ABC Private Limited</h2>
+                <ul>
+                    <li>Birmingom BS -435</li>
+                    <li>United Kingdom</li>
+                    <li>888-555-2311 | eadzhosting@gmail.com</li>
+                </ul>
+            </div>
+            <div>
+                <table>
                     <tr>
-                        <td style="width: 165px">{{ $item->item[0]->name }}</td>
-                        <td>{{ $item->qty }}</td>
-                        <td style="text-align:right; width:60px">{{ format_rupiah($item->price) }}</td>
-                        <td style="text-align:right; width:60px">
-                            {{ format_rupiah(($item->price - $item->discount_item) * $item->qty) }}
-                        </td>
+                        <th>Issue Date</th>
+                        <td>12-02-2018</td>
                     </tr>
-                @endforeach
-
-
-                <tr>
-                    <td colspan="4" style="border-bottom: 1px dashed; padding: 5px 0;"></td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td style="text-align: right; padding: 5px 0;">Sub Total</td>
-                    <td style="text-align: right; padding: 5px 0;">
-                        {{ format_rupiah($data->total_price) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td style="text-align: right; padding: 5px 0;">Diskon</td>
-                    <td style="text-align: right; padding: 5px 0;">
-                        {{ format_rupiah($data->service) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">Total Akhir</td>
-                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">
-                        {{ format_rupiah($data->final_price) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">Dibayarkan</td>
-                    <td style="border-top: 1px dashed; text-align:right; padding: 5px 0">
-                        {{ format_rupiah($data->cash) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td style="text-align:right;">Kembalian</td>
-                    <td style="text-align:right;">
-                        {{ format_rupiah($data->remaining) }}
-                    </td>
-                </tr>
+                    <tr>
+                        <th>Due Date</th>
+                        <td>12-02-2018</td>
+                    </tr>
+                    <tr>
+                        <th>Sub total</th>
+                        <td>6500</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <td>7000</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="inv-body">
+            <table>
+                <thead>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h4>Hosting</h4>
+                            <p>Some kind of hositing</p>
+                        </td>
+                        <td>1</td>
+                        <td>2000</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Hosting</h4>
+                            <p>Some kind of hositing</p>
+                        </td>
+                        <td>1</td>
+                        <td>2000</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-        <div class="thanks">
-            --- Thank You ---
-            <br>
-            AWR Motor
+        <div class="inv-footer">
+            <div><!-- required --></div>
+            <div>
+                <table>
+                    <tr>
+                        <th>Sub total</th>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <th>Sales tax</th>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <th>Grand total</th>
+                        <td>1200</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </body>
