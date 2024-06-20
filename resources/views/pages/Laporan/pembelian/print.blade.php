@@ -63,12 +63,24 @@
         .inv-body {
             margin-bottom: 30px;
         }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed;
+        }
     </style>
 </head>
 {{-- @dd($data) --}}
 
 <body>
     <div class="container">
+        <div class="title">
+            <b>AWR Motor</b>
+            <br>
+            Jl.Makmur Sudimoro Sidoarjo
+        </div>
         <div class="inv-body">
             <table>
                 <thead>

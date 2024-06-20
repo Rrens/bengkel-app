@@ -101,7 +101,7 @@ class RealtimeController extends Controller
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
             ->get();
-        // dd($hitung);
+        // dd($data_part);
         // dd($data_part, $hitung, $jum_hari);
         // dd($data_part->where('nm_motor', 'Wiper Volkswagen'));
 
