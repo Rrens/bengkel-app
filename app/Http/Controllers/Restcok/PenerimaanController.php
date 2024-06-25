@@ -122,10 +122,15 @@ class PenerimaanController extends Controller
             $detail->jumlah_penerimaan = $request->jumlah_penerimaan[$i];
             $detail->save();
 
-            $avg_lead_time = PenerimaanDetail::whereMonth('date', Carbon::now()->format('m'))
+            $tanggalPenerimaanFormat = $request->tanggal_penerimaan;
+
+
+            $avg_lead_time = PenerimaanDetail::whereMonth('date', Carbon::parse($request->tanggal_penerimaan)->format('m'))
                 ->where('item_id', $item->id)
                 ->avg('lead_time');
             // ->get();
+
+            // dd($avg_lead_time);
 
 
             $item = ProductItems::where('name', $request->nama_sparepart[$i])->first();

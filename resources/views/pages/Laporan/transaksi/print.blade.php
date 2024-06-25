@@ -63,12 +63,24 @@
         .inv-body {
             margin-bottom: 30px;
         }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed;
+        }
     </style>
 </head>
 {{-- @dd($data) --}}
 
 <body>
     <div class="container">
+        <div class="title">
+            <b>AWR Motor</b>
+            <br>
+            Jl.Makmur Sudimoro Sidoarjo
+        </div>
         <div class="inv-body">
             <table>
                 <thead>
@@ -83,12 +95,12 @@
                 <tbody>
                     @foreach ($data as $row)
                         <tr>
-                            <td>{{ $row->sale[0]->date }}</td>
-                            <td>{{ $row->item[0]->name }}</td>
-                            <td>{{ format_rupiah($row->item[0]->price) }}</td>
+                            <td>{{ $row->date }}</td>
+                            <td>{{ $row->name }}</td>
+                            <td>{{ format_rupiah($row->price) }}</td>
                             <td>{{ $row->jual }}</td>
                             <td>{{ $row->qty }}</td>
-                            <td>{{ format_rupiah($row->discount_row) }}</td>
+                            <td>{{ format_rupiah($row->discount_item) }}</td>
                             <td>{{ format_rupiah($row->total) }}</td>
                         </tr>
                     @endforeach

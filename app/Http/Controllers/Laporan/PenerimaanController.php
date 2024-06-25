@@ -26,6 +26,7 @@ class PenerimaanController extends Controller
                 // 'pnd.jumlah_penerimaan'
             )
             ->selectRaw('COUNT(pnd.jumlah_penerimaan) as jumlah_penerimaan')
+            ->orderBy('tanggal_penerimaan', 'asc')
             ->groupBy('pn.tanggal_penerimaan')
             ->groupBy('pd.item_id');
 

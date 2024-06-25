@@ -50,6 +50,7 @@ class PembelianController extends Controller
                 'pi.name as sparepart',
                 'pd.jumlah_pembelian'
             )
+            ->orderBy('tanggal_pembelian', 'asc')
             ->groupBy('p.id')
             ->groupBy('pi.id')
             ->get();
@@ -69,6 +70,7 @@ class PembelianController extends Controller
                 'pi.name as sparepart',
                 'pd.jumlah_pembelian'
             )
+            ->orderBy('tanggal_pembelian', 'asc')
             ->groupBy('p.id')
             ->groupBy('pi.id');
 

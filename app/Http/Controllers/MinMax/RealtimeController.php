@@ -84,7 +84,7 @@ class RealtimeController extends Controller
                 $join->on("product_items.id", "=", "history.item_id");
             })
             //->select(DB::raw('MAX(total) as besar, round(SUM(total)/30) as rata'))
-            ->select(DB::raw('*, SUM(result_total) as besar, SUM(total) as rata'))
+            ->select(DB::raw('*, MAX(result_total) as besar, SUM(total) as rata'))
             ->whereMonth('date', $current)
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
@@ -101,7 +101,9 @@ class RealtimeController extends Controller
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
             ->get();
+
         // dd($hitung);
+        // dd($data_part);
         // dd($data_part, $hitung, $jum_hari);
         // dd($data_part->where('nm_motor', 'Wiper Volkswagen'));
 

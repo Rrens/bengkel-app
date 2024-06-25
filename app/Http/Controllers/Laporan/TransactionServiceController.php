@@ -93,15 +93,30 @@ class TransactionServiceController extends Controller
     public function print($month = null, $year = null)
     {
         if (!isset($month) && !isset($year)) {
-            $data =
-                SaleDetail::all();
+            $data = DB::table('sale_details as sd')
+                ->join('product_items as pi', 'pi.id', '=', 'sd.item_id')
+                ->join('sales as s', 's.id', '=', 'sd.sale_id')
+                ->orderBy('s.date', 'asc')
+                ->get();
+            // dd($data);
         } else {
-            $data = SaleDetail::with('item')
-                ->whereHas('sale', function ($query) use ($month, $year) {
-                    $query->whereMonth('date', $month)->where(DB::raw('YEAR(date)'), '=', $year);
-                })
+            // $data = SaleDetail::with('item')
+            //     ->whereHas('sale', function ($query) use ($month, $year) {
+            //         $query->whereMonth('date', $month)->where(DB::raw('YEAR(date)'), '=', $year)
+            //             ->orderBy('date', 'DESC');
+            //     })
+            //     ->orderBy('sale.date', 'asc')
+            //     ->get();
+
+            $data = DB::table('sale_details as sd')
+                ->join('product_items as pi', 'pi.id', '=', 'sd.item_id')
+                ->join('sales as s', 's.id', '=', 'sd.sale_id')
+                ->whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->orderBy('s.date', 'asc')
                 ->get();
         }
+        // dd($data);
 
         return view('pages.Laporan.transaksi.print', compact('data'));
     }
