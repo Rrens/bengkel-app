@@ -95,12 +95,12 @@
                 <tbody>
                     @foreach ($data as $row)
                         <tr>
-                            <td>{{ $row->sale[0]->date }}</td>
-                            <td>{{ $row->item[0]->name }}</td>
-                            <td>{{ format_rupiah($row->item[0]->price) }}</td>
+                            <td>{{ $row->date }}</td>
+                            <td>{{ $row->name }}</td>
+                            <td>{{ format_rupiah($row->price) }}</td>
                             <td>{{ $row->jual }}</td>
                             <td>{{ $row->qty }}</td>
-                            <td>{{ format_rupiah($row->discount_row) }}</td>
+                            <td>{{ format_rupiah($row->discount_item) }}</td>
                             <td>{{ format_rupiah($row->total) }}</td>
                         </tr>
                     @endforeach

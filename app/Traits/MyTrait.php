@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 trait MyTrait
 {
-    public function minmax($item_id = null, $jumlah = null)
+    public function minmax($item_id = null, $jumlah = null, $date = null)
     {
         try {
             $today = date("Y-m-d");
@@ -121,9 +121,10 @@ trait MyTrait
                         return back()->withSuccess('Stock Tidak Mencukupi');
                     } else if ($cek > $min) {
                         $up = DB::table('history')
-                            ->where('date', $today)
+                            ->where('date', $date)
                             ->where('item_id', $item_id)
                             ->sum('total');
+                        // dd($up, $date, $item_id);
                         // ->get();
                         // foreach ($up as $data) {
                         //     $total = $data->total;
@@ -133,9 +134,9 @@ trait MyTrait
                         // $hasil = $total + $jumlah;
                         // dd($up);
 
-
+                        // dd('ini');
                         DB::table('history')
-                            ->where('date', $today)
+                            ->where('date', $date)
                             ->where('item_id', $item_id)
                             ->update(
                                 [
@@ -153,7 +154,7 @@ trait MyTrait
 
                             $up12 = DB::table('history')
                                 ->select("*")
-                                ->where('date', $today)
+                                ->where('date', $date)
                                 ->where('item_id', $item_id)
                                 ->sum('total');
                             // foreach ($up12 as $data) {
@@ -162,7 +163,7 @@ trait MyTrait
                             $hasil12 = $up12 + $sisa1;
 
                             DB::table('history')
-                                ->where('date', $today)
+                                ->where('date', $date)
                                 ->where('item_id', $item_id)
                                 ->update(
                                     [
@@ -175,7 +176,7 @@ trait MyTrait
                     } else {
                         $up1 = DB::table('history')
                             ->select("*")
-                            ->where('date', $today)
+                            ->where('date', $date)
                             ->where('item_id', $item_id)
                             ->sum('total');
                         // foreach ($up1 as $data) {
@@ -184,7 +185,7 @@ trait MyTrait
                         $hasil1 = $up1 + $jumlah;
 
                         DB::table('history')
-                            ->where('date', $today)
+                            ->where('date', $date)
                             ->where('item_id', $item_id)
                             ->update(
                                 [
