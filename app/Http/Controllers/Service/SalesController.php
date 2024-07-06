@@ -335,8 +335,8 @@ class SalesController extends Controller
                 $history->date = $request['date'];
                 $history->total = $item->quantity;
                 $history->save();
-                $this->minmax($item->item_id, $item->quantity, $request->date);
                 // dd($request->all(), $item);
+                $this->minmax($item->item_id, $item->quantity, $request->date);
             }
 
             Cart::where('user_id', Auth::user()->id)->delete();
