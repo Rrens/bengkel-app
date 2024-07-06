@@ -19,7 +19,7 @@ trait MyTrait
 
             $jum_hari = DB::table('history')
                 ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
-                ->whereMonth('date', $current)
+                ->whereMonth('date', Carbon::parse($date)->format('m'))
                 ->whereNull('deleted_at')
                 ->get();
 
@@ -29,11 +29,12 @@ trait MyTrait
 
             $hitung = DB::table('history')
                 //->select(DB::raw('MAX(total) as besar, ceil(SUM(total)/30) as rata'))
-                ->select(DB::raw('MAX(total) as terbesar, SUM(total) as rata'))
-                ->whereMonth('date', $current)
+                ->selectRaw('MAX(total) as terbesar, SUM(total) as rata')
+                ->whereMonth('date', Carbon::parse($date)->format('m'))
                 ->where('item_id', $item_id)
                 ->whereNull('deleted_at')
                 ->get();
+
 
             foreach ($hitung as $data) {
                 $rata = (int) $data->rata;
@@ -48,7 +49,8 @@ trait MyTrait
                 $time =  $data->lead_time;
             }
 
-            $rata2 = ceil($rata /  $jum_hari);
+            // dd($jum_hari);
+            $rata2 = ceil($rata / $jum_hari);
 
             $cek = ceil($dt_stok - $jumlah);
 
@@ -66,9 +68,10 @@ trait MyTrait
 
             $tgl = DB::table('history')
                 ->select(DB::raw('COUNT(date) as tgl'))
-                ->where('date', $today)
+                ->whereMonth('date', Carbon::parse($date)->format('m'))
                 ->whereNull('deleted_at')
                 ->get();
+
 
             foreach ($tgl as $data) {
                 $tgl = $data->tgl;
@@ -77,10 +80,9 @@ trait MyTrait
             $part = DB::table('history')
                 ->select(DB::raw('COUNT(item_id) as part'))
                 ->where('item_id', $item_id)
-                ->where('date', $today)
+                ->whereMonth('date', Carbon::parse($date)->format('m'))
                 ->whereNull('deleted_at')
                 ->get();
-
             foreach ($part as $data) {
                 $part = $data->part;
             }
@@ -121,7 +123,7 @@ trait MyTrait
                         return back()->withSuccess('Stock Tidak Mencukupi');
                     } else if ($cek > $min) {
                         $up = DB::table('history')
-                            ->where('date', $date)
+                            ->whereMonth('date', Carbon::parse($date)->format('m'))
                             ->where('item_id', $item_id)
                             ->sum('total');
                         // dd($up, $date, $item_id);
@@ -136,7 +138,7 @@ trait MyTrait
 
                         // dd('ini');
                         DB::table('history')
-                            ->where('date', $date)
+                            ->whereMonth('date', Carbon::parse($date)->format('m'))
                             ->where('item_id', $item_id)
                             ->update(
                                 [
@@ -154,7 +156,7 @@ trait MyTrait
 
                             $up12 = DB::table('history')
                                 ->select("*")
-                                ->where('date', $date)
+                                ->whereMonth('date', Carbon::parse($date)->format('m'))
                                 ->where('item_id', $item_id)
                                 ->sum('total');
                             // foreach ($up12 as $data) {
@@ -163,7 +165,7 @@ trait MyTrait
                             $hasil12 = $up12 + $sisa1;
 
                             DB::table('history')
-                                ->where('date', $date)
+                                ->whereMonth('date', Carbon::parse($date)->format('m'))
                                 ->where('item_id', $item_id)
                                 ->update(
                                     [
@@ -176,7 +178,7 @@ trait MyTrait
                     } else {
                         $up1 = DB::table('history')
                             ->select("*")
-                            ->where('date', $date)
+                            ->whereMonth('date', Carbon::parse($date)->format('m'))
                             ->where('item_id', $item_id)
                             ->sum('total');
                         // foreach ($up1 as $data) {
@@ -185,7 +187,7 @@ trait MyTrait
                         $hasil1 = $up1 + $jumlah;
 
                         DB::table('history')
-                            ->where('date', $date)
+                            ->whereMonth('date', Carbon::parse($date)->format('m'))
                             ->where('item_id', $item_id)
                             ->update(
                                 [

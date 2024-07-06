@@ -116,6 +116,8 @@ class PenerimaanController extends Controller
                 $detail->date = $data->tanggal_penerimaan;
                 $detail->pembelian_detail_id = $request->pembelian_detail_id[$i];
                 $detail->lead_time = $selisihHari;
+            } else {
+                $detail->lead_time = $selisihHari;
             }
 
             $detail->item_id = $item->id;

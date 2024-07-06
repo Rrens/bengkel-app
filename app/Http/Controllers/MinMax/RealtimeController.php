@@ -30,7 +30,7 @@ class RealtimeController extends Controller
                 $join->on("product_items.id", "=", "history.item_id");
             })
             //->select(DB::raw('MAX(total) as besar, round(SUM(total)/30) as rata'))
-            ->select(DB::raw('*,MAX(total) as besar, SUM(total) as rata'))
+            ->select(DB::raw('*,MAX(result_total) as besar, SUM(total) as rata'))
             ->whereMonth('date', $current)
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
@@ -45,13 +45,15 @@ class RealtimeController extends Controller
             ->join("history", function ($join) {
                 $join->on("product_items.id", "=", "history.item_id");
             })
+            ->join('penerimaan_details', function ($join) {
+                $join->on("product_items.id", "=", "penerimaan_details.item_id");
+            })
             ->whereMonth('history.date', $current)
-            ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "product_items.lead_time as time")
+            ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "penerimaan_details.lead_time as time")
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
             ->get();
-        // dd($hitung, $data_part);
         // dd($data_part, $hitung, $jum_hari);
 
         return view('pages.Minmax.realtime', compact(
@@ -95,14 +97,24 @@ class RealtimeController extends Controller
             ->join("history", function ($join) {
                 $join->on("product_items.id", "=", "history.item_id");
             })
+            ->join('penerimaan_details', function ($join) {
+                $join->on("product_items.id", "=", "penerimaan_details.item_id");
+            })
             ->whereMonth('history.date', $current)
-            ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "product_items.lead_time as time")
+            ->whereMonth('penerimaan_details.date', $current)
+            ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "penerimaan_details.lead_time as time")
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
             ->get();
+        // dd(
+        //     $hitung,
+        //     $data_part,
+        //     $current
+        // );
 
-        // dd($hitung);
+
+        // dd($hitung) ;
         // dd($data_part);
         // dd($data_part, $hitung, $jum_hari);
         // dd($data_part->where('nm_motor', 'Wiper Volkswagen'));
