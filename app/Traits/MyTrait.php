@@ -30,7 +30,8 @@ trait MyTrait
             $hitung = DB::table('history')
                 //->select(DB::raw('MAX(total) as besar, ceil(SUM(total)/30) as rata'))
                 ->selectRaw('MAX(total) as terbesar, SUM(total) as rata')
-                ->whereMonth('date', Carbon::parse($date)->format('m'))
+                // ->whereMonth('date', Carbon::parse($date)->format('m'))
+                ->whereDate('date', $date)
                 ->where('item_id', $item_id)
                 ->whereNull('deleted_at')
                 ->get();
@@ -123,7 +124,8 @@ trait MyTrait
                         return back()->withSuccess('Stock Tidak Mencukupi');
                     } else if ($cek > $min) {
                         $up = DB::table('history')
-                            ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            // ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            ->whereDate('date', $date)
                             ->where('item_id', $item_id)
                             ->sum('total');
                         // dd($up, $date, $item_id);
@@ -138,7 +140,8 @@ trait MyTrait
 
                         // dd('ini');
                         DB::table('history')
-                            ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            // ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            ->whereDate('date', $date)
                             ->where('item_id', $item_id)
                             ->update(
                                 [
@@ -156,7 +159,8 @@ trait MyTrait
 
                             $up12 = DB::table('history')
                                 ->select("*")
-                                ->whereMonth('date', Carbon::parse($date)->format('m'))
+                                // ->whereMonth('date', Carbon::parse($date)->format('m'))
+                                ->whereDate('date', $date)
                                 ->where('item_id', $item_id)
                                 ->sum('total');
                             // foreach ($up12 as $data) {
@@ -165,7 +169,8 @@ trait MyTrait
                             $hasil12 = $up12 + $sisa1;
 
                             DB::table('history')
-                                ->whereMonth('date', Carbon::parse($date)->format('m'))
+                                // ->whereMonth('date', Carbon::parse($date)->format('m'))
+                                ->whereDate('date', $date)
                                 ->where('item_id', $item_id)
                                 ->update(
                                     [
@@ -178,7 +183,8 @@ trait MyTrait
                     } else {
                         $up1 = DB::table('history')
                             ->select("*")
-                            ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            // ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            ->whereDate('date', $date)
                             ->where('item_id', $item_id)
                             ->sum('total');
                         // foreach ($up1 as $data) {
@@ -187,7 +193,8 @@ trait MyTrait
                         $hasil1 = $up1 + $jumlah;
 
                         DB::table('history')
-                            ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            // ->whereMonth('date', Carbon::parse($date)->format('m'))
+                            ->whereDate('date', $date)
                             ->where('item_id', $item_id)
                             ->update(
                                 [
