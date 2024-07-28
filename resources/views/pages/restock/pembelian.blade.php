@@ -15,112 +15,116 @@
                 <div class="row align-items-center">
                     <form action="{{ route('restock.pembelian.store') }}" method="post">
                         @csrf
-                            <div class="col-md-6">
-                                <div class="box box-widget">
-                                    <div class="box-body">
-                                        <table>
-                                            <tr>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="kode_pembelian">Kode Pembelian</label>
-                                                        <input type="text" class="form-control" value="{{ $kode_pembelian }}"
-                                                            id="kode_pembelian" readonly>
-                                                    </div>
+                        <div class="col-md-6">
+                            <div class="box box-widget">
+                                <div class="box-body">
+                                    <table>
+                                        <tr>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="kode_pembelian">Kode Pembelian</label>
+                                                    <input type="text" class="form-control" value="{{ $kode_pembelian }}"
+                                                        id="kode_pembelian" readonly>
                                                 </div>
-                                            </tr>
+                                            </div>
+                                        </tr>
 
-                                            <tr>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Tanggal Pembelian *</label>
-                                                        <input type="date" name="tanggal_pembelian"
-                                                            value="{{ now() }}" class="form-control"
-                                                            id="tanggal_pembelian">
-                                                    </div>
+                                        <tr>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Tanggal Pembelian *</label>
+                                                    <input type="date" name="tanggal_pembelian"
+                                                        value="{{ now() }}" class="form-control"
+                                                        id="tanggal_pembelian">
+                                                </div>
 
-                                                    {{-- <div class="form-group">
+                                                {{-- <div class="form-group">
                                                         <label>Tanggal Pembelian *</label>
                                                         <input type="date" name="tanggal_pembelian"
                                                             value="{{ now()->toDateString() }}" class="form-control"
                                                             id="tanggal_pembelian" required>
                                                     </div> --}}
-                                                </div>
-                                            </tr>
+                                            </div>
+                                        </tr>
 
-                                            <tr>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label>Supplier *</label>
-                                                        <select name="supplier_id" id="supplier_id" class="form-control">
-                                                            <option selected hidden>- Pilih -</option>
-                                                            @foreach ($supplier as $item)
-                                                                <option {{ old('supplier_id') == $item->id ? 'selected' : '' }}
-                                                                    value="{{ $item->id }}">{{ $item->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
+                                        <tr>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Supplier *</label>
+                                                    <select name="supplier_id" id="supplier_id" class="form-control">
+                                                        <option selected hidden>- Pilih -</option>
+                                                        @foreach ($supplier as $item)
+                                                            <option {{ old('supplier_id') == $item->id ? 'selected' : '' }}
+                                                                value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                            </div>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-6">
-                                <div class="box body-widget">
-                                    <div class="box-body">
-                                        <table>
-                                            <tr>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="name_item">Cari Item</label>
-                                                        <div class="form-group input-group">
-                                                            <input name="item_id" id="item_id" value="{{ old('item_id') }}" hidden>
-                                                            <input type="text" name="name_item" id="name_item" value="{{ old('name_item') }}"
-                                                                class="form-control" readonly="">
-                                                            <span class="input-group-btn">
-                                                                <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
-                                                                    data-target="#modalItemAdd">
-                                                                    <i class="fa fa-search"></i>
-                                                                </button>
-                                                            </span>
-                                                        </div>
+                        <div class="col-md-6">
+                            <div class="box body-widget">
+                                <div class="box-body">
+                                    <table>
+                                        <tr>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="name_item">Cari Item</label>
+                                                    <div class="form-group input-group">
+                                                        <input name="item_id" id="item_id" value="{{ old('item_id') }}"
+                                                            hidden>
+                                                        <input type="text" name="name_item" id="name_item"
+                                                            value="{{ old('name_item') }}" class="form-control"
+                                                            readonly="">
+                                                        <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-info btn-flat"
+                                                                data-toggle="modal" data-target="#modalItemAdd">
+                                                                <i class="fa fa-search"></i>
+                                                            </button>
+                                                        </span>
                                                     </div>
                                                 </div>
-                                            </tr>
+                                            </div>
+                                        </tr>
 
-                                            <tr>
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label for="stock">Stok Sekarang</label>
-                                                        <input type="text" name="stock" id="stock"
-                                                            value="{{ old('stock') }}" class="form-control" readonly="">
-                                                    </div>
+                                        <tr>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="stock">Stok Sekarang</label>
+                                                    <input type="text" name="stock" id="stock"
+                                                        value="{{ old('stock') }}" class="form-control" readonly="">
                                                 </div>
-                                            </tr>
+                                            </div>
+                                        </tr>
 
-                                            <tr>
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label>Stok Dibeli</label>
-                                                        <input type="number" name="jumlah_pembelian" id="stok_dibeli"
-                                                            value="{{ old('jumlah_pembelian') }}" class="form-control" required>
-                                                    </div>
+                                        <tr>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label>Stok Dibeli</label>
+                                                    <input type="number" name="jumlah_pembelian" id="stok_dibeli"
+                                                        value="{{ old('jumlah_pembelian') }}" class="form-control"
+                                                        required>
                                                 </div>
-                                            </tr>
+                                            </div>
+                                        </tr>
 
-                                            <tr>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        <br>
-                                                        <button type="submit" class="btn btn-primary" style="float: right;">Simpan</button>
-                                                    </div>
+                                        <tr>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <br>
+                                                    <button type="submit" class="btn btn-primary"
+                                                        style="float: right;">Simpan</button>
                                                 </div>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                            </div>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
+                        </div>
                     </form>
                 </div>
 
@@ -288,20 +292,25 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                <th>Barcode</th>
                                 <th>Sparepart</th>
                                 <th>Kategori</th>
                                 <th>Harga</th>
                                 <th>Stok</th>
+                                <th>Restok</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($items as $item)
+                                {{-- @dd($item) --}}
                                 <tr>
+                                    <td>{{ $item->barcode }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ !empty($item->category[0]) ? $item->category[0]->name : '-' }}</td>
                                     <td class="text-right">Rp {{ number_format($item->price) }}</td>
                                     <td class="text-right">{{ $item->stock }}</td>
+                                    <td class="text-right"></td>
                                     <td>
                                         <button class="btn btn-xs btn-info" id="select"
                                             data-item_id="{{ $item->id }}" data-name_item="{{ $item->name }}"
@@ -340,6 +349,25 @@
         </script>
 
         <script>
+            function fetchRestockData() {
+                $('#example1 tbody tr').each(function() {
+                    let barcode = $(this).find('td:first').text();
+
+                    $.ajax({
+                        url: `/transaction/sales/data-restock/${barcode}`,
+                        method: 'GET',
+                        success: function(data) {
+                            console.log(data)
+                            $(this).find('td').eq(5).text(
+                                data);
+                        }.bind(this),
+                        error: function() {
+                            console.log('fail', barcode)
+                        }
+                    });
+                });
+            }
+
             $(document).ready(function() {
                 $(document).on('click', '#select', function() {
                     var item_id = $(this).data('item_id');
@@ -361,6 +389,8 @@
                         }
                     })
                 })
+
+                fetchRestockData()
             })
         </script>
 
@@ -375,6 +405,9 @@
                 // alert(date)
                 $('#supplier_tanggal_pembelian').val(date);
             })
-        </script>
-    @endpush
-@endsection
+
+            $(document).on('keyup mouseup', function() {
+                fetchRestockData()
+            })
+        @endpush
+    @endsection
