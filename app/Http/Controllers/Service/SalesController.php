@@ -143,7 +143,7 @@ class SalesController extends Controller
     public function data_restock($item)
     {
         $barcode = ProductItems::where('barcode', $item)->first();
-        $current = Carbon::now()->format('m');
+        $current = Carbon::now()->subMonth(1)->format('m');
 
         $hitung = DB::table('history')
             ->rightJoin("product_items", function ($join) {
@@ -154,12 +154,28 @@ class SalesController extends Controller
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
+            ->where('product_items.barcode', $item)
             ->get();
 
         $jum_hari = DB::table('history')
             ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
             ->whereMonth('date', $current)
             ->whereNull('deleted_at')
+            ->get();
+
+        $data_part = DB::table('product_items')
+            ->join("history", function ($join) {
+                $join->on("product_items.id", "=", "history.item_id");
+            })
+            ->join('penerimaan_details', function ($join) {
+                $join->on("product_items.id", "=", "penerimaan_details.item_id");
+            })
+            ->whereMonth('history.date', $current)
+            ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "penerimaan_details.lead_time as time")
+            ->groupBy('product_items.id')
+            ->whereNull('product_items.deleted_at')
+            ->where('product_items.barcode', $item)
+            ->whereNull('history.deleted_at')
             ->get();
 
         foreach ($jum_hari as $item) {
@@ -169,6 +185,12 @@ class SalesController extends Controller
         $check_null = $hitung->where('item_id', $barcode->id)->first();
         $hitung_hasil = !empty($check_null) ? $check_null : 0;
         $data = 0;
+
+        $cek = ceil($hitung[0]->rata / $jum_hari) * $data_part[0]->time * 2 + ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time - (ceil($hitung[0]->rata / $jum_hari) * $data_part[0]->time + ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time);
+        // dd($data_part, $hitung);
+        // dd($cek);
+
+        return response()->json($cek);
 
         try {
             if ($barcode->stock <= ($hitung_hasil->besar - ceil($hitung_hasil->rata / $jum_hari)) * $barcode->lead_time) {
