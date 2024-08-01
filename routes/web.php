@@ -10,7 +10,7 @@ use App\Http\Controllers\MinMax\PeriodeController;
 use App\Http\Controllers\MinMax\RealtimeController;
 use App\Http\Controllers\Product\CategoriesController;
 use App\Http\Controllers\Product\ItemsController;
-use App\Http\Controllers\Restcok\PembelianController;
+use App\Http\Controllers\Restcok\PembelianController as RestockPembelianController;
 use App\Http\Controllers\Restcok\PenerimaanController;
 use App\Http\Controllers\Service\SalesController;
 // use App\Http\Controllers\Service\SalesInController;
@@ -50,6 +50,8 @@ Route::group([
     Route::post('register/update', [AuthController::class, 'update'])->name('register.update');
     Route::post('register/delete', [AuthController::class, 'delete'])->name('register.delete');
 });
+
+Route::get('/data-hitung/{id}', [RestockPembelianController::class, 'data_hitung']);
 
 Route::group(
     [
@@ -104,11 +106,11 @@ Route::group(
             Route::group([
                 'prefix' => 'pembelian',
             ], function () {
-                Route::get('', [PembelianController::class, 'index'])->name('restock.pembelian.index');
-                Route::post('', [PembelianController::class, 'store'])->name('restock.pembelian.store');
-                Route::post('update', [PembelianController::class, 'update'])->name('restock.pembelian.update');
-                Route::post('delete', [PembelianController::class, 'delete'])->name('restock.pembelian.delete');
-                Route::post('store-pembelian', [PembelianController::class, 'store_pembelian'])->name('restock.pembelian.store-pembelian');
+                Route::get('', [RestockPembelianController::class, 'index'])->name('restock.pembelian.index');
+                Route::post('', [RestockPembelianController::class, 'store'])->name('restock.pembelian.store');
+                Route::post('update', [RestockPembelianController::class, 'update'])->name('restock.pembelian.update');
+                Route::post('delete', [RestockPembelianController::class, 'delete'])->name('restock.pembelian.delete');
+                Route::post('store-pembelian', [RestockPembelianController::class, 'store_pembelian'])->name('restock.pembelian.store-pembelian');
             });
 
             Route::group([
@@ -181,5 +183,3 @@ Route::group(
         });
     }
 );
-
-Route::get('/data-hitung/{id}', [PembelianController::class, 'data_hitung']);

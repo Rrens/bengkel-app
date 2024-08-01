@@ -49,6 +49,7 @@ class SalesController extends Controller
             ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
             ->whereMonth('date', $current)
             ->where('item_id', $id)
+            ->whereNull('deleted_at')
             ->get();
 
         foreach ($jum_hari as $item) {
@@ -98,14 +99,15 @@ class SalesController extends Controller
                 $join->on("product_items.id", "=", "penerimaan_details.item_id");
             })
             ->whereMonth('history.date', $current)
-            ->whereMonth('penerimaan_details.date', $current)
+            // ->whereMonth('penerimaan_details.date', $current)
             ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "penerimaan_details.lead_time as time")
             ->where('product_items.id', $id)
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
             ->get();
-        // dd($data_part);
+        // dd($data_part, $hitung, $jum_hari);
         $stock_min = ceil($hitung[0]->rata / $jum_hari) * $data_part[0]->time + ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time;
+        // dd($data_part[0]->time);
         $safety_stock = ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time;
         return response()->json([
             'stock_min' =>  $stock_min,
@@ -145,23 +147,30 @@ class SalesController extends Controller
         $barcode = ProductItems::where('barcode', $item)->first();
         $current = Carbon::now()->subMonth(1)->format('m');
 
-        $hitung = DB::table('history')
-            ->rightJoin("product_items", function ($join) {
-                $join->on("product_items.id", "=", "history.item_id");
-            })
-            ->select(DB::raw('*, MAX(total) as besar, SUM(total) as rata'))
-            ->whereMonth('date', $current)
-            ->groupBy('product_items.id')
-            ->whereNull('product_items.deleted_at')
-            ->whereNull('history.deleted_at')
-            ->where('product_items.barcode', $item)
-            ->get();
-
         $jum_hari = DB::table('history')
             ->select(DB::raw('DAY(LAST_DAY(date)) as jum_hari'))
             ->whereMonth('date', $current)
             ->whereNull('deleted_at')
             ->get();
+        foreach ($jum_hari as $data) {
+            $jum_hari = $data->jum_hari;
+        }
+
+        $hitung = DB::table('history')
+            ->join("product_items", function ($join) {
+                $join->on("product_items.id", "=", "history.item_id");
+            })
+            //->select(DB::raw('MAX(total) as besar, round(SUM(total)/30) as rata'))
+            ->select(DB::raw('*,MAX(result_total) as besar, SUM(total) as rata'))
+            ->whereMonth('date', $current)
+            ->groupBy('product_items.id')
+            ->whereNull('product_items.deleted_at')
+            ->whereNull('history.deleted_at')
+            ->get();
+        // dd($hitung);
+
+
+        //	echo "<script>console.log('Debug Objects: " . $jum_hari . "' );</script>";
 
         $data_part = DB::table('product_items')
             ->join("history", function ($join) {
@@ -174,13 +183,8 @@ class SalesController extends Controller
             ->select("product_items.id as id_part", "product_items.name as nm_motor", "product_items.stock as stok", "penerimaan_details.lead_time as time")
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
-            ->where('product_items.barcode', $item)
             ->whereNull('history.deleted_at')
             ->get();
-
-        foreach ($jum_hari as $item) {
-            $jum_hari = $item->jum_hari;
-        }
 
         $check_null = $hitung->where('item_id', $barcode->id)->first();
         $hitung_hasil = !empty($check_null) ? $check_null : 0;

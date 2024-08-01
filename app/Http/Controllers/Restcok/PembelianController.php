@@ -60,7 +60,6 @@ class PembelianController extends Controller
             'stock' => 'required',
             'jumlah_pembelian' => 'required',
         ]);
-
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
