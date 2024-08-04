@@ -313,8 +313,8 @@
                                     <td class="text-right"></td>
                                     <td>
                                         <button class="btn btn-xs btn-info" id="select"
-                                            data-item_id="{{ $item->id }}" data-name_item="{{ $item->name }}"
-                                            data-stock="{{ $item->stock }}">
+                                            data-barcode="{{ $item->barcode }}" data-item_id="{{ $item->id }}"
+                                            data-name_item="{{ $item->name }}" data-stock="{{ $item->stock }}">
                                             <i class="fa fa-check"> Select</i>
                                         </button>
                                     </td>
@@ -370,24 +370,38 @@
 
             $(document).ready(function() {
                 $(document).on('click', '#select', function() {
-                    var item_id = $(this).data('item_id');
-                    var name_item = $(this).data('name_item');
-                    var stock = $(this).data('stock');
+                    console.log($(this))
+                    let barcode = $(this).data('barcode')
+                    let item_id = $(this).data('item_id');
+                    let name_item = $(this).data('name_item');
+                    let stock = $(this).data('stock');
                     $('#item_id').val(item_id);
                     $('#name_item').val(name_item);
                     $('#stock').val(stock);
                     $('#modalItemAdd').modal('hide');
 
+                    // $.ajax({
+                    //     url: `/data-hitung/${item_id}`,
+                    //     method: 'GET',
+                    //     success: function(data) {
+                    //         // console.log(data)
+                    //         $('#stok_dibeli').val(data)
+                    //     },
+                    //     error: function() {
+                    //         $('#stok_dibeli').val('')
+                    //     }
+                    // })
+
                     $.ajax({
-                        url: `/data-hitung/${item_id}`,
+                        url: `/transaction/sales/data-restock/${barcode}`,
                         method: 'GET',
                         success: function(data) {
                             $('#stok_dibeli').val(data)
                         },
                         error: function() {
-                            $('#stok_dibeli').val('')
+                            console.log('fail', barcode)
                         }
-                    })
+                    });
                 })
 
                 fetchRestockData()
@@ -401,13 +415,14 @@
             })
 
             $('#tanggal_pembelian').on('change', function() {
-                var date = $('#tanggal_pembelian').val();
-                // alert(date)
+                let date = $('#tanggal_pembelian').val();
+                console.log(date)
                 $('#supplier_tanggal_pembelian').val(date);
             })
 
             $(document).on('keyup mouseup', function() {
                 fetchRestockData()
             })
-        @endpush
-    @endsection
+        </script>
+    @endpush
+@endsection

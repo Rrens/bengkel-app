@@ -45,6 +45,8 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $data->nm_motor }}</td>
                                             <td>{{ $data->stok }}</td>
+                                            {{-- @dd($data) --}}
+                                            {{-- @dd(ceil($hitung[$i]->rata / $jum_hari) * $data->time + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time) --}}
                                             {{-- KENE --}}
                                             <td>{{ ceil($hitung[$i]->rata / $jum_hari) * $data->time + ($hitung[$i]->besar - ceil($hitung[$i]->rata / $jum_hari)) * $data->time }}
                                                 Item</td>
