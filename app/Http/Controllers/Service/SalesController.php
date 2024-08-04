@@ -166,6 +166,7 @@ class SalesController extends Controller
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
+            ->where('product_items.id', $barcode->id)
             ->get();
         // dd($hitung);
 
@@ -184,6 +185,7 @@ class SalesController extends Controller
             ->groupBy('product_items.id')
             ->whereNull('product_items.deleted_at')
             ->whereNull('history.deleted_at')
+            ->where('product_items.id', $barcode->id)
             ->get();
 
         $check_null = $hitung->where('item_id', $barcode->id)->first();
@@ -192,7 +194,7 @@ class SalesController extends Controller
 
         $cek = ceil($hitung[0]->rata / $jum_hari) * $data_part[0]->time * 2 + ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time - (ceil($hitung[0]->rata / $jum_hari) * $data_part[0]->time + ($hitung[0]->besar - ceil($hitung[0]->rata / $jum_hari)) * $data_part[0]->time);
         // dd($data_part, $hitung);
-        // dd($cek);
+        // data_partdd($cek);
 
         return response()->json($cek);
 
